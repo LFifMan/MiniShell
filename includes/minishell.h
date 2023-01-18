@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:44:43 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/18 17:59:09 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/18 18:37:50 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,16 @@
 # define DOUBLEQUOTE 34
 # define SINGLEQUOTE 39
 # define SPACE 32
+# define OPTION 45
+# define IGNORE 35
+# define VARIABLES 36
+# define SEPARATOR 59
+# define PIPE 124
+# define BACKSLASH 92
+# define SLASH 47
+# define EQUAL 61
+# define GREATER 62
+# define SMALLER 60
 
 # include <stdio.h>
 # include <stdlib.h>
