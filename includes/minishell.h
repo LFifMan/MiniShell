@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:44:43 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/17 14:44:43 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/18 15:39:40 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,19 @@ typedef struct s_vars
 }					t_vars;
 
 char	*ft_parsing_sh(char *const *envp);
+t_shell	*parsing_not_quotation(t_shell **shell);
+void	split_not_quotation(t_shell **shell, char *input);
+int		parsing_input(t_shell **shell, char *input);
+char	*parse_quotation(char *input, int index, int size);
+
+void	ft_lstadd_back(t_shell **lst, char *input);
+int		free_lst(t_shell *lst);
+int		ft_lstsize(t_shell **lst);
+
+size_t	ft_strlen(const char *str);
+int		ft_strcmp(char *input, char *str);
+
+/* TO BE REMOVED */
+void	printed(t_shell **a);
 
 #endif

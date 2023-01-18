@@ -29,7 +29,11 @@ PATH_OBJ	= obj/
 ##-----FILES-----##
 
 SRC		=	main.c \
-			parsingshell.c
+			parsing_shell.c \
+			parsing_input.c \
+			utils.c \
+			lsts.c \
+			delete.c
 
 HEAD	=	minishell.h
 
