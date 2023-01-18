@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:38:40 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/18 15:44:50 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/18 15:54:08 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,33 @@ char	*parse_quotation(char *input, int index, int size)
 
 	i = 0;
 	j = 0;
-	if (index == 0)
+	if(index == DOUBLEQUOTE)
+	{
+		data = malloc(sizeof(char) * size + 3);
+		data[i] = DOUBLEQUOTE;
+		while (i < size)
+		{
+			data[i + 1] = input[i];
+			i++;
+		}
+		i++;
+		data[i++] = DOUBLEQUOTE;
+		data[i] = 0;
+	}
+	else if (index == SINGLEQUOTE)
+	{
+		data = malloc(sizeof(char) * size + 3);
+		data[i] = SINGLEQUOTE;
+		while (i < size)
+		{
+			data[i + 1] = input[i];
+			i++;
+		}
+		i++;
+		data[i++] = SINGLEQUOTE;
+		data[i] = 0;
+	}
+	else
 	{
 		data = malloc(sizeof(char) * size + 1);
 		while (i < size)
@@ -40,32 +66,6 @@ char	*parse_quotation(char *input, int index, int size)
 			data[i] = input[i];
 			i++;
 		}
-		data[i] = 0;
-	}
-	else if(index == 1)
-	{
-		data = malloc(sizeof(char) * size + 3);
-		data[i] = 34;
-		while (i < size)
-		{
-			data[i + 1] = input[i];
-			i++;
-		}
-		i++;
-		data[i++] = 34;
-		data[i] = 0;
-	}
-	else
-	{
-		data = malloc(sizeof(char) * size + 3);
-		data[i] = 39;
-		while (i < size)
-		{
-			data[i + 1] = input[i];
-			i++;
-		}
-		i++;
-		data[i++] = 39;
 		data[i] = 0;
 	}
 	return (data);
@@ -81,41 +81,40 @@ int	parsing_input(t_shell **shell, char *input)
 	int j;
 
 	i = 0;
-	while (input[i] == ' ')
+	while (input[i] == SPACE)
 		i++;
 	while (input[i])
 	{
 		j = 0;
-		if (input[i] == 34)
+		if (input[i] == DOUBLEQUOTE)
 		{
 			i++;
-			while (input[i + j] != 0 && input[i + j] != 34)
+			while (input[i + j] != 0 && input[i + j] != DOUBLEQUOTE)
 				j++;
 			if (input[i + j] == 0) // error check if there is a missing quotation
 				return (1);
-			ft_lstadd_back(shell, parse_quotation(&input[i], 1, j));
+			ft_lstadd_back(shell, parse_quotation(&input[i], DOUBLEQUOTE, j));
 			i++;
 		}
-		else if (input[i] == 39)
+		else if (input[i] == SINGLEQUOTE)
 		{
 			i++;
-			while (input[i + j] != 0 && input[i + j] != 39)
+			while (input[i + j] != 0 && input[i + j] != SINGLEQUOTE)
 				j++;
 			if (input[i + j] == 0) // error check if there is a missing quotation
 				return (1);
-			ft_lstadd_back(shell, parse_quotation(&input[i], 2, j));
+			ft_lstadd_back(shell, parse_quotation(&input[i], SINGLEQUOTE, j));
 			i++;
 		}
 		else
 		{
-			while (input[i + j] != 0 && input[i + j] != 39 && input[i + j] != 34)
+			while (input[i + j] != 0 && input[i + j] != SINGLEQUOTE && input[i + j] != DOUBLEQUOTE)
 				j++;
 			ft_lstadd_back(shell, parse_quotation(&input[i], 0, j));
 		}
 		i += j;
 	}
 	return (0);
-
 }
 
 /* PARSING LV 2: keep quotation strings, split unquotes */
@@ -131,12 +130,12 @@ void	split_not_quotation(t_shell **shell, char *input)
 	i = 0;
 	while (input[i])
 	{
-		while (input[i] == ' ')
+		while (input[i] == SPACE)
 			i++;
 		j = 0;
 		if (input[i] != 0)
 		{
-			while (input[i + j] != 0 && input[i + j] != ' ')
+			while (input[i + j] != 0 && input[i + j] != SPACE)
 				j++;
 			ft_lstadd_back(shell, parse_quotation(&input[i], 0, j));
 		}
@@ -145,7 +144,6 @@ void	split_not_quotation(t_shell **shell, char *input)
 		i += j;
 	}
 }
-
 
 /*
 parsing_not_quotation is pasring level two. It creates a new lst, splits unquoted strings and keeps strings in quotations. 

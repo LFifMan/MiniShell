@@ -6,43 +6,23 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 16:31:32 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/18 15:37:18 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/18 16:06:00 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int	ft_memcmp(void *s1, void *s2, size_t n)
-{
-	size_t			i;
-	unsigned char	*ptr1;
-	unsigned char	*ptr2;
-
-	i = 0;
-	ptr1 = (unsigned char *)s1;
-	ptr2 = (unsigned char *)s2;
-	while (i < n)
-	{
-		if (ptr1[i] != ptr2[i])
-			return (ptr1[i] - ptr2[i]);
-		i++;
-	}
-	return (0);
-}
 
 char	*ft_parsing_sh(char *const *envp)
 {
 	char	*shell_paths;
 	int		i;
 	int		j;
-	int		c;
 	int		count;
 
 	i = 0;
 	while (ft_memcmp((char *)envp[i], "SHELL=", 6) != 0)
 		i++;
 	j = 0;
-	c = 0;
 	count = 0;
 	while ((char)envp[i][j] != 0)
 	{
@@ -64,4 +44,34 @@ char	*ft_parsing_sh(char *const *envp)
 	shell_paths[j++] = ' ';
 	shell_paths[j] = '\0';
 	return (shell_paths);
+}
+
+char	*ft_parsing_pwd(char *const *envp)
+{
+	char	*pwd_path;
+	int		i;
+	int		j;
+	int		count;
+
+	i = 0;
+	while (ft_memcmp((char *)envp[i], "PWD=", 4) != 0)
+		i++;
+	j = 0;
+	count = 0;
+	while ((char)envp[i][j] != 0)
+	{
+		j++;
+	}
+	j -= 4;
+	pwd_path = malloc (sizeof(char) * j + 2);
+	j = 0;
+	count = 4;
+	while ((char)envp[i][count] != 0)
+	{
+		pwd_path[j] = (char)envp[i][count];
+		count++;
+		j++;
+	}
+	pwd_path[j] = '\0';
+	return (pwd_path);
 }
