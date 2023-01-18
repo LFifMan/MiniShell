@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:38:40 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/18 15:54:08 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/18 17:50:57 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,16 @@ char	*parse_quotation(char *input, int index, int size)
 		data[i++] = SINGLEQUOTE;
 		data[i] = 0;
 	}
+	else if (index == SPACE)
+	{
+		data = malloc(sizeof(char) * size + 1);
+		while (i < size)
+		{
+			data[i] = input[i];
+			i++;
+		}
+		data[i] = 0;
+	}
 	else
 	{
 		data = malloc(sizeof(char) * size + 1);
@@ -81,8 +91,6 @@ int	parsing_input(t_shell **shell, char *input)
 	int j;
 
 	i = 0;
-	while (input[i] == SPACE)
-		i++;
 	while (input[i])
 	{
 		j = 0;
@@ -115,6 +123,7 @@ int	parsing_input(t_shell **shell, char *input)
 		i += j;
 	}
 	return (0);
+
 }
 
 /* PARSING LV 2: keep quotation strings, split unquotes */
@@ -130,10 +139,14 @@ void	split_not_quotation(t_shell **shell, char *input)
 	i = 0;
 	while (input[i])
 	{
-		while (input[i] == SPACE)
-			i++;
 		j = 0;
-		if (input[i] != 0)
+		if (input[i] == SPACE)
+		{
+			while (input[i + j] == SPACE)
+				j++;
+			ft_lstadd_back(shell, parse_quotation(&input[i], SPACE, j));
+		}
+		else if (input[i] != 0)
 		{
 			while (input[i + j] != 0 && input[i + j] != SPACE)
 				j++;
@@ -144,6 +157,7 @@ void	split_not_quotation(t_shell **shell, char *input)
 		i += j;
 	}
 }
+
 
 /*
 parsing_not_quotation is pasring level two. It creates a new lst, splits unquoted strings and keeps strings in quotations. 

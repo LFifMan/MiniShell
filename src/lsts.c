@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 18:45:45 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/18 15:37:18 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/18 16:21:43 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	ft_lstadd_back(t_shell **lst, char *input)
 	if (!tmp)
 		return ;
 	tmp->next = NULL;
-	if (input[0] == 34 || input[0] == 39) // create an index to know if the lst is a quotation or not
+	if (input[0] == DOUBLEQUOTE || input[0] == SINGLEQUOTE) // create an index to know if the lst is a quotation or not
 		tmp->index = 1;
 	else
 		tmp->index = 0;
