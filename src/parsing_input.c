@@ -12,6 +12,23 @@
 
 #include "../includes/minishell.h"
 
+//int	ft_count_pipes(t_shell **shell)
+//{
+//	int	count;
+//
+//	count = 0;
+//	while ()
+//	return (count);
+//}
+//
+//void	ft_create_tabs(t_vars *vars, t_shell **shell)
+//{
+//	int	pipes;
+//
+//	pipes = ft_count_pipes(shell);
+//}
+
+
 
 /* PARSING LV 1: split quotes from unquotes */
 
@@ -24,49 +41,21 @@ i.e. index
 
 it returns the final string of the new element and sends it to ft_lstadd_back
 */
-char	*parse_quotation(char *input, int index, int size)
+char	*parse_quotation(char *input, char index, int size, int i)
 {
-	int		i;
-	int		j;
 	char	*data;
 
-	i = 0;
-	j = 0;
-	if(index == DOUBLEQUOTE)
+	if (index == DOUBLEQUOTE || index == SINGLEQUOTE)
 	{
 		data = malloc(sizeof(char) * size + 3);
-		data[i] = DOUBLEQUOTE;
+		data[i] = index;
 		while (i < size)
 		{
 			data[i + 1] = input[i];
 			i++;
 		}
-		i++;
-		data[i++] = DOUBLEQUOTE;
-		data[i] = 0;
-	}
-	else if (index == SINGLEQUOTE)
-	{
-		data = malloc(sizeof(char) * size + 3);
-		data[i] = SINGLEQUOTE;
-		while (i < size)
-		{
-			data[i + 1] = input[i];
-			i++;
-		}
-		i++;
-		data[i++] = SINGLEQUOTE;
-		data[i] = 0;
-	}
-	else if (index == SPACE)
-	{
-		data = malloc(sizeof(char) * size + 1);
-		while (i < size)
-		{
-			data[i] = input[i];
-			i++;
-		}
-		data[i] = 0;
+		data[++i] = index;
+		data[++i] = 0;
 	}
 	else
 	{
@@ -87,8 +76,8 @@ it returns 1 if one of the quotation mark is not closed
 */
 int	parsing_input(t_shell **shell, char *input)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (input[i])
@@ -97,33 +86,32 @@ int	parsing_input(t_shell **shell, char *input)
 		if (input[i] == DOUBLEQUOTE)
 		{
 			i++;
-			while (input[i + j] != 0 && input[i + j] != DOUBLEQUOTE)
+			while (input[i + j] && input[i + j] != DOUBLEQUOTE)
 				j++;
-			if (input[i + j] == 0) // error check if there is a missing quotation
-				return (1);
-			ft_lstadd_back(shell, parse_quotation(&input[i], DOUBLEQUOTE, j));
+			if (!input[i + j]) // error check if there is a missing quotation
+				return (FALSE);
+			ft_lstadd_back(shell, parse_quotation(&input[i], DOUBLEQUOTE, j, 0));
 			i++;
 		}
 		else if (input[i] == SINGLEQUOTE)
 		{
 			i++;
-			while (input[i + j] != 0 && input[i + j] != SINGLEQUOTE)
+			while (input[i + j] && input[i + j] != SINGLEQUOTE)
 				j++;
-			if (input[i + j] == 0) // error check if there is a missing quotation
-				return (1);
-			ft_lstadd_back(shell, parse_quotation(&input[i], SINGLEQUOTE, j));
+			if (!input[i + j]) // error check if there is a missing quotation
+				return (FALSE);
+			ft_lstadd_back(shell, parse_quotation(&input[i], SINGLEQUOTE, j, 0));
 			i++;
 		}
 		else
 		{
-			while (input[i + j] != 0 && input[i + j] != SINGLEQUOTE && input[i + j] != DOUBLEQUOTE)
+			while (input[i + j] && input[i + j] != SINGLEQUOTE && input[i + j] != DOUBLEQUOTE)
 				j++;
-			ft_lstadd_back(shell, parse_quotation(&input[i], 0, j));
+			ft_lstadd_back(shell, parse_quotation(&input[i], 0, j, 0));
 		}
 		i += j;
 	}
-	return (0);
-
+	return (TRUE);
 }
 
 /* PARSING LV 2: keep quotation strings, split unquotes */
@@ -144,13 +132,13 @@ void	split_not_quotation(t_shell **shell, char *input)
 		{
 			while (input[i + j] == SPACE)
 				j++;
-			ft_lstadd_back(shell, parse_quotation(&input[i], SPACE, j));
+			ft_lstadd_back(shell, parse_quotation(&input[i], SPACE, j, 0));
 		}
-		else if (input[i] != 0)
+		else if (input[i])
 		{
-			while (input[i + j] != 0 && input[i + j] != SPACE)
+			while (input[i + j] && input[i + j] != SPACE)
 				j++;
-			ft_lstadd_back(shell, parse_quotation(&input[i], 0, j));
+			ft_lstadd_back(shell, parse_quotation(&input[i], 0, j, 0));
 		}
 		else
 			return ;
@@ -169,11 +157,11 @@ t_shell	*parsing_not_quotation(t_shell **shell)
 	t_shell *new;
 
 	new = malloc(sizeof(t_shell));
-	new->next = NULL;
-	tmp = (*shell)->next; // error check?
 	if (!new)
 		return (NULL);
-	while (tmp != NULL)
+	new->next = NULL;
+	tmp = (*shell)->next; // error check?
+	while (tmp)
 	{
 		if (tmp->index == 1) // if the data is a quotation string, just keep it as it is
 			ft_lstadd_back(&new, tmp->data);

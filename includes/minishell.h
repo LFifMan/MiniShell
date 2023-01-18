@@ -28,10 +28,7 @@
 typedef struct s_shell
 {
 	char			*data;
-	char			quote_type;
-	int				pos;
 	int				index;
-
 	struct s_shell	*next;
 }			t_shell;
 
@@ -39,8 +36,15 @@ typedef struct s_vars
 {
 	char			*env_shell;
 	char			*env_pwd;
+	char			**envp;
 }					t_vars;
 
+typedef struct s_tabs
+{
+	char			**cmds;
+	char			**paths;
+	struct s_tabs	*next;
+}					t_tabs;
 /* PARSING_SHELL.C */
 char	*ft_parsing_sh(char *const *envp);
 char	*ft_parsing_pwd(char *const *envp);
@@ -49,7 +53,7 @@ char	*ft_parsing_pwd(char *const *envp);
 t_shell	*parsing_not_quotation(t_shell **shell);
 void	split_not_quotation(t_shell **shell, char *input);
 int		parsing_input(t_shell **shell, char *input);
-char	*parse_quotation(char *input, int index, int size);
+char	*parse_quotation(char *input, char index, int size, int i);
 
 /* LSTS.C */
 void	ft_lstadd_back(t_shell **lst, char *input);
