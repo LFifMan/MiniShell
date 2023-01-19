@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:38:47 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/19 21:21:45 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/19 22:52:16 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ int	main(int ac, char **av, char **ev)
 		add_history(input);
 		if (parsing_input(&shell, input) == FALSE)
 			printf(" error: quote not finished\n");
-		write (1, "\n", 1);
-		write (1, "\n", 1);
 		shell = parsing_not_quotation(&shell);
 		shell = ft_get_da_pipes(&shell);
 		tabs = ft_regroup(&shell, &vars);
@@ -60,6 +58,8 @@ int	main(int ac, char **av, char **ev)
 			printf("%s\n", tabs->cmds[i]);
 			i++;
 		}
+		ft_print_lst(&shell);
+
 		printf("You entered: %s\n", input);
 		free(input);
 		free_lst(shell);

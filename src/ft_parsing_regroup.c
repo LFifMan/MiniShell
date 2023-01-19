@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_regroup.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:25:12 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/19 21:39:13 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/19 22:51:15 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ char	*ft_trim_quotations(char *str)
 	
 	if (str[0] == SINGLEQUOTE || str[0] == DOUBLEQUOTE)
 	{
-		printf("\n22222222\n\n\n");
-
 		if (ft_strlen(str) == 2)
 			return (ft_strdup(""));
 		dest = (char *)malloc(sizeof(char) * (ft_strlen(str) - 2 + 1));
@@ -110,7 +108,6 @@ t_shell	*ft_get_da_pipes(t_shell **shell)
 	t_shell *new;
 	int		i;
 
-	ft_print_lst(shell);
 	new = malloc(sizeof(t_shell));
 	if (!new)
 		return (NULL);
@@ -136,7 +133,6 @@ t_shell	*ft_get_da_pipes(t_shell **shell)
 			ft_lstadd_back(&new, tmp->data);
 		tmp = tmp->next;
 	}
-	ft_print_lst(&new);
 	//free_lst(*shell); --> does not work, I'm lost in translation
 	return (new);
 }
