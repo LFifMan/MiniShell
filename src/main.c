@@ -34,7 +34,7 @@ int	main(int ac, char **av, char **ev)
 
 	vars.envp = ev;
 	if (ac != 1 || av[1])
-		exit (0); // add error 
+		exit (0); // TODO : add error
 	shell = malloc(sizeof(t_shell));
 	if (!shell)
 		return (0);
@@ -45,20 +45,14 @@ int	main(int ac, char **av, char **ev)
 		input = readline("> ");
 		if (ft_strcmp(input, "exit") == TRUE)
 			break ;
-		if (ft_strcmp(input, "pwd") == TRUE)
-			printf("%s\n", vars.env_pwd);
 		add_history(input);
-		if (parsing_input(&shell, input) == FALSE) // split input in chunks of quotes / unquotes
+		if (parsing_input(&shell, input) == FALSE)
 			printf(" error: quote not finished\n");
-		shell = parsing_not_quotation(&shell); // split all chunks of unquotes, creates a new lst
-		/* temporary code to print result */
-//		ft_creates_tabs(&vars, &shell);
-		printed(&shell); // to check the data of the lst. 
-		printf(" size %d \n", ft_lstsize(&shell)); // to check the size of the lst
+		shell = parsing_not_quotation(&shell);
+		ft_print_lst(&shell);
 		printf("You entered: %s\n", input);
 		free(input);
 		free_lst(shell);
-		printed(&shell);
 	}
 	//rl_clear_history();
 	return (0);
