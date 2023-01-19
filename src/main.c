@@ -49,6 +49,7 @@ int	main(int ac, char **av, char **ev)
 		if (parsing_input(&shell, input) == FALSE)
 			printf(" error: quote not finished\n");
 		shell = parsing_not_quotation(&shell);
+		ft_dollars(&shell, &vars);
 		ft_print_lst(&shell);
 		printf("You entered: %s\n", input);
 		free(input);

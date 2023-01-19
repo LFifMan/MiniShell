@@ -17,6 +17,9 @@
 # define DOUBLEQUOTE 34
 # define SINGLEQUOTE 39
 # define SPACE 32
+# define CHARS 0
+# define DOLLAR 36
+# define PIPE 124
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -59,6 +62,7 @@ t_shell	*parsing_not_quotation(t_shell **shell);
 void	split_not_quotation(t_shell **shell, char *input);
 int		parsing_input(t_shell **shell, char *input);
 char	*parse_quotation(char *input, char index, int size, int i);
+void	ft_dollars(t_shell **shell, t_vars *vars);
 
 
 /* LSTS.C */

@@ -33,7 +33,8 @@ SRC		=	main.c \
 			ft_parsing_input.c \
 			ft_utils.c \
 			ft_lsts.c \
-			ft_verifs.c
+			ft_verifs.c \
+			ft_dollars.c
 
 HEAD	=	minishell.h
 
