@@ -15,18 +15,19 @@
 /*
 A function to print the list, will be removed at the end, it's meant for testing
 */
-void	printed(t_shell **a)
+void	ft_print_lst(t_shell **a)
 {
 	t_shell	*tmpa;
+	int		i;
 
+	i = 1;
 	if ((*a)->next != NULL)
 	{
 		tmpa = (*a);
-		printf("A = ");
 		(*a) = (*a)->next;
 		while ((*a) != NULL)
 		{
-			printf("%s \n", (*a)->data);
+			printf("Element %d	| address : %p	| data : %s\n", i++, &(*a)->data, (*a)->data);
 			(*a) = (*a)->next;
 		}
 		(*a) = tmpa;

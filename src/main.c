@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:38:47 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/19 14:05:15 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/19 21:21:45 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,12 @@ int	main(int ac, char **av, char **ev)
 {
 	t_vars	vars;
 	t_shell	*shell;
+	t_tabs  *tabs;
 	char	*input;
 
+	vars.envp = ev;
 	if (ac != 1 || av[1])
-		exit (0); // add error 
+		exit (0); // TODO : add error
 	shell = malloc(sizeof(t_shell));
 	if (!shell)
 		return (0);
@@ -41,25 +43,26 @@ int	main(int ac, char **av, char **ev)
 	while (1)
 	{
 		init_vars(&vars, ev);
-		input = readline(vars.env_shell);
+		input = readline("> ");
 		if (ft_strcmp(input, "exit") == TRUE)
 			break ;
-		if (ft_strcmp(input, "pwd") == TRUE)
-			printf("%s\n", vars.env_pwd);
 		add_history(input);
-		if (parsing_input(&shell, input) == 1) // split input in chunks of quotes / unquotes
+		if (parsing_input(&shell, input) == FALSE)
 			printf(" error: quote not finished\n");
-		shell = parsing_not_quotation(&shell); // split all chunks of unquotes, creates a new lst
-		
-		/* temporary code to print result */
-		printed(&shell); // to check the data of the lst. 
-		printf(" size %d \n", ft_lstsize(&shell)); // to check the size of the lst
+		write (1, "\n", 1);
+		write (1, "\n", 1);
+		shell = parsing_not_quotation(&shell);
+		shell = ft_get_da_pipes(&shell);
+		tabs = ft_regroup(&shell, &vars);
+		int i = 0;
+		while (tabs->cmds[i])
+		{
+			printf("%s\n", tabs->cmds[i]);
+			i++;
+		}
 		printf("You entered: %s\n", input);
-
 		free(input);
 		free_lst(shell);
-		printed(&shell);
-
 	}
 	//rl_clear_history();
 	return (0);

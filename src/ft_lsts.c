@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lsts.c                                             :+:      :+:    :+:   */
+/*   ft_lsts.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 18:45:45 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/18 17:59:12 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/19 16:24:32 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,10 @@ void	ft_lstadd_back(t_shell **lst, char *input)
 	if (!tmp)
 		return ;
 	tmp->next = NULL;
-	if (input[0] == DOUBLEQUOTE || input[0] == SINGLEQUOTE) // create an index to know if the lst is a quotation or not
-		tmp->index = 1;
+	if (input[0] == DOUBLEQUOTE || input[0] == SINGLEQUOTE || input[0] == SPACE) // create an index to know if the lst is a quotation or not
+		tmp->index = input[0];
 	else
-		tmp->index = 0;
+		tmp->index = CHARS;
 	i = 0;
 	tmp->data = malloc(sizeof(char) * ft_strlen(input) + 1);
 	if (!tmp->data)
