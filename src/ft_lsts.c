@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 18:45:45 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/20 15:57:25 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/20 19:59:56 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,18 +49,21 @@ int	free_lst_tabs(t_tabs *lst)
 			free(tmp->cmds[i]);
 			i++;
 		}
+		free(tmp->cmds);
 		i = 0;
 		while (tmp->paths[i])
 		{
 			free(tmp->paths[i]);
 			i++;
 		}
-		//free(tmp);
+		free(tmp->paths);
+		free(tmp);
 	}
 	lst = end;
 	lst->next = NULL;
 	return (0);
 }
+
 int	ft_lstsize(t_shell **lst)
 {
 	t_shell	*tmp;
@@ -104,7 +107,7 @@ void	ft_lstadd_back(t_shell **lst, char *input)
 	while (curr->next != NULL)
 		curr = curr->next;
 	curr->next = tmp;
-	free (input);
+	//free (input);
 }
 
 void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input)
@@ -119,7 +122,6 @@ void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input)
 	tmp->next = NULL;
 	i = 0;
 	tmp->cmds = malloc (sizeof(char*) *ft_lst_count_spaces(input) + 1);
-	//e = %d\n", ft_lst_count_spaces(input) + 1);
 	if (!tmp->cmds)
 		return ;
 	while (input)

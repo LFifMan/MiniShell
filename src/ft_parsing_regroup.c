@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:25:12 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/20 18:24:20 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/20 19:48:17 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,16 +102,21 @@ void	ft_split_pipes(t_shell **shell, char *input)
 t_shell	*ft_get_da_pipes(t_shell **shell)
 {
 	t_shell *tmp;
+	t_shell *tmp2;
 	t_shell *new;
 	int		i;
+
+	ft_print_lst(shell);
 
 	new = malloc(sizeof(t_shell));
 	if (!new)
 		return (NULL);
 	new->next = NULL;
 	tmp = (*shell)->next; // error check?
+	tmp2 = (*shell); // error check?
 	while (tmp)
 	{
+		printf("before shell %s | address tmp %s\n", (*shell)->next->data, tmp->data);
 		i = 0;
 		if (tmp->index == CHARS)
 		{
@@ -128,8 +133,13 @@ t_shell	*ft_get_da_pipes(t_shell **shell)
 		}
 		else // otherwise, split it
 			ft_lstadd_back(&new, tmp->data);
+		printf("after shell %s | address tmp %s\n", (*shell)->next->data, tmp->data);
 		tmp = tmp->next;
 	}
-	//free_lst(*shell); --> does not work, I'm lost in translation
+	//printf("address shell %s | address tmp %s\n", (*shell)->next->data, tmp->data);
+
+	*shell = tmp2;
+	ft_print_lst(shell);
+	free_lst(*shell); //--> does not work, I'm lost in translation
 	return (new);
 }

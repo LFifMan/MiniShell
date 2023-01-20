@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:38:47 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/20 18:24:21 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/20 19:12:05 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	main(int ac, char **av, char **ev)
 {
 	t_vars	vars;
 	t_shell	*shell;
-	t_tabs  *tabs;
+	t_tabs	*tabs;
 	char	*input;
 
 	shell = malloc(sizeof(t_shell));
@@ -52,8 +52,6 @@ int	main(int ac, char **av, char **ev)
 		shell = ft_get_da_pipes(&shell);
 		ft_dollars(&shell, &vars);
 		tabs = ft_regroup(&shell, &vars); // la segfault est ici
-		printf("after the regroup: \n\n\n");
-
 		ft_parsing_paths(vars, &tabs);
 		/*
 		ft_print_lst(&shell);

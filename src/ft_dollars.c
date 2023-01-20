@@ -95,7 +95,6 @@ char	*ft_malloc_cpy(char *data, char *envp, int size)
 
 	iret = 0;
 	ienvp = 0;
-	printf("data : %s	| envp : %s	| size : %d\n", data, envp, size);
 	ret = malloc(sizeof(char) * size + 1);
 	if (!ret)
 		exit (0); // TODO : deal with this error.
@@ -104,15 +103,11 @@ char	*ft_malloc_cpy(char *data, char *envp, int size)
 		ret[iret] = data[iret];
 		iret++;
 	}
-	printf("iret : %d\n", iret);
 	ienvp = ft_dollar_len(data, iret + 1) + 1;
 	idata = ienvp + iret;
-	printf("ienvp : %d\n", ienvp);
-	printf("idata : %d\n", idata);
 	while (envp[ienvp])
 	{
 		ret[iret] = envp[ienvp];
-		printf("ret[%d] : %s\n", iret, ret);
 		iret++;
 		ienvp++;
 	}
@@ -162,7 +157,6 @@ char	*ft_remove_dollar(char *data)
 	end = start + 1;
 	while (data[end] && (data[end] == 95 || (data[end] >= 'a' && data[end] <= 'z') || (data[end] >= 'A' && data[end] <= 'Z') || (data[end] >= '0' && data[end] <= '9')))
 		end++;
-	//printf("start = %d \n", end);
 	size = ft_strlen(data) - end + start;
 	ret = malloc(sizeof(char) * size + 1);
 	size = 0;

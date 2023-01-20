@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:38:40 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/19 21:08:13 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/20 19:32:17 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ int	parsing_input(t_shell **shell, char *input)
 		{
 			while (input[i + j] && input[i + j] != SINGLEQUOTE && input[i + j] != DOUBLEQUOTE)
 				j++;
+			printf("1 %s\n", input);
 			ft_lstadd_back(shell, parse_quotation(&input[i], 0, j, 0));
 		}
 		i += j;
@@ -137,13 +138,16 @@ void	split_not_quotation(t_shell **shell, char *input)
 		{
 			while (input[i + j] == SPACE)
 				j++;
+
 			ft_lstadd_back(shell, parse_quotation(&input[i], SPACE, j, 0));
 		}
 		else if (input[i])
 		{
 			while (input[i + j] && input[i + j] != SPACE)
 				j++;
+			printf("2 %s\n", input);
 			ft_lstadd_back(shell, parse_quotation(&input[i], 0, j, 0));
+			printf("3 %s\n", input);
 		}
 		else
 			return ;
@@ -168,8 +172,12 @@ t_shell	*parsing_not_quotation(t_shell **shell)
 	tmp = (*shell)->next; // error check?
 	while (tmp)
 	{
+		printf("last? %s\n", tmp->data);
+
 		if (tmp->index == SINGLEQUOTE || tmp->index == DOUBLEQUOTE) // if the data is a quotation string, just keep it as it is
-			ft_lstadd_back(&new, tmp->data);
+		{
+				ft_lstadd_back(&new, tmp->data);
+		}
 		else // otherwise, split it
 			split_not_quotation(&new, tmp->data);
 		tmp = tmp->next;

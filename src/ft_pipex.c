@@ -29,7 +29,7 @@ void	ft_pipex(t_tabs *tabs, t_vars vars)
 				var = execve(tabs->paths[i], tabs->cmds, vars.envp);
 				i++;
 			}
-			//printf("command not found\n");//ft_errors(4, tabs);
+			printf("bash: %s command not found\n", tabs->cmds[0]);//ft_errors(4, tabs);
 		}
 		else
 		{
