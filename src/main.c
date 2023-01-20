@@ -51,7 +51,7 @@ int	main(int ac, char **av, char **ev)
 		shell = parsing_not_quotation(&shell);
 		ft_dollars(&shell, &vars);
 		ft_print_lst(&shell);
-		printf("You entered: %s\n", input);
+//		printf("You entered: %s\n", input);
 		free(input);
 		free_lst(shell);
 	}
