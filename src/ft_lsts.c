@@ -6,7 +6,7 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 18:45:45 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/20 02:34:11 by max              ###   ########.fr       */
+/*   Updated: 2023/01/20 03:49:21 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,36 @@ int	free_lst(t_shell *lst)
 	return (0);
 }
 
+int	free_lst_tabs(t_tabs *lst)
+{
+	t_tabs	*tmp;
+	t_tabs	*end;
+	int		i;
+
+	end = lst;
+	lst = lst->next;
+	while (lst != NULL)
+	{
+		i = 0;
+		tmp = lst;
+		lst = lst->next;
+		while (tmp->cmds[i])
+		{
+			free(tmp->cmds[i]);
+			i++;
+		}
+		i = 0;
+		while (tmp->paths[i])
+		{
+			free(tmp->paths[i]);
+			i++;
+		}
+		//free(tmp);
+	}
+	lst = end;
+	lst->next = NULL;
+	return (0);
+}
 int	ft_lstsize(t_shell **lst)
 {
 	t_shell	*tmp;
@@ -89,7 +119,7 @@ void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input)
 	tmp->next = NULL;
 	i = 0;
 	tmp->cmds = malloc (sizeof(char*) *ft_lst_count_spaces(input) + 1);
-	printf("siye = %d\n", ft_lst_count_spaces(input) + 1);
+	//e = %d\n", ft_lst_count_spaces(input) + 1);
 	if (!tmp->cmds)
 		return ;
 	while (input)
@@ -111,7 +141,7 @@ void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input)
 	curr = *tabs;
 	while (curr->next != NULL)
 		curr = curr->next;
-	write (1, "hella\n", 6);
+	//write (1, "hella\n", 6);
 	curr->next = tmp;
 
 }

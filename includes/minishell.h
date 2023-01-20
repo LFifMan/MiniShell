@@ -6,7 +6,7 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:44:43 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/20 02:37:23 by max              ###   ########.fr       */
+/*   Updated: 2023/01/20 03:46:20 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,14 +83,31 @@ t_shell	*ft_get_da_pipes(t_shell **shell);
 void	ft_split_pipes(t_shell **shell, char *input);
 char	*ft_trim_quotations(char *str);
 
+/* PARSING_REGROUP.C */
+
+void	ft_parsing_paths(t_vars vars, t_tabs **tabs);
+char	**ft_split_bin(char *s, char c, char *argv);
+int		ft_countwords(char *s, char c);
+char	*ft_mallocfill_bin(char **s, char c, char *argv, int beg);
+char	**ft_parsing_binaries(char *const *envp, char *argv);
+
 
 /* LSTS.C */
 
 void	ft_lstadd_back(t_shell **lst, char *input);
 int		free_lst(t_shell *lst);
+int		free_lst_tabs(t_tabs *lst);
 int		ft_lstsize(t_shell **lst);
 void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input);
 
+/* FT_PIPEX.C */
+
+void	ft_pipex(t_tabs *tabs, t_vars vars);
+/*
+void	ft_pipex(t_tabs **tabs, t_vars vars);
+void	ft_parent_process(t_tabs tabs, int *end, t_vars vars);
+void	ft_child_process(t_tabs tabs, int *end, t_vars vars);
+*/
 
 /* UTILS.C */
 
@@ -106,6 +123,7 @@ size_t	ft_strlcpy(char *dest, const char *src, size_t size);
 /* TO BE REMOVED */
 
 void	ft_print_lst(t_shell **a);
-void	ft_print_lst_tabs(t_tabs **a);
+void	ft_print_tabs_cmds(t_tabs **a);
+void	ft_print_tabs_paths(t_tabs **a);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:38:47 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/20 02:34:20 by max              ###   ########.fr       */
+/*   Updated: 2023/01/20 03:45:33 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,20 @@ int	main(int ac, char **av, char **ev)
 		shell = ft_get_da_pipes(&shell);
 		ft_dollars(&shell, &vars);
 		tabs = ft_regroup(&shell, &vars);
+
+		ft_parsing_paths(vars, &tabs);
+
 		ft_print_lst(&shell);
-		ft_print_lst_tabs(&tabs);
+		ft_print_tabs_cmds(&tabs);
+		ft_print_tabs_paths(&tabs);
+		
+		ft_pipex(tabs, vars);
+
 
 		printf("You entered: %s\n", input);
 		free(input);
 		free_lst(shell);
+		free_lst_tabs(tabs);
 	}
 	//rl_clear_history();
 	return (0);
