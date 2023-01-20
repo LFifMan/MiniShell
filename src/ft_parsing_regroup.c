@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_regroup.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:25:12 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/20 04:05:28 by max              ###   ########.fr       */
+/*   Updated: 2023/01/20 15:51:00 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ t_tabs	*ft_regroup(t_shell **shell, t_vars *vars)
 	tabs = malloc(sizeof(t_tabs));
 	if (!tabs)
 		return (0);
+	tabs->next = NULL;
 	tmp = (*shell)->next;
 	while (tmp)
 	{

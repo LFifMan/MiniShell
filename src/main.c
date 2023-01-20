@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:38:47 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/20 04:08:10 by max              ###   ########.fr       */
+/*   Updated: 2023/01/20 15:43:50 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ int	main(int ac, char **av, char **ev)
 		exit (0); // TODO : add error
 	while (1)
 	{
-
 		init_vars(&vars, ev);
 		input = readline("salut bg> ");
 		if (ft_strcmp(input, "exit") == TRUE)
@@ -53,15 +52,17 @@ int	main(int ac, char **av, char **ev)
 		shell = ft_get_da_pipes(&shell);
 		ft_dollars(&shell, &vars);
 		tabs = ft_regroup(&shell, &vars); // la segfault est ici
+		printf("after the regroup: \n\n\n");
 
 		ft_parsing_paths(vars, &tabs);
-	
+		/*
 		ft_print_lst(&shell);
 		ft_print_tabs_cmds(&tabs);
 		ft_print_tabs_paths(&tabs);
 		printf("You entered: %s\n", input);
-		ft_pipex(tabs, vars);
+		*/
 
+		ft_pipex(tabs, vars);
 
 		free(input);
 		free_lst(shell);
@@ -70,5 +71,3 @@ int	main(int ac, char **av, char **ev)
 	//rl_clear_history();
 	return (0);
 }
-
-

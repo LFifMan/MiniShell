@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lsts.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 18:45:45 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/20 04:10:21 by max              ###   ########.fr       */
+/*   Updated: 2023/01/20 15:57:25 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,9 +139,10 @@ void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input)
 	}
 	tmp->cmds[i] = 0;
 	curr = *tabs;
-	//printf("Welcome to the matrix: \n\n\n");
-	while (curr->next != NULL) // the segfault is here, but why?
-		curr = curr->next;
-	curr->next = tmp;
-
+	while (tabs && (*tabs)->next != NULL) // the segfault is here, but why?
+	{
+		(*tabs) = (*tabs)->next;
+	}
+	(*tabs)->next = tmp;
+	(*tabs) = curr;
 }

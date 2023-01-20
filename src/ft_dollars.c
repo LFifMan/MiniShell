@@ -14,18 +14,6 @@ int	ft_look_for_dollar(char *data)
 	return (FALSE);
 }
 
-int	ft_find(char *data, char *envp)
-{
-	int	i;
-
-	i = 0;
-	while (envp[i] == data[i])
-		i++;
-	if (!data[i] && envp[i] == '=') // added this condition to avoid shorter $NAME than variable name, eg USE instead of USER
-		return (TRUE);
-	return (FALSE);
-}
-
 int	ft_look_in_envp(char *data, char *envp)
 {
 	int	i;
@@ -36,14 +24,11 @@ int	ft_look_in_envp(char *data, char *envp)
 	while (data[i] != DOLLAR)
 		i++;
 	i++;
-	//printf("dollar = %c\n", data[i]);
-	if (ft_find(&data[i], envp) == TRUE)
-	{
-		//printf("yope = %d\n", j);
-		return (j);
-	}
-	//printf("nope = %c\n", data[i]);
-	return (-1);
+	while (data[i + j] && envp[j] != '=' && data[i + j] == envp[j])
+		j++;
+	if ((data[i + j] == DOUBLEQUOTE || data[i + j] == 0) && envp[j] == '=')
+		return (TRUE);
+	return (FALSE);
 }
 
 int	ft_dollar_len(char *data, int start)
@@ -54,7 +39,7 @@ int	ft_dollar_len(char *data, int start)
 	while (data[start] && data[start] != DOUBLEQUOTE && data[start] != PIPE)
 	{
 		start++;
-		len++;
+		len ++;
 	}
 	return (len);
 }
@@ -64,12 +49,11 @@ int	ft_env_len(char *envp, int start)
 	int	len;
 
 	len = 0;
-	while (envp[start] && envp[start] != DOUBLEQUOTE && envp[start] != PIPE)
+	while (envp[start] && envp[start] != PIPE)
 	{
-		len++;
 		start++;
+		len++;
 	}
-	//printf("envp %s and start_envp %d\n", envp, len);
 	return (len);
 }
 
@@ -80,11 +64,10 @@ int	ft_size_malloc(char *data, char *envp, int start_data, int start_envp)
 	int	size_dollar;
 	int	len;
 
-	size_data = ft_strlen(data) - 1; // j'ai ajoute - 1, pas sur de oim
+	size_data = ft_strlen(data);
 	size_env = ft_env_len(envp, start_envp);
 	size_dollar = ft_dollar_len(data, start_data);
 	len = size_data - size_dollar + size_env;
-	//printf("size_data %d and size_env %d and size_dollar %d and len %d\n", size_data, size_env, size_dollar, len);
 	return (len);
 }
 
@@ -96,54 +79,80 @@ char	*ft_malloc_cpy(char *data, char *envp, int size)
 
 	i = 0;
 	j = 0;
-	//printf("size_data %d", size + 1);
-	ret = malloc(sizeof(char) * size + 1);
+	ret = malloc(sizeof(char) * size);
 	if (!ret)
 		exit (0); // TODO : deal with this error.
-	//printf("\n\n\ndata tot %s\n", data);
 	while (data[i] && data[i] != DOLLAR)
 	{
 		ret[i] = data[i];
-		//printf("data now %c\n", ret[i]);
 		i++;
 	}
-
 	while (envp[j] && envp[j] != '=')
 		j++;
 	j++;
 	while (envp[j] && envp[j] != DOUBLEQUOTE && envp[j] != PIPE)
-	{
-		ret[i] = envp[j];
-		j++;
-		i++;
-	}
+		ret[i++] = envp[j++];
 	if (data[0] == DOUBLEQUOTE)
-	{
-		ret[i] = DOUBLEQUOTE;
-		i++;
-	}
+		ret[i++] = DOUBLEQUOTE;
 	ret[i] = 0;
 	return (ret);
 }
 
 char	*ft_replace(char *data, char *envp)
 {
-	int		start_data;
-	int		start_envp;
+	int		idata;
+	int		ienvp;
 	int		size_malloc;
 	char	*ret;
 
-	start_data = 0;
-	start_envp = 0;
-	while (data[start_data] && data[start_data] != DOLLAR)
-		start_data++;
-	while (envp[start_envp] != '=')
-		start_envp++;
-	start_envp++;
-	start_data++;
-	//printf("data %s and envp %s and start_data %d and start_envp %d\n", data, envp, start_data, start_envp);
-	size_malloc = ft_size_malloc(data, envp, start_data, start_envp);
-	ret = ft_malloc_cpy(data, envp, size_malloc + 1);
+	idata = 0;
+	ienvp = 0;
+	while (data[idata] && data[idata] != DOLLAR)
+		idata++;
+	idata++;
+	while (envp[ienvp] == data[idata + ienvp])
+		ienvp++;
+	ienvp++;
+	size_malloc = ft_size_malloc(data, envp, idata, ienvp);
+	ret = ft_malloc_cpy(data, envp, size_malloc);
+	return (ret);
+}
+
+char	*ft_remove_dollar(char *data)
+{
+	char	*ret;
+	int		start;
+	int		end;
+	int		size;
+	int		i;
+
+	start = 0;
+	while (data[start] && data[start] != DOLLAR)
+	{
+		start++;
+	}
+	end = start + 1;
+	while (data[end] && (data[end] == 95 || (data[end] >= 'a' && data[end] <= 'z') || (data[end] >= 'A' && data[end] <= 'Z') || (data[end] >= '0' && data[end] <= '9')))
+		end++;
+	//printf("start = %d \n", end);
+	size = ft_strlen(data) - end + start;
+	ret = malloc(sizeof(char) * size + 1);
+	size = 0;
+	i = 0;
+	while (data[i] && size < start)
+	{
+		ret[size] = data[i];
+		i++;
+		size++;
+	}
+	while (data[end])
+	{
+		ret[size] = data[end];
+		end++;
+		size++;
+
+	}
+	ret[size] = 0;
 	return (ret);
 }
 
@@ -151,25 +160,30 @@ void	ft_dollars(t_shell **shell, t_vars *vars)
 {
 	t_shell	*tmp;
 	int		j;
+	int		index;
 
 	tmp = (*shell)->next;
 	while (tmp)
 	{
-		j = 0;
 		if (tmp->index == DOUBLEQUOTE || tmp->index == CHARS)
 		{
-			while (vars->envp[j])
+			while (ft_look_for_dollar(tmp->data) == TRUE)
 			{
-				//printf("envp[%d] = %s\n", j, vars->envp[j]);
-				if (ft_look_for_dollar(tmp->data) == TRUE)
+				j = 0;
+				index = FALSE;
+				while (vars->envp[j])
 				{
-					if (ft_look_in_envp(tmp->data, vars->envp[j]) >= 0) // else: error TODO
+					if (ft_look_in_envp(tmp->data, vars->envp[j]) == TRUE)
 					{
 						tmp->data = ft_replace(tmp->data, vars->envp[j]);
+						index = TRUE;
 						break ;
 					}
+
+					j++;
 				}
-				j++;
+				if (index == FALSE)
+					tmp->data = ft_remove_dollar(tmp->data);
 			}
 		}
 		tmp = tmp->next;
