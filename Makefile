@@ -34,7 +34,8 @@ SRC		=	main.c \
 			ft_parsing_regroup.c \
 			ft_utils.c \
 			ft_lsts.c \
-			ft_verifs.c
+			ft_verifs.c \
+			ft_dollars.c
 
 HEAD	=	minishell.h
 

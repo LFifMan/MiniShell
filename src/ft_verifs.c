@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   delete.c                                           :+:      :+:    :+:   */
+/*   ft_verifs.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 15:38:41 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/18 15:38:57 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/20 00:58:49 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,34 @@ void	ft_print_lst(t_shell **a)
 		while ((*a) != NULL)
 		{
 			printf("Element %d	| address : %p	| data : %s\n", i++, &(*a)->data, (*a)->data);
+			(*a) = (*a)->next;
+		}
+		(*a) = tmpa;
+	}
+	printf("\n");
+}
+
+void	ft_print_lst_tabs(t_tabs **a)
+{
+	t_tabs	*tmpa;
+	int		i;
+	int		lstnb;
+
+	lstnb = 0;
+	if ((*a)->next != NULL)
+	{
+		tmpa = (*a);
+		(*a) = (*a)->next;
+		while ((*a) != NULL)
+		{
+			i = 0;
+			printf("ELEMENT %d:\n", lstnb + 1);
+			while ((*a)->cmds[i])
+			{
+				printf("lst %d | index %d	| data : %s\n", lstnb, i, (*a)->cmds[i]);
+				i++;
+			}
+			lstnb++;
 			(*a) = (*a)->next;
 		}
 		(*a) = tmpa;

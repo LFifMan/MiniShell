@@ -6,7 +6,7 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:38:47 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/19 22:52:16 by max              ###   ########.fr       */
+/*   Updated: 2023/01/20 02:34:20 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,10 @@ int	main(int ac, char **av, char **ev)
 			printf(" error: quote not finished\n");
 		shell = parsing_not_quotation(&shell);
 		shell = ft_get_da_pipes(&shell);
+		ft_dollars(&shell, &vars);
 		tabs = ft_regroup(&shell, &vars);
-		int i = 0;
-		while (tabs->cmds[i])
-		{
-			printf("%s\n", tabs->cmds[i]);
-			i++;
-		}
 		ft_print_lst(&shell);
+		ft_print_lst_tabs(&tabs);
 
 		printf("You entered: %s\n", input);
 		free(input);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lsts.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 18:45:45 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/19 16:24:32 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/20 02:34:11 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	ft_lstadd_back(t_shell **lst, char *input)
 	if (!tmp)
 		return ;
 	tmp->next = NULL;
-	if (input[0] == DOUBLEQUOTE || input[0] == SINGLEQUOTE || input[0] == SPACE) // create an index to know if the lst is a quotation or not
+	if (input[0] == DOUBLEQUOTE || input[0] == SINGLEQUOTE || input[0] == PIPE || input[0] == SPACE) // create an index to know if the lst is a quotation or not
 		tmp->index = input[0];
 	else
 		tmp->index = CHARS;
@@ -75,4 +75,43 @@ void	ft_lstadd_back(t_shell **lst, char *input)
 		curr = curr->next;
 	curr->next = tmp;
 	free (input);
+}
+
+void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input)
+{
+	t_tabs	*tmp;
+	t_tabs	*curr;
+	int		i;
+
+	tmp = malloc(sizeof(t_tabs));
+	if (!tmp)
+		return ;
+	tmp->next = NULL;
+	i = 0;
+	tmp->cmds = malloc (sizeof(char*) *ft_lst_count_spaces(input) + 1);
+	printf("siye = %d\n", ft_lst_count_spaces(input) + 1);
+	if (!tmp->cmds)
+		return ;
+	while (input)
+	{
+		if (input && input->next && input->index == SPACE)
+			input = input->next;
+		if (input && input->index == PIPE)
+			break ;
+		tmp->cmds[i] = ft_strdup(input->data);
+		input = input->next;
+		while (input && input->index != SPACE && input->index != PIPE)
+		{
+			tmp->cmds[i] = ft_strjoin(tmp->cmds[i], ft_trim_quotations(input->data));
+			input = input->next;
+		}
+		i++;
+	}
+	tmp->cmds[i] = 0;
+	curr = *tabs;
+	while (curr->next != NULL)
+		curr = curr->next;
+	write (1, "hella\n", 6);
+	curr->next = tmp;
+
 }
