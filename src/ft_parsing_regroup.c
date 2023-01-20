@@ -6,7 +6,7 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:25:12 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/20 03:18:17 by max              ###   ########.fr       */
+/*   Updated: 2023/01/20 04:05:28 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ t_tabs	*ft_regroup(t_shell **shell, t_vars *vars)
 	t_shell	*tmp;
 
 	(void)vars;
+
 	tabs = malloc(sizeof(t_tabs));
 	if (!tabs)
 		return (0);
@@ -61,7 +62,7 @@ t_tabs	*ft_regroup(t_shell **shell, t_vars *vars)
 	{
 		if (tmp->index == PIPE && tmp->next != NULL)
 			tmp = tmp->next;
-		ft_lstregroup_back(&tabs, tmp);
+		ft_lstregroup_back(&tabs, tmp); // follow the path to the segfault
 		while (tmp && tmp->next && tmp->index != PIPE)
 			tmp = tmp->next;
 		if (!tmp || !tmp->next)

@@ -6,7 +6,7 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 18:45:45 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/20 03:49:21 by max              ###   ########.fr       */
+/*   Updated: 2023/01/20 04:10:21 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,9 +139,9 @@ void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input)
 	}
 	tmp->cmds[i] = 0;
 	curr = *tabs;
-	while (curr->next != NULL)
+	//printf("Welcome to the matrix: \n\n\n");
+	while (curr->next != NULL) // the segfault is here, but why?
 		curr = curr->next;
-	//write (1, "hella\n", 6);
 	curr->next = tmp;
 
 }

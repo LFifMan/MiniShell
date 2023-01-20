@@ -6,7 +6,7 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:38:47 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/20 03:45:33 by max              ###   ########.fr       */
+/*   Updated: 2023/01/20 04:08:10 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,17 @@ int	main(int ac, char **av, char **ev)
 	t_tabs  *tabs;
 	char	*input;
 
-	vars.envp = ev;
-	if (ac != 1 || av[1])
-		exit (0); // TODO : add error
 	shell = malloc(sizeof(t_shell));
 	if (!shell)
 		return (0);
-	ft_lstsize(&shell);
+	vars.envp = ev;
+	if (ac != 1 || av[1])
+		exit (0); // TODO : add error
 	while (1)
 	{
+
 		init_vars(&vars, ev);
-		input = readline("> ");
+		input = readline("salut bg> ");
 		if (ft_strcmp(input, "exit") == TRUE)
 			break ;
 		add_history(input);
@@ -52,18 +52,17 @@ int	main(int ac, char **av, char **ev)
 		shell = parsing_not_quotation(&shell);
 		shell = ft_get_da_pipes(&shell);
 		ft_dollars(&shell, &vars);
-		tabs = ft_regroup(&shell, &vars);
+		tabs = ft_regroup(&shell, &vars); // la segfault est ici
 
 		ft_parsing_paths(vars, &tabs);
-
+	
 		ft_print_lst(&shell);
 		ft_print_tabs_cmds(&tabs);
 		ft_print_tabs_paths(&tabs);
-		
+		printf("You entered: %s\n", input);
 		ft_pipex(tabs, vars);
 
 
-		printf("You entered: %s\n", input);
 		free(input);
 		free_lst(shell);
 		free_lst_tabs(tabs);
