@@ -6,7 +6,7 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:44:43 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/22 04:04:15 by max              ###   ########.fr       */
+/*   Updated: 2023/01/22 20:56:53 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ int		ft_build_unset(t_tabs *tabs, t_vars *vars);
 int		ft_build_env(t_tabs *tabs, t_vars *vars);
 int	ft_builtins(t_tabs *tabs, t_vars *vars, char *cmd_one);
 
+void	ft_unset_export(t_tabs *tabs, t_vars *vars, char *cmd_one);
 
 /* UTILS.C */
 

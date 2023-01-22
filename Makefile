@@ -41,6 +41,7 @@ SRC		=	main.c \
 			ft_check.c \
 			ft_parsing_paths.c \
 			ft_builtins.c \
+			ft_unset_export.c \
 			ft_parsing_redop.c
 
 HEAD	=	minishell.h

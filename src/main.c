@@ -6,7 +6,7 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:38:47 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/22 16:58:25 by max              ###   ########.fr       */
+/*   Updated: 2023/01/22 21:01:36 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	main(int ac, char **av, char **ev)
 		exit (0); // TODO : add error
 	while (1)
 	{
-		input = readline("salut lulu> ");
+		input = readline("> ");
 		if (ft_strcmp(input, "exit") == TRUE)
 			break ;
 		add_history(input);
@@ -80,12 +80,14 @@ int	main(int ac, char **av, char **ev)
 		ft_parsing_redop(&tabs);
 		ft_parsing_paths(vars, &tabs);
 		PRINT_CMDS(&tabs);
-		ft_pipex(tabs, &vars);
-		free_lst(shell);
 
+		ft_pipex(tabs, &vars);
+		ft_unset_export(tabs, &vars, tabs->next->cmds[0]);
+		free_lst(shell);
 		free(input);
 		free_lst_tabs(tabs);
 	}
+	//ft_free_struct(vars);
 	//rl_clear_history();
 	return (0);
 }

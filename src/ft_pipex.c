@@ -12,7 +12,6 @@ void	ft_pipex(t_tabs *tabs, t_vars *vars)
 	int in_fd, out_fd; //new
 	int input_redirection, output_redirection;
 
-
 	var = -1;
 	i = 0;
 	while (tabs)
@@ -60,12 +59,22 @@ void	ft_pipex(t_tabs *tabs, t_vars *vars)
 			}
 			if (i != 0 && input_redirection == 0)
 				dup2(fd[0], 0);
-			if (tabs->next != NULL && output_redirection == 0)
+			if (tabs->next && output_redirection == 0)
 				dup2(fd[1], 1);
 			close(fd[0]);
 			close(fd[1]);
 			if (ft_builtins(tabs, vars, tabs->cmds[0]) == TRUE)
+			{
+				/*
+				int t = 0;
+				while (vars->envp[t])
+				{
+					printf("%s\n", vars->envp[t]);
+					t++;
+				}
+				*/
 				exit(1);
+			}
 			else
 			{
 				while (tabs->paths[i] && var < 0)
@@ -83,6 +92,8 @@ void	ft_pipex(t_tabs *tabs, t_vars *vars)
 		}
 		else
 		{
+		    waitpid(child, &status, 0);
+
 			if (i != 0)
 				close(fd[0]);
 			if (tabs->next != NULL)

@@ -6,7 +6,7 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 16:17:05 by max               #+#    #+#             */
-/*   Updated: 2023/01/22 16:58:26 by max              ###   ########.fr       */
+/*   Updated: 2023/01/22 21:01:29 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,14 @@ int	ft_build_cd(t_tabs *tabs, t_vars *vars)
 
 int	ft_build_pwd(t_tabs *tabs, t_vars *vars)
 {
-	int	len;
+	char	*tmp;
 
+	tmp = getcwd(NULL, 0);
 	(void)tabs;
-	len = ft_strlen(ft_parsing_pwd(vars->envp));
-	write(1, ft_parsing_pwd(vars->envp), len); // change with getcwd
+	(void)vars;
+	write(1, tmp, ft_strlen(tmp)); // change with getcwd
 	write(1, "\n", 1);
+	free(tmp);
 	return (TRUE);
 }
 
@@ -68,8 +70,6 @@ int	check_var(char *str)
 			return (FALSE);
 		i++;
 	}
-	if (!str[i])
-		return (FALSE);
 	return (TRUE);
 }
 
@@ -88,20 +88,20 @@ char **replace_var(char **src, char *str, int place)
 	if (place < len)
 	{
 		free(src[place]);
-		src[place] = ft_strdup(str);
+		src[place] = ft_strdup(str); // new_src
 	}
 	else
 	{
-        new_src = malloc(sizeof(char *) * (i + 2));
-        while (i < len)
+		new_src = malloc(sizeof(char *) * (i + 2));
+		while (i < len)
 		{
-            new_src[i] = src[i];
+			new_src[i] = src[i];
 			i++;
-        }
-        new_src[len] = ft_strdup(str);
-        new_src[len + 1] = 0;
-        free(src);
-        src = new_src;
+		}
+		new_src[len] = ft_strdup(str);
+		new_src[len + 1] = 0;
+		free(src);
+		src = new_src;
 	}
 	/*
 	int t = 0;
@@ -158,18 +158,60 @@ int	ft_build_export(t_tabs *tabs, t_vars *vars)
 	return (TRUE);
 }
 
-
-
-
-
+void	ft_remove_var(t_vars *vars, char *str)
+{
+	int	i;
+	int	j;
+	int	len;
+	
+	len = strlen(str);
+	i = 0;
+	while (vars->envp[i])
+	{
+		if (ft_strncmp(vars->envp[i], str, len) == TRUE && (vars->envp[i][len] == '\0' || vars->envp[i][len] == '='))
+		{
+			printf("HELLO strcmp = %d env = %s et str = %s\n", i, vars->envp[i], str);
+			free(vars->envp[i]);
+			j = i;
+			while (vars->envp[j])
+			{
+				vars->envp[j] = vars->envp[j+1];
+				j++;
+			}
+		}
+		else
+			i++;
+	}
+	return ;
+}
 
 int	ft_build_unset(t_tabs *tabs, t_vars *vars)
 {
-	(void)tabs;
-	(void)vars;
+	int	i;
 
+	i = 1;
+	while (tabs->cmds[i])
+	{
+		if (check_var(tabs->cmds[i]) == TRUE)
+		{
+			ft_remove_var(vars, tabs->cmds[i]);
+		}
+		i++;
+	}
 	return (TRUE);
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 int	ft_build_env(t_tabs *tabs, t_vars *vars)
 {
