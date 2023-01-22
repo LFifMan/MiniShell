@@ -6,7 +6,7 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:44:43 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/20 03:46:20 by max              ###   ########.fr       */
+/*   Updated: 2023/01/22 04:04:15 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@
 # define CHARS 0
 # define DOLLAR 36
 # define PIPE 124
+# define GREATER 62
+# define SMALLER 60
+# define EQUAL 61
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -27,6 +30,7 @@
 # include <unistd.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <fcntl.h>
 
 typedef struct s_shell
 {
@@ -46,6 +50,7 @@ typedef struct s_tabs
 {
 	char			**cmds;
 	char			**paths;
+	char			**redop;
 	struct s_tabs	*next;
 }					t_tabs;
 
@@ -63,6 +68,7 @@ void	split_not_quotation(t_shell **shell, char *input);
 int		parsing_input(t_shell **shell, char *input);
 char	*parse_quotation(char *input, char index, int size, int i);
 
+
 /* PARSING_DOLLARS.C */
 int		ft_look_for_dollar(char *data);
 int		ft_find(char *data, char *envp);
@@ -73,6 +79,8 @@ int		ft_size_malloc(char *data, char *envp, int start_data, int start_envp);
 char	*ft_malloc_cpy(char *data, char *envp, int size);
 char	*ft_replace(char *data, char *envp);
 void	ft_dollars(t_shell **shell, t_vars *vars);
+int		ft_check_allowed_char(char c, int pos);
+
 
 /* PARSING_REGROUP.C */
 
@@ -83,7 +91,25 @@ t_shell	*ft_get_da_pipes(t_shell **shell);
 void	ft_split_pipes(t_shell **shell, char *input);
 char	*ft_trim_quotations(char *str);
 
-/* PARSING_REGROUP.C */
+
+/* PARSING_REDIRECTIONS.C */
+
+t_shell	*ft_redirections(t_shell **shell);
+void	ft_split_redirections(t_shell **shell, char *input);
+t_shell	*ft_space_redop(t_shell **shell);
+
+
+/* PARSING_REDOP.C */
+
+void	ft_parsing_redop(t_tabs **tabs);
+
+
+/* CHECK.C */
+
+int		ft_check_op(t_shell *shell);
+
+
+/* PARSING_PATHS.C */
 
 void	ft_parsing_paths(t_vars vars, t_tabs **tabs);
 char	**ft_split_bin(char *s, char c, char *argv);
@@ -102,12 +128,18 @@ void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input);
 
 /* FT_PIPEX.C */
 
-void	ft_pipex(t_tabs *tabs, t_vars vars);
-/*
-void	ft_pipex(t_tabs **tabs, t_vars vars);
-void	ft_parent_process(t_tabs tabs, int *end, t_vars vars);
-void	ft_child_process(t_tabs tabs, int *end, t_vars vars);
-*/
+void	ft_pipex(t_tabs *tabs, t_vars *vars);
+
+
+/* FT_PIPEX.C */
+int		ft_build_cd(t_tabs *tabs, t_vars *vars);
+int		ft_build_echo(t_tabs *tabs, t_vars *vars);
+int		ft_build_pwd(t_tabs *tabs, t_vars *vars);
+int		ft_build_export(t_tabs *tabs, t_vars *vars);
+int		ft_build_unset(t_tabs *tabs, t_vars *vars);
+int		ft_build_env(t_tabs *tabs, t_vars *vars);
+int	ft_builtins(t_tabs *tabs, t_vars *vars, char *cmd_one);
+
 
 /* UTILS.C */
 
@@ -118,12 +150,15 @@ char	*ft_zero(const char *s);
 char	*ft_strjoin(char *s1, char const *s2);
 char	*ft_strdup(const char *src);
 size_t	ft_strlcpy(char *dest, const char *src, size_t size);
+int		ft_tolower(int c);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
 
 /* TO BE REMOVED */
 
-void	ft_print_lst(t_shell **a);
-void	ft_print_tabs_cmds(t_tabs **a);
-void	ft_print_tabs_paths(t_tabs **a);
+void	PRINT_SHELL(t_shell **a);
+void	PRINT_CMDS(t_tabs **a);
+void	PRINT_PATHS(t_tabs **a);
+void	PRINT_REDOP(t_tabs **tabs);
 
 #endif

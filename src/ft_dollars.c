@@ -8,7 +8,8 @@ int	ft_look_for_dollar(char *data)
 	while (data[i])
 	{
 		if (data[i] == DOLLAR)
-			return (TRUE);
+			if (data[i + 1] != SPACE && data[i + 1] != 0)
+				return (TRUE);
 		i++;
 	}
 	return (FALSE);
@@ -189,7 +190,7 @@ void	ft_dollars(t_shell **shell, t_vars *vars)
 	{
 		if (tmp->index == DOUBLEQUOTE || tmp->index == CHARS)
 		{
-			if (ft_look_for_dollar(tmp->data) == TRUE)
+			while (ft_look_for_dollar(tmp->data) == TRUE)
 			{
 				j = 0;
 				index = FALSE;

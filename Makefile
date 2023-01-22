@@ -37,7 +37,11 @@ SRC		=	main.c \
 			ft_verifs.c \
 			ft_dollars.c \
 			ft_pipex.c \
-			ft_parsing_paths.c
+			ft_redirections.c \
+			ft_check.c \
+			ft_parsing_paths.c \
+			ft_builtins.c \
+			ft_parsing_redop.c
 
 HEAD	=	minishell.h
 
@@ -50,7 +54,7 @@ HEADERS = $(addprefix $(PATH_HEAD),$(HEAD))
 
 ##-----RULES-----##
 
-all:						asciiart $(NAME)
+all:						$(NAME)
 
 $(NAME):					$(OBJS) $(HEADERS)
 							$(CC) $(FLAGS) $(OBJS) -o $(NAME) -lreadline

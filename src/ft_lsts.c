@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lsts.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 18:45:45 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/20 19:59:56 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/21 21:27:42 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	ft_lstadd_back(t_shell **lst, char *input)
 	if (!tmp)
 		return ;
 	tmp->next = NULL;
-	if (input[0] == DOUBLEQUOTE || input[0] == SINGLEQUOTE || input[0] == PIPE || input[0] == SPACE) // create an index to know if the lst is a quotation or not
+	if (input[0] == DOUBLEQUOTE || input[0] == SINGLEQUOTE || input[0] == PIPE || input[0] == SPACE || input[0] == GREATER || input[0] == SMALLER) // create an index to know if the lst is a quotation or not
 		tmp->index = input[0];
 	else
 		tmp->index = CHARS;
@@ -130,7 +130,9 @@ void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input)
 			input = input->next;
 		if (input && input->index == PIPE)
 			break ;
-		tmp->cmds[i] = ft_strdup(input->data);
+		if (input && input->index == SPACE && !input->next)
+			break ;
+		tmp->cmds[i] = ft_strdup(ft_trim_quotations(input->data));
 		input = input->next;
 		while (input && input->index != SPACE && input->index != PIPE)
 		{

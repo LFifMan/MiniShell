@@ -6,7 +6,7 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 02:56:33 by max               #+#    #+#             */
-/*   Updated: 2023/01/20 03:06:59 by max              ###   ########.fr       */
+/*   Updated: 2023/01/22 04:03:56 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,31 @@ void	ft_parsing_paths(t_vars vars, t_tabs **tabs)
 	}
 }
 
+char	**ft_create_paths(char *argv)
+{
+	char	**dst;
+
+	dst = malloc(sizeof(char *) * 2 + 1);
+	if (!dst)
+		return (NULL);
+	dst[0] = ft_strjoin("/bin/", argv);
+	dst[1] = ft_strjoin("/usr/bin/", argv);
+	dst[2] = 0;
+	return (dst);
+}
+
 char	**ft_parsing_binaries(char *const *envp, char *argv)
 {
 	char	**binaries_paths;
 	int		i;
 
 	i = 0;
-	while (ft_memcmp((char *)envp[i], "PATH=", 5) != 0)
+	while (envp[i] && ft_memcmp((char *)envp[i], "PATH=", 5) != 0)
 		i++;
-	binaries_paths = ft_split_bin((char *)envp[i], ':', argv);
+	if (!envp[i])
+		binaries_paths = ft_create_paths(argv);
+	else
+		binaries_paths = ft_split_bin((char *)envp[i], ':', argv);
 	if (!binaries_paths)
 		return (NULL);
 	return (binaries_paths);
