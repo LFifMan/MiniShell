@@ -29,11 +29,13 @@ PATH_OBJ	= obj/
 ##-----FILES-----##
 
 SRC		=	main.c \
+			ft_control_tower.c \
 			ft_parsing_shell.c \
 			ft_parsing_input.c \
 			ft_parsing_regroup.c \
 			ft_utils.c \
 			ft_lsts.c \
+			ft_free_lsts.c \
 			ft_verifs.c \
 			ft_dollars.c \
 			ft_pipex.c \
@@ -41,7 +43,8 @@ SRC		=	main.c \
 			ft_check.c \
 			ft_parsing_paths.c \
 			ft_builtins.c \
-			ft_unset_export.c \
+			ft_unset.c \
+			ft_export.c \
 			ft_parsing_redop.c
 
 HEAD	=	minishell.h

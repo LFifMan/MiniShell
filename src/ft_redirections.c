@@ -6,7 +6,7 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 22:03:36 by max               #+#    #+#             */
-/*   Updated: 2023/01/22 22:09:30 by max              ###   ########.fr       */
+/*   Updated: 2023/01/22 23:21:35 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_shell	*ft_space_redops(t_shell **shell)
 		}
 		tmp = tmp->next;
 	}
-	//free_lst(*shell); --> does not work, I'm lost in translation
+	free_shell(*shell);
 	return (new);
 }
 void	ft_split_redirections(t_shell **shell, char *input)
@@ -111,6 +111,6 @@ t_shell	*parsing_redops(t_shell **shell)
 		tmp = tmp->next;
 	}
 	*shell = tmp2;
-	free_lst(*shell);
+	free_shell(*shell);
 	return (new);
 }

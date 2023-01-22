@@ -6,7 +6,7 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 23:15:26 by max               #+#    #+#             */
-/*   Updated: 2023/01/21 16:04:21 by max              ###   ########.fr       */
+/*   Updated: 2023/01/23 00:00:28 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,20 @@ int	ft_check_op(t_shell *shell)
 			}
 		}
 		shell = shell->next;
+	}
+	return (TRUE);
+}
+
+int	check_only_spaces(char *input)
+{
+	int	i;
+
+	i = 0;
+	while (input[i])
+	{
+		if (input[i] != SPACE)
+			return (FALSE);
+		i++;
 	}
 	return (TRUE);
 }
