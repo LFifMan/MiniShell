@@ -6,13 +6,13 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 22:03:36 by max               #+#    #+#             */
-/*   Updated: 2023/01/21 16:03:59 by max              ###   ########.fr       */
+/*   Updated: 2023/01/22 22:09:30 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_shell	*ft_space_redop(t_shell **shell)
+t_shell	*ft_space_redops(t_shell **shell)
 {
 	t_shell *tmp;
 	t_shell *new;
@@ -74,7 +74,7 @@ void	ft_split_redirections(t_shell **shell, char *input)
 	}
 }
 
-t_shell	*ft_redirections(t_shell **shell)
+t_shell	*parsing_redops(t_shell **shell)
 {
 	t_shell *tmp;
 	t_shell *tmp2;

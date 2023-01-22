@@ -6,7 +6,7 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:38:40 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/21 02:37:12 by max              ###   ########.fr       */
+/*   Updated: 2023/01/22 22:49:48 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ char	*parse_quotation(char *input, char index, int size, int i)
 parsing_input receives the lst and the input. it splits the input into chunks of quotes / unquotes
 it returns 1 if one of the quotation mark is not closed
 */
-int	parsing_input(t_shell **shell, char *input)
+int	parsing_quotations(t_shell **shell, char *input)
 {
 	int		i;
 	int		j;
@@ -123,9 +123,9 @@ int	parsing_input(t_shell **shell, char *input)
 /* PARSING LV 2: keep quotation strings, split unquotes */
 
 /*
-split_not_quotation splits unquotes, ignores all spaces, and add a new element to the list for each
+split_spaces splits unquotes, ignores all spaces, and add a new element to the list for each
 */
-void	split_not_quotation(t_shell **shell, char *input)
+void	split_spaces(t_shell **shell, char *input)
 {
 	int	i;
 	int	j;
@@ -155,10 +155,10 @@ void	split_not_quotation(t_shell **shell, char *input)
 
 
 /*
-parsing_not_quotation is pasring level two. It creates a new lst, splits unquoted strings and keeps strings in quotations. 
+parsing_spaces is pasring level two. It creates a new lst, splits unquoted strings and keeps strings in quotations. 
 Note: it makes a "pointer being freed was not allocated" sometimes...
 */
-t_shell	*parsing_not_quotation(t_shell **shell)
+t_shell	*parsing_spaces(t_shell **shell)
 {
 	t_shell *tmp;
 	t_shell *new;
@@ -175,7 +175,7 @@ t_shell	*parsing_not_quotation(t_shell **shell)
 				ft_lstadd_back(&new, tmp->data);
 		}
 		else // otherwise, split it
-			split_not_quotation(&new, tmp->data);
+			split_spaces(&new, tmp->data);
 		tmp = tmp->next;
 	}
 	//free_lst(*shell); --> does not work, I'm lost in translation

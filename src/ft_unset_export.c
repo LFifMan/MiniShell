@@ -6,7 +6,7 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 19:44:36 by max               #+#    #+#             */
-/*   Updated: 2023/01/22 20:56:49 by max              ###   ########.fr       */
+/*   Updated: 2023/01/22 22:25:17 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	ft_unset_export(t_tabs *tabs, t_vars *vars, char *cmd_one)
 		cmd_one[i] = ft_tolower(cmd_one[i]);
 		i++;
 	}
+
 	if (tabs->next)
 		return ;
 	while (tabs)

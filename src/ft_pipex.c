@@ -84,7 +84,7 @@ void	ft_pipex(t_tabs *tabs, t_vars *vars)
 				}
 				write(1, "bash: ", ft_strlen("bash: "));
 				write(1, tabs->cmds[0], ft_strlen(tabs->cmds[0]));
-				write(1, " command not found\n", ft_strlen(": command not found\n"));
+				write(1, ": command not found\n", ft_strlen(": command not found\n"));
 				exit(1);
 
 				//printf("bash: %s command not found\n", tabs->cmds[0]);//ft_errors(4, tabs);

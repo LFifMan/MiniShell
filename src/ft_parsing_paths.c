@@ -6,13 +6,13 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 02:56:33 by max               #+#    #+#             */
-/*   Updated: 2023/01/22 04:03:56 by max              ###   ########.fr       */
+/*   Updated: 2023/01/22 22:49:46 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	ft_parsing_paths(t_vars vars, t_tabs **tabs)
+void	ft_paths(t_vars vars, t_tabs **tabs)
 {
 	t_tabs	*tmp;
 
@@ -80,6 +80,7 @@ char	*ft_mallocfill_bin(char **s, char c, char *argv, int beg)
 	dst[i] = 0;
 	dst = ft_strjoin(dst, argv);
 	*s += i + start;
+
 	return (dst);
 }
 
@@ -115,6 +116,7 @@ char	**ft_split_bin(char *s, char c, char *argv)
 	if (!dst)
 		return (NULL);
 	i = 0;
+	
 	while (*s && i < count)
 	{
 		while (*s && *s == c)

@@ -6,7 +6,7 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:25:12 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/21 21:27:43 by max              ###   ########.fr       */
+/*   Updated: 2023/01/22 22:07:51 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	ft_split_pipes(t_shell **shell, char *input)
 	}
 }
 
-t_shell	*ft_get_da_pipes(t_shell **shell)
+t_shell	*parsing_pipes(t_shell **shell)
 {
 	t_shell *tmp;
 	t_shell *tmp2;

@@ -6,7 +6,7 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:44:43 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/22 20:56:53 by max              ###   ########.fr       */
+/*   Updated: 2023/01/22 22:09:42 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ typedef struct s_shell
 
 typedef struct s_vars
 {
-	char			*env_shell;
-	char			*env_pwd;
 	char			**envp;
 }					t_vars;
 
@@ -63,9 +61,9 @@ char	*ft_parsing_pwd(char *const *envp);
 
 /* PARSING_INPUT.C */
 
-t_shell	*parsing_not_quotation(t_shell **shell);
-void	split_not_quotation(t_shell **shell, char *input);
-int		parsing_input(t_shell **shell, char *input);
+t_shell	*parsing_spaces(t_shell **shell);
+void	split_spaces(t_shell **shell, char *input);
+int		parsing_quotations(t_shell **shell, char *input);
 char	*parse_quotation(char *input, char index, int size, int i);
 
 
@@ -78,7 +76,7 @@ int		ft_env_len(char *envp, int start);
 int		ft_size_malloc(char *data, char *envp, int start_data, int start_envp);
 char	*ft_malloc_cpy(char *data, char *envp, int size);
 char	*ft_replace(char *data, char *envp);
-void	ft_dollars(t_shell **shell, t_vars *vars);
+void	parsing_dollars(t_shell **shell, t_vars *vars);
 int		ft_check_allowed_char(char c, int pos);
 
 
@@ -87,21 +85,21 @@ int		ft_check_allowed_char(char c, int pos);
 t_tabs	*ft_regroup(t_shell **shell, t_vars *vars);
 int		ft_lst_count_spaces(t_shell *lst);
 
-t_shell	*ft_get_da_pipes(t_shell **shell);
+t_shell	*parsing_pipes(t_shell **shell);
 void	ft_split_pipes(t_shell **shell, char *input);
 char	*ft_trim_quotations(char *str);
 
 
 /* PARSING_REDIRECTIONS.C */
 
-t_shell	*ft_redirections(t_shell **shell);
+t_shell	*parsing_redops(t_shell **shell);
 void	ft_split_redirections(t_shell **shell, char *input);
-t_shell	*ft_space_redop(t_shell **shell);
+t_shell	*ft_space_redops(t_shell **shell);
 
 
 /* PARSING_REDOP.C */
 
-void	ft_parsing_redop(t_tabs **tabs);
+void	ft_redops(t_tabs **tabs);
 
 
 /* CHECK.C */
@@ -111,7 +109,7 @@ int		ft_check_op(t_shell *shell);
 
 /* PARSING_PATHS.C */
 
-void	ft_parsing_paths(t_vars vars, t_tabs **tabs);
+void	ft_paths(t_vars vars, t_tabs **tabs);
 char	**ft_split_bin(char *s, char c, char *argv);
 int		ft_countwords(char *s, char c);
 char	*ft_mallocfill_bin(char **s, char c, char *argv, int beg);

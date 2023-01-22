@@ -6,7 +6,7 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 16:17:05 by max               #+#    #+#             */
-/*   Updated: 2023/01/22 21:01:29 by max              ###   ########.fr       */
+/*   Updated: 2023/01/22 22:49:49 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,6 @@ void	ft_export_env(t_vars *vars, char *str)
 		if (ft_strncmp(vars->envp[i], str, size) == TRUE)
 		{
 			vars->envp = replace_var(vars->envp, str, i);
-			printf("HELLO size = %d\n", i);
 			return ;
 		}
 		i++;
@@ -170,7 +169,6 @@ void	ft_remove_var(t_vars *vars, char *str)
 	{
 		if (ft_strncmp(vars->envp[i], str, len) == TRUE && (vars->envp[i][len] == '\0' || vars->envp[i][len] == '='))
 		{
-			printf("HELLO strcmp = %d env = %s et str = %s\n", i, vars->envp[i], str);
 			free(vars->envp[i]);
 			j = i;
 			while (vars->envp[j])

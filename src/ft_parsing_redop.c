@@ -6,7 +6,7 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 01:38:54 by max               #+#    #+#             */
-/*   Updated: 2023/01/21 20:28:45 by max              ###   ########.fr       */
+/*   Updated: 2023/01/22 22:04:39 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char	**ft_remove_redop_cmds(char **cmd, int index)
 	return (dst);	
 }
 
-void	ft_parsing_redop(t_tabs **tabs)
+void	ft_redops(t_tabs **tabs)
 {
 	int		i;
 	int		j;

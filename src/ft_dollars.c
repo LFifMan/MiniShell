@@ -179,7 +179,7 @@ char	*ft_remove_dollar(char *data)
 	return (ret);
 }
 
-void	ft_dollars(t_shell **shell, t_vars *vars)
+void	parsing_dollars(t_shell **shell, t_vars *vars)
 {
 	t_shell	*tmp;
 	int		j;
