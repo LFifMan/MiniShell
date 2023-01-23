@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:39:02 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/23 20:54:45 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/23 22:55:08 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	*ft_zero(const char *s)
 	return (new);
 }
 
-char	*ft_strjoin(char *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2, int index)
 {
 	char	*dest;
 	size_t	i;
@@ -99,11 +99,12 @@ char	*ft_strjoin(char *s1, char const *s2)
 			dest[j++] = s2[i++];
 	dest[j] = '\0';
 	free(s1);
-
+	if (index == TRUE)
+		free(s2);
 	return (dest);
 }
 
-char	*ft_strdup(const char *src)
+char	*ft_strdup(char *src, int index)
 {
 	char	*dest;
 	int		i;
@@ -118,6 +119,8 @@ char	*ft_strdup(const char *src)
 		i++;
 	}
 	dest[i] = src[i];
+	if (index == TRUE)
+		free(src);
 	return (dest);
 }
 

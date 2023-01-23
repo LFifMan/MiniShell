@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 23:27:44 by max               #+#    #+#             */
-/*   Updated: 2023/01/23 21:00:33 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/23 21:20:05 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,20 +78,21 @@ void	control_tower(t_vars *vars)
 				free_shell(shell);
 				free(input);
 			}
-			if (control_commands(&tabs, &shell, vars) == FALSE)
+			else if (control_commands(&tabs, &shell, vars) == FALSE)
 			{
 				free_shell(shell);
 				free_tabs(tabs);
+				free(tabs);
 			}
-
-			ft_pipex(tabs, vars);
-			ft_unset_export(tabs, vars, tabs->next->cmds[0]);
-			free_shell(shell);
-			//free(shell);
-			free_tabs(tabs);
-			free(tabs);
-			//	printf("leaks regroup 1 %p next %p\n", tabs, tabs->next);
-
+			else
+			{
+				ft_pipex(tabs, vars);
+				ft_unset_export(tabs, vars, tabs->next->cmds[0]);
+				free_shell(shell);
+				free_tabs(tabs);
+				free(tabs);
+				//	printf("leaks regroup 1 %p next %p\n", tabs, tabs->next);
+			}
 		}
 	}
 	//rl_clear_history();

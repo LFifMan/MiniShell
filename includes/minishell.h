@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:44:43 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/23 19:19:58 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/23 22:54:05 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,8 +139,8 @@ size_t	ft_strlen(const char *str);
 int		ft_strcmp(char *input, char *str);
 int		ft_memcmp(void *s1, void *s2, size_t n);
 char	*ft_zero(const char *s);
-char	*ft_strjoin(char *s1, char const *s2);
-char	*ft_strdup(const char *src);
+char	*ft_strjoin(char *s1, char *s2, int index);
+char	*ft_strdup(char *src, int index);
 size_t	ft_strlcpy(char *dest, const char *src, size_t size);
 int		ft_tolower(int c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);

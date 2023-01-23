@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:38:47 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/23 14:25:17 by max              ###   ########.fr       */
+/*   Updated: 2023/01/23 22:55:57 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	init_vars(t_vars *vars, char **envp)
 	new_envp = malloc(sizeof(char *) * (envp_length + 1));
 	while (i < envp_length)
 	{
-		new_envp[i] = ft_strdup(envp[i]);
+		new_envp[i] = ft_strdup(envp[i], FALSE);
 		i++;
 	}
 	new_envp[envp_length] = 0;

@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:25:12 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/23 20:44:16 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/23 22:56:24 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,12 @@ char	*ft_trim_quotations(char *str)
 	if (str[0] == SINGLEQUOTE || str[0] == DOUBLEQUOTE)
 	{
 		if (ft_strlen(str) == 2)
-			return (ft_strdup(""));
-		dest = (char *)malloc(sizeof(char) * (ft_strlen(str) - 2 + 1));
-		ft_strlcpy(dest, (char *)str + 1, (ft_strlen(str) -2 + 1));
+			return (ft_strdup("", FALSE));
+		dest = (char *)malloc(sizeof(char) * (ft_strlen(str) - 2 + 1)); // + 1 ?
+		ft_strlcpy(dest, (char *)str + 1, (ft_strlen(str) -2 + 1)); // + 1 ?
+		//free(str);
+		printf("str = %p dest %p\n", str, dest);
+
 		return (dest);
 	}
 	return (str);
@@ -55,7 +58,6 @@ t_tabs	*ft_regroup(t_shell **shell, t_vars *vars)
 	t_shell	*tmp;
 
 	(void)vars;
-
 	tabs = malloc(sizeof(t_tabs));
 	if (!tabs)
 		return (0);
@@ -71,7 +73,6 @@ t_tabs	*ft_regroup(t_shell **shell, t_vars *vars)
 		if (!tmp || !tmp->next)
 			return (tabs);
 	}
-	printf("leaks regroup %p next %p\n", tabs, tabs->next);
 	return (tabs);
 }
 
@@ -139,7 +140,7 @@ t_shell	*parsing_pipes(t_shell **shell)
 		tmp = tmp->next;
 	}
 	*shell = tmp2;
-	free_shell(*shell); //--> does not work, I'm lost in translation
+	free_shell(*shell);
 	free(*shell);
 
 	return (new);

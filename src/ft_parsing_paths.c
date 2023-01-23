@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 02:56:33 by max               #+#    #+#             */
-/*   Updated: 2023/01/23 21:05:17 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/23 22:58:01 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ char	**ft_create_paths(char *argv)
 	dst = malloc(sizeof(char *) * 2 + 1);
 	if (!dst)
 		return (NULL);
-	dst[0] = ft_strjoin("/bin/", argv);
-	dst[1] = ft_strjoin("/usr/bin/", argv);
+	dst[0] = ft_strjoin("/bin/", argv, FALSE); // TODO: NOT FREE S1
+	dst[1] = ft_strjoin("/usr/bin/", argv, FALSE);// TODO: NOT FREE S1
 	dst[2] = 0;
 	return (dst);
 }
@@ -78,7 +78,7 @@ char	*ft_mallocfill_bin(char **s, char c, char *argv, int beg)
 	}
 	dst[i++] = '/';
 	dst[i] = 0;
-	dst = ft_strjoin(dst, argv);
+	dst = ft_strjoin(dst, argv, FALSE);
 	*s += i + start;
 
 	return (dst);

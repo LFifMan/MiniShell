@@ -139,6 +139,7 @@ char	*ft_replace(char *data, char *envp)
 	ienvp++;
 	size_malloc = ft_size_malloc(data, envp, idata, ienvp);
 	ret = ft_malloc_cpy(data, envp, size_malloc);
+	free(data);
 	return (ret);
 }
 
@@ -175,6 +176,7 @@ char	*ft_remove_dollar(char *data)
 		size++;
 
 	}
+	free(data);
 	ret[size] = 0;
 	return (ret);
 }

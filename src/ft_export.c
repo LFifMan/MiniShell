@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 23:43:51 by max               #+#    #+#             */
-/*   Updated: 2023/01/23 14:25:45 by max              ###   ########.fr       */
+/*   Updated: 2023/01/23 22:58:25 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char **replace_var(char **src, char *str, int place)
 	if (place < len)
 	{
 		free(src[place]);
-		src[place] = ft_strdup(str);
+		src[place] = ft_strdup(str, FALSE);
 	}
 	else
 	{
@@ -53,7 +53,7 @@ char **replace_var(char **src, char *str, int place)
 			new_src[i] = src[i];
 			i++;
 		}
-		new_src[len] = ft_strdup(str);
+		new_src[len] = ft_strdup(str, FALSE);
 		new_src[len + 1] = 0;
 		free(src);
 		src = new_src;
