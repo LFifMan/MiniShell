@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_control_tower.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 23:27:44 by max               #+#    #+#             */
-/*   Updated: 2023/01/23 14:29:05 by max              ###   ########.fr       */
+/*   Updated: 2023/01/23 16:12:31 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	control_parsing(t_shell **shell, t_vars *vars, char *input)
 	if (parsing_quotations(shell, input) == FALSE)
 	{
 		printf("error: quote not finished\n");
+		free_shell(*shell);
 		return (FALSE);
 	}
 	(*shell) = parsing_spaces(shell);
@@ -35,7 +36,11 @@ int	control_parsing(t_shell **shell, t_vars *vars, char *input)
 	(*shell) = parsing_redops(shell);
 	parsing_dollars(shell, vars);
 	if (ft_check_op(*shell) == FALSE)
+	{
+		free_shell(*shell);
+
 		return (FALSE);
+	}
 	(*shell) = ft_space_redops(shell);
 	free(input);
 	return (TRUE);

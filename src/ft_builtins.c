@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_builtins.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 16:17:05 by max               #+#    #+#             */
-/*   Updated: 2023/01/23 14:59:30 by max              ###   ########.fr       */
+/*   Updated: 2023/01/23 16:05:17 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,9 @@ char	*get_current_cd(char **env)
 	int		j;
 	int		k;
 	int		slash;
-	char	*current;
+	char	*current = NULL;
 	i = 0;
+	k = 0;
 	while (env[i] && ft_memcmp((char *)env[i], "PATH=", 5) != 0)
 		i++;
 	//if envp[i] == 0 -->stop
@@ -76,9 +77,10 @@ char	*get_root_cd(char **env)
 	int		i;
 	int		j;
 	int		k;
-	char	*root;
+	char	*root = NULL;
 
 	i = 0;
+	k = 0;
 	while (env[i] && ft_memcmp((char *)env[i], "PATH=", 5) != 0) // TDOD PWD not path, change all j nb after
 		i++;
 	//if envp[i] == 0 -->stop
@@ -105,7 +107,7 @@ char	*get_root_cd(char **env)
 	}
 	return (root);
 }
-
+/*
 int	check_directory_exists(const char* path)
 {
 	DIR* dir;
@@ -118,19 +120,19 @@ int	check_directory_exists(const char* path)
 	}
 	return (FALSE);
 }
-
+*/
 int	ft_build_cd(t_tabs *tabs, t_vars *vars)
 {
 	/*
 	modify PWD and OLDPWD
 	*/
-	char	*root;
+	char	*root = NULL;
 	char	*current;
-	char	*dir_path;
+	//char	*dir_path;
 
 	root = get_root_cd(vars->envp);
 	current = get_current_cd(vars->envp);
-
+ /*
 	if (ft_strncmp(tabs->cmds[1], root, ft_strlen(root)) == TRUE)
 	{
 		if (check_directory_exists(tabs->cmds[1]))
@@ -142,7 +144,8 @@ int	ft_build_cd(t_tabs *tabs, t_vars *vars)
 	{
 		current = ft_strjoin()
 	}
-	
+	*/
+	(void)tabs;
 	return (TRUE);
 }
 
