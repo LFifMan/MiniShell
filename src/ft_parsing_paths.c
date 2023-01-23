@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_paths.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 02:56:33 by max               #+#    #+#             */
-/*   Updated: 2023/01/22 22:49:46 by max              ###   ########.fr       */
+/*   Updated: 2023/01/23 21:05:17 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,6 @@ char	**ft_split_bin(char *s, char c, char *argv)
 	if (!dst)
 		return (NULL);
 	i = 0;
-	
 	while (*s && i < count)
 	{
 		while (*s && *s == c)

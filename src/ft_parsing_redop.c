@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_redop.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 01:38:54 by max               #+#    #+#             */
-/*   Updated: 2023/01/22 22:04:39 by max              ###   ########.fr       */
+/*   Updated: 2023/01/23 19:50:54 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void	ft_redops(t_tabs **tabs)
 			else
 				i++;
 		}
+		tmp->redop[j] = 0;
 		tmp->cmds[i] = 0;
 		tmp = tmp->next;
 	}

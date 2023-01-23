@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:39:02 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/23 01:33:01 by max              ###   ########.fr       */
+/*   Updated: 2023/01/23 20:54:45 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ size_t	ft_strlen(const char *str)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return (i);
 	while (str[i] != '\0')
 	{
 		i++;
@@ -92,8 +94,9 @@ char	*ft_strjoin(char *s1, char const *s2)
 			j++;
 		}
 	}
-	while (s2[i])
-		dest[j++] = s2[i++];
+	if (s2)
+		while (s2[i])
+			dest[j++] = s2[i++];
 	dest[j] = '\0';
 	free(s1);
 

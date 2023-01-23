@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:44:43 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/23 00:00:23 by max              ###   ########.fr       */
+/*   Updated: 2023/01/23 19:19:58 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ typedef struct s_tabs
 
 /* CONTROL_TOWER.C */
 void	control_tower(t_vars *vars);
-int	control_commands(t_tabs **tabs, t_shell **shell, t_vars *vars);
-int	control_parsing(t_shell **shell, t_vars *vars, char *input);
+int		control_commands(t_tabs **tabs, t_shell **shell, t_vars *vars);
+int		control_parsing(t_shell **shell, t_vars *vars, char *input);
 char	*ft_prompt(char **input);
 
 /* PARSING_SHELL.C */
@@ -109,7 +109,7 @@ char	*ft_mallocfill_bin(char **s, char c, char *argv, int beg);
 char	**ft_parsing_binaries(char *const *envp, char *argv);
 
 /* LSTS.C */
-void	ft_lstadd_back(t_shell **lst, char *input);
+void	ft_lstadd_back(t_shell **lst, char *input, int index);
 int		ft_lstsize(t_shell **lst);
 void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input);
 

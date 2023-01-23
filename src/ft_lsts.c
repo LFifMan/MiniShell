@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lsts.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 18:45:45 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/22 23:15:09 by max              ###   ########.fr       */
+/*   Updated: 2023/01/23 19:28:20 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	ft_lstsize(t_shell **lst)
 	return (i);
 }
 
-void	ft_lstadd_back(t_shell **lst, char *input)
+void	ft_lstadd_back(t_shell **lst, char *input, int index)
 {
 	t_shell	*tmp;
 	t_shell	*curr;
@@ -55,7 +55,8 @@ void	ft_lstadd_back(t_shell **lst, char *input)
 	while (curr->next != NULL)
 		curr = curr->next;
 	curr->next = tmp;
-	//free (input);
+	if (index == TRUE)
+		free (input);
 }
 
 void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input)

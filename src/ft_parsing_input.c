@@ -3,47 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_input.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:38:40 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/22 22:49:48 by max              ###   ########.fr       */
+/*   Updated: 2023/01/23 19:25:18 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-//tour de controle
-//{
-//	parsing1(lst); //quotes
-//	parsing2(lst); //spaces
-//	parsing2.1(lst); //$
-//	parsing3(lst); //regroup
-//	parsing4(lst); //pipes
-//	parsing4
-//};
-
-
-/*
-lst de tabs
-
-- vars→args =
-    - separer chaque espace(s) en nouveau string
-    - separer les pipes en nouvelle lst
-    - transformer chaque $XXX en vars
-- vars→path =
-    - strjoin de chaque path avec vars→args[0]
-    - si path= n existe pas, remplacer par /bin et /user/bin
-*/
-//void	ft_regroup(t_shell **shell)
-//{
-//	t_shell	*tmp;
-//
-//	tmp = (*shell)->next;
-//	while (tmp)
-//	{
-//		/*look if
-//	}
-//}
 
 /*
 PARSING LV 1: split quotes from unquotes
@@ -105,7 +72,7 @@ int	parsing_quotations(t_shell **shell, char *input)
 				j++;
 			if (!input[i + j]) // error check if there is a missing quotation
 				return (FALSE);
-			ft_lstadd_back(shell, parse_quotation(&input[i], type, j, 0));
+			ft_lstadd_back(shell, parse_quotation(&input[i], type, j, 0), TRUE);
 			i++;
 
 		}
@@ -113,7 +80,7 @@ int	parsing_quotations(t_shell **shell, char *input)
 		{
 			while (input[i + j] && input[i + j] != SINGLEQUOTE && input[i + j] != DOUBLEQUOTE)
 				j++;
-			ft_lstadd_back(shell, parse_quotation(&input[i], 0, j, 0));
+			ft_lstadd_back(shell, parse_quotation(&input[i], 0, j, 0), TRUE);
 		}
 		i += j;
 	}
@@ -139,13 +106,13 @@ void	split_spaces(t_shell **shell, char *input)
 			while (input[i + j] == SPACE)
 				j++;
 
-			ft_lstadd_back(shell, parse_quotation(&input[i], SPACE, j, 0));
+			ft_lstadd_back(shell, parse_quotation(&input[i], SPACE, j, 0), TRUE);
 		}
 		else if (input[i])
 		{
 			while (input[i + j] && input[i + j] != SPACE)
 				j++;
-			ft_lstadd_back(shell, parse_quotation(&input[i], 0, j, 0));
+			ft_lstadd_back(shell, parse_quotation(&input[i], 0, j, 0), TRUE);
 		}
 		else
 			return ;
@@ -172,12 +139,13 @@ t_shell	*parsing_spaces(t_shell **shell)
 	{
 		if (tmp->index == SINGLEQUOTE || tmp->index == DOUBLEQUOTE) // if the data is a quotation string, just keep it as it is
 		{
-				ft_lstadd_back(&new, tmp->data);
+				ft_lstadd_back(&new, tmp->data, FALSE);
 		}
 		else // otherwise, split it
 			split_spaces(&new, tmp->data);
 		tmp = tmp->next;
 	}
-	//free_lst(*shell); --> does not work, I'm lost in translation
+	free_shell(*shell);
+	free(*shell);
 	return (new);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_redirections.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 22:03:36 by max               #+#    #+#             */
-/*   Updated: 2023/01/22 23:21:35 by max              ###   ########.fr       */
+/*   Updated: 2023/01/23 19:20:16 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,20 @@ t_shell	*ft_space_redops(t_shell **shell)
 	{
 		if (tmp->index != GREATER && tmp->index != SMALLER)
 		{
-				ft_lstadd_back(&new, tmp->data);
+				ft_lstadd_back(&new, tmp->data, FALSE);
 				if (tmp->next && tmp->index != SPACE && (tmp->next->index == GREATER || tmp->next->index == SMALLER))
-					ft_lstadd_back(&new, " ");
+					ft_lstadd_back(&new, " ", FALSE);
 		}
 		else 
 		{
-			ft_lstadd_back(&new, tmp->data);
+			ft_lstadd_back(&new, tmp->data, FALSE);
 			if (tmp->next && tmp->next->index != SPACE)
-				ft_lstadd_back(&new, " ");
+				ft_lstadd_back(&new, " ", FALSE);
 		}
 		tmp = tmp->next;
 	}
 	free_shell(*shell);
+	free(*shell);
 	return (new);
 }
 void	ft_split_redirections(t_shell **shell, char *input)
@@ -54,19 +55,19 @@ void	ft_split_redirections(t_shell **shell, char *input)
 		{
 			while (input[i + j] == GREATER)
 				j++;
-			ft_lstadd_back(shell, parse_quotation(&input[i], GREATER, j, 0));
+			ft_lstadd_back(shell, parse_quotation(&input[i], GREATER, j, 0), TRUE);
 		}
 		else if (input[i] == SMALLER)
 		{
 			while (input[i + j] == SMALLER)
 				j++;
-			ft_lstadd_back(shell, parse_quotation(&input[i], SMALLER, j, 0));
+			ft_lstadd_back(shell, parse_quotation(&input[i], SMALLER, j, 0), TRUE);
 		}
 		else if (input[i])
 		{
 			while (input[i + j] && input[i + j] != SMALLER && input[i + j] != GREATER)
 				j++;
-			ft_lstadd_back(shell, parse_quotation(&input[i], 0, j, 0));
+			ft_lstadd_back(shell, parse_quotation(&input[i], 0, j, 0), TRUE);
 		}
 		else
 			return ;
@@ -104,13 +105,14 @@ t_shell	*parsing_redops(t_shell **shell)
 				ft_split_redirections(&new, tmp->data);
 			}
 			else
-				ft_lstadd_back(&new, tmp->data);
+				ft_lstadd_back(&new, tmp->data, FALSE);
 		}
 		else
-			ft_lstadd_back(&new, tmp->data);
+			ft_lstadd_back(&new, tmp->data, FALSE);
 		tmp = tmp->next;
 	}
 	*shell = tmp2;
 	free_shell(*shell);
+	free(*shell);
 	return (new);
 }

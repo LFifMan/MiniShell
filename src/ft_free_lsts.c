@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free_lsts.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 23:14:47 by max               #+#    #+#             */
-/*   Updated: 2023/01/22 23:26:51 by max              ###   ########.fr       */
+/*   Updated: 2023/01/23 19:51:18 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,17 @@ int	free_shell(t_shell *lst)
 {
 	t_shell	*tmp;
 	t_shell	*end;
+	t_shell	*tmp2;
 
 	end = lst;
+	tmp2 = lst;
 	lst = lst->next;
 	while (lst != NULL)
 	{
 		tmp = lst;
 		lst = lst->next;
 		free(tmp->data);
-		//free(tmp);
+		free(tmp);
 	}
 	lst = end;
 	lst->next = NULL;
@@ -39,17 +41,19 @@ int	free_tabs(t_tabs *lst)
 
 	end = lst;
 	lst = lst->next;
+	//printf("malloc cmd %p path %p redop %p\n", lst->cmds, lst->paths, lst->redop);
 	while (lst != NULL)
 	{
+
 		i = 0;
 		tmp = lst;
-		lst = lst->next;
 		while (tmp->cmds[i])
 		{
 			free(tmp->cmds[i]);
 			i++;
 		}
 		free(tmp->cmds);
+
 		i = 0;
 		while (tmp->paths[i])
 		{
@@ -57,7 +61,16 @@ int	free_tabs(t_tabs *lst)
 			i++;
 		}
 		free(tmp->paths);
+		i = 0;
+		while (tmp->redop[i])
+		{
+			free(tmp->redop[i]);
+			i++;
+		}
+		free(tmp->redop);
+		lst = lst->next;
 		free(tmp);
+
 	}
 	lst = end;
 	lst->next = NULL;

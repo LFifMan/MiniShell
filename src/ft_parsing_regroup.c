@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_regroup.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:25:12 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/22 23:18:35 by max              ###   ########.fr       */
+/*   Updated: 2023/01/23 20:44:16 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ t_tabs	*ft_regroup(t_shell **shell, t_vars *vars)
 		if (!tmp || !tmp->next)
 			return (tabs);
 	}
+	printf("leaks regroup %p next %p\n", tabs, tabs->next);
 	return (tabs);
 }
 
@@ -87,13 +88,13 @@ void	ft_split_pipes(t_shell **shell, char *input)
 		{
 			while (input[i + j] == PIPE)
 				j++;
-			ft_lstadd_back(shell, parse_quotation(&input[i], PIPE, j, 0));
+			ft_lstadd_back(shell, parse_quotation(&input[i], PIPE, j, 0), TRUE);
 		}
 		else if (input[i])
 		{
 			while (input[i + j] && input[i + j] != PIPE)
 				j++;
-			ft_lstadd_back(shell, parse_quotation(&input[i], 0, j, 0));
+			ft_lstadd_back(shell, parse_quotation(&input[i], 0, j, 0), TRUE);
 		}
 		else
 			return ;
@@ -131,13 +132,15 @@ t_shell	*parsing_pipes(t_shell **shell)
 				ft_split_pipes(&new, tmp->data);
 			}
 			else
-				ft_lstadd_back(&new, tmp->data);
+				ft_lstadd_back(&new, tmp->data, FALSE);
 		}
 		else
-			ft_lstadd_back(&new, tmp->data);
+			ft_lstadd_back(&new, tmp->data, FALSE);
 		tmp = tmp->next;
 	}
 	*shell = tmp2;
 	free_shell(*shell); //--> does not work, I'm lost in translation
+	free(*shell);
+
 	return (new);
 }
