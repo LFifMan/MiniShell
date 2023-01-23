@@ -6,7 +6,7 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:38:47 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/22 23:41:44 by max              ###   ########.fr       */
+/*   Updated: 2023/01/23 02:13:55 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,16 @@ int	main(int ac, char **av, char **ev)
 {
 	t_vars	vars;
 	int		i;
-
+	(void)av;
+	(void)ac;
+	
+	/*
 	if (ac != 1 || av[1])
 	{
 		printf("Minishell does not take arguments\n");
 		exit (0);
 	}
+	*/
 	init_vars(&vars, ev);
 	control_tower(&vars);
 	i = 0;

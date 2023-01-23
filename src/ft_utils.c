@@ -6,7 +6,7 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:39:02 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/22 22:48:55 by max              ###   ########.fr       */
+/*   Updated: 2023/01/23 01:33:01 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int	ft_strcmp(char *input, char *str)
 	int	i;
 
 	i = 0;
+	if (!input)
+		return (FALSE);
 	while (str[i] && input[i])
 	{
 		if (str[i] != input[i])

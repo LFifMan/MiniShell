@@ -6,7 +6,7 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 23:27:44 by max               #+#    #+#             */
-/*   Updated: 2023/01/22 23:55:54 by max              ###   ########.fr       */
+/*   Updated: 2023/01/23 02:12:41 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,10 @@
 char	*ft_prompt(char **input)
 {
 	*input = readline("> ");
-	if (ft_strcmp(*input, "exit") == TRUE)
+	if (input == 0 || ft_strcmp(*input, "exit") == TRUE)
+	{
 		return (0);
+	}
 	add_history(*input);
 	return (*input);
 }
@@ -58,6 +60,7 @@ void	control_tower(t_vars *vars)
 	shell = malloc(sizeof(t_shell));
 	if (!shell)
 		return ;
+
 	while (1)
 	{
 		if (!ft_prompt(&input))
