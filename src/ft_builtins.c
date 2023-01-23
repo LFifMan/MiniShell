@@ -6,7 +6,7 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 16:17:05 by max               #+#    #+#             */
-/*   Updated: 2023/01/23 00:01:22 by max              ###   ########.fr       */
+/*   Updated: 2023/01/23 14:59:30 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,113 @@ int	ft_build_echo(t_tabs *tabs, t_vars *vars)
 	return (TRUE);
 }
 
+char	*get_current_cd(char **env)
+{
+	int		i;
+	int		j;
+	int		k;
+	int		slash;
+	char	*current;
+	i = 0;
+	while (env[i] && ft_memcmp((char *)env[i], "PATH=", 5) != 0)
+		i++;
+	//if envp[i] == 0 -->stop
+	// also, if PWD was modified, like a / was removed
+	if (env[i][6] == '/')
+	{
+		j = 7;
+		while  (env[i][j])
+		{
+			if (env[i][j] == '/')
+				slash = j;
+			j++;
+		}
+		current = malloc(sizeof(char) * j - slash + 1); // pas sur?
+		if (!current)
+			return (NULL);
+		j = slash;
+		while  (env[i][j])
+		{
+			current[k] = env[i][j];
+			j++;
+		}
+		current[k] = 0;		
+	}
+	return (current);
+}
+
+char	*get_root_cd(char **env)
+{
+	int		i;
+	int		j;
+	int		k;
+	char	*root;
+
+	i = 0;
+	while (env[i] && ft_memcmp((char *)env[i], "PATH=", 5) != 0) // TDOD PWD not path, change all j nb after
+		i++;
+	//if envp[i] == 0 -->stop
+	// also, if PWD was modified, like a / was removed
+	if (env[i][6] == '/')
+	{
+		j = 7;
+		while  (env[i][j] && env[i][j] != '/')
+		{
+			j++;
+		}
+		root = malloc(sizeof(char) * j - 6 + 1); // pas sur?
+		if (!root)
+			return (NULL);
+		j = 6;
+		while  (env[i][j] && env[i][j] != '/')
+		{
+			root[k] = env[i][j];
+			j++;
+		}
+		root[k] = 0;
+
+		
+	}
+	return (root);
+}
+
+int	check_directory_exists(const char* path)
+{
+	DIR* dir;
+	
+	dir = opendir(path);
+	if (dir) 
+	{
+		closedir(dir);
+		return (TRUE);
+	}
+	return (FALSE);
+}
+
 int	ft_build_cd(t_tabs *tabs, t_vars *vars)
 {
-	(void)tabs;
-	(void)vars;
+	/*
+	modify PWD and OLDPWD
+	*/
+	char	*root;
+	char	*current;
+	char	*dir_path;
+
+	root = get_root_cd(vars->envp);
+	current = get_current_cd(vars->envp);
+
+	if (ft_strncmp(tabs->cmds[1], root, ft_strlen(root)) == TRUE)
+	{
+		if (check_directory_exists(tabs->cmds[1]))
+		{
+			
+		}
+	}
+	else
+	{
+		current = ft_strjoin()
+	}
+	
 	return (TRUE);
 }
 

@@ -6,7 +6,7 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 23:43:51 by max               #+#    #+#             */
-/*   Updated: 2023/01/22 23:49:24 by max              ###   ########.fr       */
+/*   Updated: 2023/01/23 14:25:45 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char **replace_var(char **src, char *str, int place)
 	if (place < len)
 	{
 		free(src[place]);
-		src[place] = ft_strdup(str); // new_src
+		src[place] = ft_strdup(str);
 	}
 	else
 	{
