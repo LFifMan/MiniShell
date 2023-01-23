@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 18:45:45 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/23 22:55:39 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/23 23:21:27 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,10 @@ void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input)
 			break ;
 		if (input && input->index == SPACE && !input->next)
 			break ;
-		tmp->cmds[i] = ft_strdup(ft_trim_quotations(input->data), TRUE);
+		if (input->index == DOUBLEQUOTE || input->index == SINGLEQUOTE)
+			tmp->cmds[i] = ft_strdup(ft_trim_quotations(input->data), TRUE);
+		else
+			tmp->cmds[i] = ft_strdup(ft_trim_quotations(input->data), FALSE);
 		input = input->next;
 		if (input)
 		while (input && input->index != SPACE && input->index != PIPE)
