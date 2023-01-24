@@ -1,5 +1,36 @@
 #include "../includes/minishell.h"
 
+#define BUFFER_SIZE 1024
+char *get_next_line(char *delimiter)
+{
+	char *line = NULL;
+	char buffer[BUFFER_SIZE];
+	ssize_t read_bytes;
+	int i = 0;
+	int j = 0;
+	while ((read_bytes = read(STDIN_FILENO, buffer, sizeof buffer)) > 0)
+	{
+		for (j = 0; j < read_bytes; j++)
+		{
+			if (buffer[j] == '\n')
+			{
+				buffer[j] = '\0';
+				if (ft_strcmp(buffer, delimiter) == 0)
+					return line;
+				if (line == NULL)
+					line = ft_strdup(buffer, FALSE);
+				else
+					line = ft_strjoin(line, buffer, FALSE);
+				i = 0;
+				continue;
+			}
+			i++;
+		}
+	}
+	return line;
+}
+
+
 void	ft_pipex(t_tabs *tabs, t_vars *vars)
 {
 	int		fd[2];
@@ -27,12 +58,42 @@ void	ft_pipex(t_tabs *tabs, t_vars *vars)
 			j = 0;
 			while (tabs->redop[j])
 			{
-				if (ft_strcmp(tabs->redop[j], "<<") == TRUE) // not goot
+				if (ft_strcmp(tabs->redop[j], "<<") == TRUE)
 				{
+					char	*delimiter;					
+					char	*input; // store the input from readline
+					// variable to store the file descriptor
+					int fd;
+
 					input_redirection = 1;
-					in_fd = open(tabs->redop[j + 1], O_RDONLY);
+					delimiter = tabs->redop[j + 1];
+					input = NULL;
+					while (1)
+					{
+						input = readline("");
+						if (strcmp(input, delimiter) == 0)
+						{
+							break;
+						}
+						// add input to history
+						add_history(input);
+					}
+					// get the current working directory
+					char path[1024];
+					getcwd(path, sizeof(path));
+					// concatenate the current working directory with the file name
+					strcat(path, "/tempfile");
+
+					// open the file for writing
+					fd = open("tempfile", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+					
+					write(fd, input, strlen(input)); // write the input to the file
+					close(fd);
+					in_fd = open("tempfile", O_RDONLY); // redirect input to the file
 					dup2(in_fd, 0);
 					close(in_fd);
+					unlink("tempfile"); // remove the temporary file
+					free(input);
 				}
 				else if (ft_strcmp(tabs->redop[j], ">>") == TRUE)
 				{
@@ -92,7 +153,7 @@ void	ft_pipex(t_tabs *tabs, t_vars *vars)
 		}
 		else
 		{
-		    waitpid(child, &status, 0);
+			waitpid(child, &status, 0);
 
 			if (i != 0)
 				close(fd[0]);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_regroup.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:25:12 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/23 22:56:24 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/24 00:00:53 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ char	*ft_trim_quotations(char *str)
 		dest = (char *)malloc(sizeof(char) * (ft_strlen(str) - 2 + 1)); // + 1 ?
 		ft_strlcpy(dest, (char *)str + 1, (ft_strlen(str) -2 + 1)); // + 1 ?
 		//free(str);
-		printf("str = %p dest %p\n", str, dest);
-
 		return (dest);
 	}
 	return (str);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free_lsts.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 23:14:47 by max               #+#    #+#             */
-/*   Updated: 2023/01/23 19:51:18 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/24 01:14:39 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,8 @@ int	free_shell(t_shell *lst)
 {
 	t_shell	*tmp;
 	t_shell	*end;
-	t_shell	*tmp2;
 
 	end = lst;
-	tmp2 = lst;
 	lst = lst->next;
 	while (lst != NULL)
 	{

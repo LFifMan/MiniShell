@@ -1,8 +1,0 @@
-Makefile
-ct
-hello.txt
-includes
-minishell
-new
-obj
-src

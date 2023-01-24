@@ -3,14 +3,46 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:39:02 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/23 22:55:08 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/24 00:43:45 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+char	*ft_strcpy(char *s1, const char *s2)
+{
+	size_t	cur;
+
+	cur = 0;
+	while (s2[cur] != '\0')
+	{
+		s1[cur] = s2[cur];
+		cur++;
+	}
+	s1[cur] = '\0';
+	return (s1);
+}
+
+char	*ft_strcat(char *dest, char *src)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (dest[i] != '\0')
+		i++;
+	j = 0;
+	while (src[j] != '\0')
+	{
+		dest[i + j] = src[j];
+		j++;
+	}
+	dest[i + j] = '\0';
+	return (dest);
+}
 
 size_t	ft_strlen(const char *str)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_control_tower.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 23:27:44 by max               #+#    #+#             */
-/*   Updated: 2023/01/23 21:20:05 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/24 03:27:52 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ void	control_tower(t_vars *vars)
 			{
 				ft_pipex(tabs, vars);
 				ft_unset_export(tabs, vars, tabs->next->cmds[0]);
+
 				free_shell(shell);
 				free_tabs(tabs);
 				free(tabs);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_builtins.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 16:17:05 by max               #+#    #+#             */
-/*   Updated: 2023/01/23 16:05:17 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/24 02:04:23 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,31 +41,29 @@ char	*get_current_cd(char **env)
 	int		i;
 	int		j;
 	int		k;
-	int		slash;
 	char	*current = NULL;
 	i = 0;
 	k = 0;
-	while (env[i] && ft_memcmp((char *)env[i], "PATH=", 5) != 0)
+	while (env[i] && ft_memcmp((char *)env[i], "PWD=", 4) != 0)
 		i++;
 	//if envp[i] == 0 -->stop
 	// also, if PWD was modified, like a / was removed
-	if (env[i][6] == '/')
+	if (env[i][4] == '/')
 	{
-		j = 7;
+		j = 5;
 		while  (env[i][j])
 		{
-			if (env[i][j] == '/')
-				slash = j;
 			j++;
 		}
-		current = malloc(sizeof(char) * j - slash + 1); // pas sur?
+		current = malloc(sizeof(char) * j + 1);
 		if (!current)
-			return (NULL);
-		j = slash;
+			return (NULL); // TODO: protect mallocs
+		j = 4;
 		while  (env[i][j])
 		{
 			current[k] = env[i][j];
 			j++;
+			k++;
 		}
 		current[k] = 0;		
 	}
@@ -81,33 +79,36 @@ char	*get_root_cd(char **env)
 
 	i = 0;
 	k = 0;
-	while (env[i] && ft_memcmp((char *)env[i], "PATH=", 5) != 0) // TDOD PWD not path, change all j nb after
+	while (env[i] && ft_memcmp((char *)env[i], "PWD=", 4) != 0) // TODO: PWD not path, change all j nb after
 		i++;
 	//if envp[i] == 0 -->stop
 	// also, if PWD was modified, like a / was removed
-	if (env[i][6] == '/')
+	
+	if (env[i][4] == '/')
 	{
-		j = 7;
+		j = 5;
 		while  (env[i][j] && env[i][j] != '/')
 		{
 			j++;
 		}
-		root = malloc(sizeof(char) * j - 6 + 1); // pas sur?
+
+		root = malloc(sizeof(char) * j - 5 + 1); // pas sur?
 		if (!root)
 			return (NULL);
-		j = 6;
+		j = 5;
+		root[k] = '/';
+		k++;
 		while  (env[i][j] && env[i][j] != '/')
 		{
 			root[k] = env[i][j];
 			j++;
+			k++;
 		}
-		root[k] = 0;
-
-		
+		root[k] = 0;	
 	}
 	return (root);
 }
-/*
+
 int	check_directory_exists(const char* path)
 {
 	DIR* dir;
@@ -120,32 +121,79 @@ int	check_directory_exists(const char* path)
 	}
 	return (FALSE);
 }
-*/
+
+
+
+
+
+void update_pwd(t_vars *vars)
+{
+    char pwd[2040];
+    int i;
+
+    i = 0;
+    while (vars->envp[i]) {
+        if (ft_strncmp(vars->envp[i], "PWD=", 4) == 0)
+            break ;
+        i++;
+    }
+    ft_strcpy(pwd, "PWD=");
+    ft_strcat(pwd, getcwd(NULL, 0));
+    vars->envp[i] = pwd;
+
+}
+
 int	ft_build_cd(t_tabs *tabs, t_vars *vars)
 {
 	/*
-	modify PWD and OLDPWD
+	TODO: modify OLDPWD
 	*/
 	char	*root = NULL;
-	char	*current;
-	//char	*dir_path;
+	char	*current = NULL;
+	char	*relative = NULL;
 
 	root = get_root_cd(vars->envp);
 	current = get_current_cd(vars->envp);
- /*
-	if (ft_strncmp(tabs->cmds[1], root, ft_strlen(root)) == TRUE)
+	if (!tabs->cmds[1])
 	{
-		if (check_directory_exists(tabs->cmds[1]))
+		if (chdir(root) == 0) 
 		{
-			
+			update_pwd(vars);
+		}
+	}
+	else if (ft_strncmp(tabs->cmds[1], root, ft_strlen(root)) == TRUE)
+	{
+		if (tabs->cmds[1][ft_strlen(root)] == '/' && check_directory_exists(tabs->cmds[1]) == TRUE)
+		{
+			if (chdir(tabs->cmds[1]) == 0) 
+			{
+				update_pwd(vars);
+			}
+		}
+		else
+		{
+			//TODO: error like in bash, stay in same repo 
+			//but careful cause it should not print the message twice!
 		}
 	}
 	else
 	{
-		current = ft_strjoin()
+		relative = ft_strjoin(ft_strjoin(current, "/", FALSE), tabs->cmds[1], FALSE);
+		if (check_directory_exists(relative) == TRUE)
+		{
+			if (chdir(relative) == 0) 
+			{
+				update_pwd(vars);
+			}
+			else
+				printf("fuck\n"); // TODO: error like in bash, stay in same repo 
+			//but careful cause it should not print the message twice! (because of pipex and unset_export)
+
+		}
+		//current = ft_strjoin()
 	}
-	*/
-	(void)tabs;
+	//free(current);
+	//free(root);
 	return (TRUE);
 }
 

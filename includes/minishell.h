@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:44:43 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/23 22:54:05 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/24 00:44:00 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # include <readline/history.h>
 # include <fcntl.h>
 # include <signal.h>
+# include <dirent.h>
 
 typedef struct s_shell
 {
@@ -144,6 +145,8 @@ char	*ft_strdup(char *src, int index);
 size_t	ft_strlcpy(char *dest, const char *src, size_t size);
 int		ft_tolower(int c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
+char	*ft_strcat(char *dest, char *src);
+char	*ft_strcpy(char *s1, const char *s2);
 
 /* TO BE REMOVED */
 void	PRINT_SHELL(t_shell **a);
