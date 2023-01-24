@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 16:17:05 by max               #+#    #+#             */
-/*   Updated: 2023/01/24 20:04:07 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/24 22:29:15 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,9 +226,7 @@ int	ft_build_pwd(t_tabs *tabs, t_vars *vars)
 {
 	char	*tmp;
 
-	printf("1\n");
 	tmp = getcwd(NULL, 0);
-	printf("2\n");
 	(void)tabs;
 	(void)vars;
 	write(1, tmp, ft_strlen(tmp));

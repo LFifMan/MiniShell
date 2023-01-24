@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 23:43:51 by max               #+#    #+#             */
-/*   Updated: 2023/01/23 23:20:27 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/24 22:15:15 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,9 @@ int	check_var(char *str)
 			return (FALSE);
 		i++;
 	}
-	return (TRUE);
+	if (str[i] == EQUAL)
+		return (TRUE);
+	return (FALSE);
 }
 
 char **replace_var(char **src, char *str, int place) 
@@ -47,7 +49,7 @@ char **replace_var(char **src, char *str, int place)
 	}
 	else
 	{
-		new_src = malloc(sizeof(char *) * (i + 2));
+		new_src = malloc(sizeof(char *) * (len + 2));
 		while (i < len)
 		{
 			new_src[i] = src[i];
@@ -84,14 +86,14 @@ void	ft_export_env(t_vars *vars, char *str)
 	}
 	while (vars->envp[i])
 	{
-		if (ft_strncmp(vars->envp[i], str, size) == TRUE)
+		if (ft_strncmp(vars->envp[i], str, size + 1) == TRUE)
 		{
 			vars->envp = replace_var(vars->envp, str, i);
 			return ;
 		}
 		i++;
 	}
-	vars->envp = replace_var(vars->envp, str, size);
+	vars->envp = replace_var(vars->envp, str, i);
 }
 
 int	ft_build_export(t_tabs *tabs, t_vars *vars)

@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 23:27:44 by max               #+#    #+#             */
-/*   Updated: 2023/01/24 15:10:00 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/24 22:29:14 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	control_parsing(t_shell **shell, t_vars *vars, char *input)
 	(*shell) = parsing_pipes(shell);
 	(*shell) = parsing_redops(shell);
 	parsing_dollars(shell, vars);
+	// (*shell) = parsing_spaces(shell);
 	if (ft_check_op(*shell) == FALSE)
 	{
 		free_shell(*shell);
