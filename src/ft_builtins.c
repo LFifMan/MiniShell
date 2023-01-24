@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 16:17:05 by max               #+#    #+#             */
-/*   Updated: 2023/01/24 19:11:37 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/24 20:04:07 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,29 +149,25 @@ int	check_directory_exists(const char* path)
 
 
 
-void update_pwd(t_vars *vars, const char *path)
+void update_pwd(t_vars *vars)
 {
 	char	*pwd;
+	char	*tmp;
 	int		i;
 
-	pwd = malloc(sizeof(char) * ft_strlen(path) + 10);
-	if (!pwd) // TODO: malloc errors
+	tmp = malloc(sizeof(char) * 5);
+	if (!tmp) // TODO: malloc errors
 		return ;
-	printf ("UPDATE		path = %p 	env = %p	pwd = %p\n", path, *vars->envp, pwd);
 	i = 0;
 	while (vars->envp[i])
 	{
-		printf ("UPDATE		path = %p 	envi = %p	pwd = %p\n", path, vars->envp[i], pwd);
-
 		if (ft_strncmp(vars->envp[i], "PWD=", 4) == 0)
 			break ;
 		i++;
 	}
-	printf ("UPDATE		path = %p 	env = %p	pwd = %p\n", path, *vars->envp, pwd);
-	ft_strcpy(pwd, "PWD=");
-	printf ("UPDATE		path = %p 	env = %p	pwd = %p\n", path, *vars->envp, pwd);
-	ft_strcat(pwd, getcwd(NULL, 0));
-	printf ("UPDATE		path = %p 	env = %p	pwd = %p\n", path, *vars->envp, pwd);
+	ft_strcpy(tmp, "PWD=");
+	pwd = getcwd(NULL, 0);
+	tmp = ft_strjoin(tmp, pwd, FALSE);
 	free(vars->envp[i]);
 	vars->envp[i] = pwd;
 }
