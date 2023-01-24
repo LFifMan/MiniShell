@@ -12,12 +12,6 @@
 
 #include "../includes/minishell.h"
 
-//void	sigquit_handler(int sig)
-//{
-//	(void)sig;
-//	exit (0);
-//}
-
 void	sigint_handler(int sig)
 {
 	(void)sig;
@@ -34,7 +28,6 @@ void	disable_sigint_display(void)
 	tcgetattr(STDIN_FILENO, &original_settings);
 	t = original_settings;
 	t.c_lflag &= ~ECHOCTL;
-//	t.c_cc[VQUIT] = 4;
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &t);
 }
 
@@ -42,4 +35,5 @@ void	ft_signals(void)
 {
 	disable_sigint_display();
 	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
 }
