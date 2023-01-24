@@ -3,24 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   ft_builtins.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 16:17:05 by max               #+#    #+#             */
-/*   Updated: 2023/01/24 02:04:23 by max              ###   ########.fr       */
+/*   Updated: 2023/01/24 19:11:37 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+int	check_option_n(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str && str[i] == '-' && str[i + 1] == 'n')
+	{
+		i++;
+		while (str[i])
+		{
+			if (str[i] != 'n')
+				return (FALSE);
+			i++;
+		}
+	}
+	else
+		return (FALSE);
+	return (TRUE);
+}
 int	ft_build_echo(t_tabs *tabs, t_vars *vars)
 {
 	int	newline;
 	int	i;
 	int	len;
 
+	i = 1;
 	newline = 0;
-	if (ft_strcmp(tabs->cmds[1], "-n") == TRUE)
-		newline = 1;
+	while (check_option_n(tabs->cmds[i]) == TRUE)
+	{
+		newline++;
+		i++;
+	}
 	i = newline + 1;
 	while (tabs->cmds[i])
 	{
@@ -126,21 +149,31 @@ int	check_directory_exists(const char* path)
 
 
 
-void update_pwd(t_vars *vars)
+void update_pwd(t_vars *vars, const char *path)
 {
-    char pwd[2040];
-    int i;
+	char	*pwd;
+	int		i;
 
-    i = 0;
-    while (vars->envp[i]) {
-        if (ft_strncmp(vars->envp[i], "PWD=", 4) == 0)
-            break ;
-        i++;
-    }
-    ft_strcpy(pwd, "PWD=");
-    ft_strcat(pwd, getcwd(NULL, 0));
-    vars->envp[i] = pwd;
+	pwd = malloc(sizeof(char) * ft_strlen(path) + 10);
+	if (!pwd) // TODO: malloc errors
+		return ;
+	printf ("UPDATE		path = %p 	env = %p	pwd = %p\n", path, *vars->envp, pwd);
+	i = 0;
+	while (vars->envp[i])
+	{
+		printf ("UPDATE		path = %p 	envi = %p	pwd = %p\n", path, vars->envp[i], pwd);
 
+		if (ft_strncmp(vars->envp[i], "PWD=", 4) == 0)
+			break ;
+		i++;
+	}
+	printf ("UPDATE		path = %p 	env = %p	pwd = %p\n", path, *vars->envp, pwd);
+	ft_strcpy(pwd, "PWD=");
+	printf ("UPDATE		path = %p 	env = %p	pwd = %p\n", path, *vars->envp, pwd);
+	ft_strcat(pwd, getcwd(NULL, 0));
+	printf ("UPDATE		path = %p 	env = %p	pwd = %p\n", path, *vars->envp, pwd);
+	free(vars->envp[i]);
+	vars->envp[i] = pwd;
 }
 
 int	ft_build_cd(t_tabs *tabs, t_vars *vars)
@@ -154,11 +187,13 @@ int	ft_build_cd(t_tabs *tabs, t_vars *vars)
 
 	root = get_root_cd(vars->envp);
 	current = get_current_cd(vars->envp);
+	printf ("root %p curr %p env %p\n", root, current, vars->envp);
 	if (!tabs->cmds[1])
 	{
 		if (chdir(root) == 0) 
 		{
-			update_pwd(vars);
+			update_pwd(vars, root);
+			free(current);
 		}
 	}
 	else if (ft_strncmp(tabs->cmds[1], root, ft_strlen(root)) == TRUE)
@@ -167,7 +202,7 @@ int	ft_build_cd(t_tabs *tabs, t_vars *vars)
 		{
 			if (chdir(tabs->cmds[1]) == 0) 
 			{
-				update_pwd(vars);
+				update_pwd(vars, tabs->cmds[1]);
 			}
 		}
 		else
@@ -175,6 +210,7 @@ int	ft_build_cd(t_tabs *tabs, t_vars *vars)
 			//TODO: error like in bash, stay in same repo 
 			//but careful cause it should not print the message twice!
 		}
+		free(current);
 	}
 	else
 	{
@@ -183,17 +219,19 @@ int	ft_build_cd(t_tabs *tabs, t_vars *vars)
 		{
 			if (chdir(relative) == 0) 
 			{
-				update_pwd(vars);
+				update_pwd(vars, relative);
+
 			}
 			else
 				printf("fuck\n"); // TODO: error like in bash, stay in same repo 
 			//but careful cause it should not print the message twice! (because of pipex and unset_export)
-
 		}
-		//current = ft_strjoin()
+		free(relative);
 	}
+	printf ("root %p relat %p env %p\n", root, relative, vars->envp);
+
 	//free(current);
-	//free(root);
+	free(root);
 	return (TRUE);
 }
 

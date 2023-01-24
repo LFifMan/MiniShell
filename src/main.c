@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:38:47 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/23 22:55:57 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/24 15:39:19 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	init_vars(t_vars *vars, char **envp)
 	while (envp[envp_length])
 		envp_length++;
 	new_envp = malloc(sizeof(char *) * (envp_length + 1));
+	printf ("env %p\n", new_envp);
+
 	while (i < envp_length)
 	{
 		new_envp[i] = ft_strdup(envp[i], FALSE);

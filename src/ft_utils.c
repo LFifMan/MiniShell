@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:39:02 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/24 00:43:45 by max              ###   ########.fr       */
+/*   Updated: 2023/01/24 15:53:52 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,10 +110,10 @@ char	*ft_strjoin(char *s1, char *s2, int index)
 	char	*dest;
 	size_t	i;
 	size_t	j;
-
 	dest = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!dest)
 		return (0);
+	//printf("strjoin s1 %p s2 %p dest %p\n", s1, s2, dest);
 	i = 0;
 	j = 0;
 	if (!s1)
