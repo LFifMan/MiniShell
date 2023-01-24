@@ -1,36 +1,5 @@
 #include "../includes/minishell.h"
 
-#define BUFFER_SIZE 1024
-char *get_next_line(char *delimiter)
-{
-	char *line = NULL;
-	char buffer[BUFFER_SIZE];
-	ssize_t read_bytes;
-	int i = 0;
-	int j = 0;
-	while ((read_bytes = read(STDIN_FILENO, buffer, sizeof buffer)) > 0)
-	{
-		for (j = 0; j < read_bytes; j++)
-		{
-			if (buffer[j] == '\n')
-			{
-				buffer[j] = '\0';
-				if (ft_strcmp(buffer, delimiter) == 0)
-					return line;
-				if (line == NULL)
-					line = ft_strdup(buffer, FALSE);
-				else
-					line = ft_strjoin(line, buffer, FALSE);
-				i = 0;
-				continue;
-			}
-			i++;
-		}
-	}
-	return line;
-}
-
-
 void	ft_pipex(t_tabs *tabs, t_vars *vars)
 {
 	int		fd[2];
