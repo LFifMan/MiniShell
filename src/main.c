@@ -34,6 +34,31 @@ void	init_vars(t_vars *vars, char **envp)
 	vars->envp = new_envp;
 }
 
+//void	sigint_handler(int sig)
+//{
+//	(void)sig;
+//	rl_on_new_line();
+//	printf("\n");
+//	rl_replace_line("", 0);
+//	rl_redisplay();
+//}
+//
+//void	disable_sigint_display(void)
+//{
+//	struct termios	t;
+//
+//	tcgetattr(STDIN_FILENO, &original_settings);
+//	t = original_settings;
+//	t.c_lflag &= ~ECHOCTL;
+////	t.c_cc[VQUIT] = 4;
+//	tcsetattr(STDIN_FILENO, TCSAFLUSH, &t);
+//}
+
+void	restore_terminal_settings(void)
+{
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &original_settings);
+}
+
 int	main(int ac, char **av, char **ev)
 {
 	t_vars	vars;
@@ -48,6 +73,10 @@ int	main(int ac, char **av, char **ev)
 		exit (0);
 	}
 	*/
+	ft_signals();
+//	disable_sigint_display();
+//	signal(SIGINT, sigint_handler);
+//	signal(SIGQUIT, sigquit_handler);
 	init_vars(&vars, ev);
 	control_tower(&vars);
 	i = 0;
@@ -57,5 +86,6 @@ int	main(int ac, char **av, char **ev)
 		i++;
 	}
 	free(vars.envp);
+	restore_terminal_settings();
 	return (0);
 }

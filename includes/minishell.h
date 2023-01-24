@@ -28,11 +28,14 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+# include </Users/vfinocie/.brew/Cellar/readline/8.2.1/include/readline/readline.h>
+# include </Users/vfinocie/.brew/Cellar/readline/8.2.1/include/readline/history.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <fcntl.h>
 # include <signal.h>
 # include <dirent.h>
+# include <termios.h>
 
 typedef struct s_shell
 {
@@ -57,6 +60,10 @@ typedef struct s_tabs
 	char			**redop;
 	struct s_tabs	*next;
 }					t_tabs;
+
+
+struct termios original_settings;
+
 
 /* CONTROL_TOWER.C */
 void	control_tower(t_vars *vars);
@@ -151,6 +158,14 @@ int		ft_tolower(int c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strcat(char *dest, char *src);
 char	*ft_strcpy(char *s1, const char *s2);
+
+
+void	ft_signals(void);
+void	disable_sigint_display(void);
+void	restore_terminal_settings(void);
+void	sigint_handler(int sig);
+void	sigquit_handler(int sig);
+
 
 /* TO BE REMOVED */
 void	PRINT_SHELL(t_shell **a);

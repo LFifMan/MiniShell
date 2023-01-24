@@ -3,8 +3,8 @@
 NAME	= minishell
 CC		= gcc
 RM		= rm -rf
-FLAGS	= -g -Werror -Wextra -Wall -I$(PATH_HEAD)
-SAN		= -fsanitize=address
+FLAGS	= -Werror -Wextra -Wall
+LIBS	= -L $(HOME)/.brew/Cellar/readline/8.2.1/lib -lreadline -I $(HOME)/.brew/Cellar/readline/8.2.1/include/readline
 
 ##-----VARIABLES-----##
 COLOR			= \033
@@ -25,7 +25,6 @@ PATH_SRC	= src/
 PATH_HEAD	= includes/
 PATH_OBJ	= obj/
 
-
 ##-----FILES-----##
 
 SRC		=	main.c \
@@ -45,7 +44,8 @@ SRC		=	main.c \
 			ft_builtins.c \
 			ft_unset.c \
 			ft_export.c \
-			ft_parsing_redop.c
+			ft_parsing_redop.c \
+			ft_signals.c
 
 HEAD	=	minishell.h
 
@@ -61,10 +61,10 @@ HEADERS = $(addprefix $(PATH_HEAD),$(HEAD))
 all:						$(NAME)
 
 $(NAME):					$(OBJS) $(HEADERS)
-							$(CC) $(FLAGS) $(OBJS) -o $(NAME) -lreadline
+							$(CC) $(FLAGS) -I $(PATH_HEAD) -L $(HOME)/.brew/Cellar/readline/8.2.1/lib -lreadline -lhistory -o $(@) $(OBJS)
 
 $(PATH_OBJ)%.o:				$(PATH_SRC)%.c
-							$(CC) $(FLAGS) -c $< -o $@
+							$(CC) $(FLAGS) -c -I $(PATH_HEAD) -I $(HOME)/.brew/Cellar/readline/8.2.1/include/ -o $@ $<
 
 clean:
 							$(RM) $(PATH_OBJ)*.o

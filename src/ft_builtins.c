@@ -149,12 +149,13 @@ int	check_directory_exists(const char* path)
 
 
 
-void update_pwd(t_vars *vars)
+void update_pwd(t_vars *vars, char *path)
 {
 	char	*pwd;
 	char	*tmp;
 	int		i;
 
+	(void)path;
 	tmp = malloc(sizeof(char) * 5);
 	if (!tmp) // TODO: malloc errors
 		return ;
