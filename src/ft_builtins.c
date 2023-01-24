@@ -145,32 +145,25 @@ int	check_directory_exists(const char* path)
 	return (FALSE);
 }
 
-
-
-
-
 void update_pwd(t_vars *vars, char *path)
 {
-	char	*pwd;
 	char	*tmp;
 	int		i;
 
-	(void)path;
 	tmp = malloc(sizeof(char) * 5);
 	if (!tmp) // TODO: malloc errors
 		return ;
 	i = 0;
 	while (vars->envp[i])
 	{
-		if (ft_strncmp(vars->envp[i], "PWD=", 4) == 0)
+		if (ft_strncmp(vars->envp[i], "PWD=", 4) == TRUE)
 			break ;
 		i++;
 	}
 	ft_strcpy(tmp, "PWD=");
-	pwd = getcwd(NULL, 0);
-	tmp = ft_strjoin(tmp, pwd, FALSE);
+	tmp = ft_strjoin(tmp, path, FALSE);
 	free(vars->envp[i]);
-	vars->envp[i] = pwd;
+	vars->envp[i] = tmp;
 }
 
 int	ft_build_cd(t_tabs *tabs, t_vars *vars)
@@ -184,10 +177,9 @@ int	ft_build_cd(t_tabs *tabs, t_vars *vars)
 
 	root = get_root_cd(vars->envp);
 	current = get_current_cd(vars->envp);
-	printf ("root %p curr %p env %p\n", root, current, vars->envp);
-	if (!tabs->cmds[1])
+	if (!tabs->cmds[1] || (ft_strncmp(tabs->cmds[1], root, ft_strlen(root)) == TRUE && tabs->cmds[1][ft_strlen(root)] == '\0'))
 	{
-		if (chdir(root) == 0) 
+		if (chdir(root) == 0)
 		{
 			update_pwd(vars, root);
 			free(current);
@@ -220,13 +212,11 @@ int	ft_build_cd(t_tabs *tabs, t_vars *vars)
 
 			}
 			else
-				printf("fuck\n"); // TODO: error like in bash, stay in same repo 
+				printf("fuck\n"); // TODO: error like in bash, stay in same repo
 			//but careful cause it should not print the message twice! (because of pipex and unset_export)
 		}
 		free(relative);
 	}
-	printf ("root %p relat %p env %p\n", root, relative, vars->envp);
-
 	//free(current);
 	free(root);
 	return (TRUE);
@@ -236,7 +226,9 @@ int	ft_build_pwd(t_tabs *tabs, t_vars *vars)
 {
 	char	*tmp;
 
+	printf("1\n");
 	tmp = getcwd(NULL, 0);
+	printf("2\n");
 	(void)tabs;
 	(void)vars;
 	write(1, tmp, ft_strlen(tmp));

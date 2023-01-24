@@ -88,7 +88,6 @@ void	control_tower(t_vars *vars)
 			{
 				ft_pipex(tabs, vars);
 				ft_unset_export(tabs, vars, tabs->next->cmds[0]);
-
 				free_shell(shell);
 				free_tabs(tabs);
 				free(tabs);

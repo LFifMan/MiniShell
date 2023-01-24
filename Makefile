@@ -61,10 +61,10 @@ HEADERS = $(addprefix $(PATH_HEAD),$(HEAD))
 all:						$(NAME)
 
 $(NAME):					$(OBJS) $(HEADERS)
-							$(CC) $(FLAGS) -I $(PATH_HEAD) -L $(HOME)/.brew/Cellar/readline/8.2.1/lib -lreadline -lhistory -o $(@) $(OBJS)
+							$(CC)  -I $(PATH_HEAD) -L $(HOME)/.brew/Cellar/readline/8.2.1/lib -lreadline -lhistory -o $(@) $(OBJS)
 
 $(PATH_OBJ)%.o:				$(PATH_SRC)%.c
-							$(CC) $(FLAGS) -c -I $(PATH_HEAD) -I $(HOME)/.brew/Cellar/readline/8.2.1/include/ -o $@ $<
+							$(CC)  -c -I $(PATH_HEAD) -I $(HOME)/.brew/Cellar/readline/8.2.1/include/ -o $@ $<
 
 clean:
 							$(RM) $(PATH_OBJ)*.o
