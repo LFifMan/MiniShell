@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 23:27:44 by max               #+#    #+#             */
-/*   Updated: 2023/01/24 22:29:14 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/25 14:04:02 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ char	*ft_prompt(char **input)
 	*input = readline("> ");
 	if (input == 0 || ft_strcmp(*input, "exit") == TRUE)
 	{
+		free(input);
 		return (0);
 	}
 	add_history(*input);
@@ -35,7 +36,7 @@ int	control_parsing(t_shell **shell, t_vars *vars, char *input)
 	(*shell) = parsing_pipes(shell);
 	(*shell) = parsing_redops(shell);
 	parsing_dollars(shell, vars);
-	// (*shell) = parsing_spaces(shell);
+	(*shell) = parsing_spaces(shell);
 	if (ft_check_op(*shell) == FALSE)
 	{
 		free_shell(*shell);
@@ -49,10 +50,18 @@ int	control_parsing(t_shell **shell, t_vars *vars, char *input)
 
 int	control_commands(t_tabs **tabs, t_shell **shell, t_vars *vars)
 {
+	printf("\n\n IN CONTROL COMMANDS BEFORE REGROUP \n");
+	PRINT_SHELL(shell);
+
 	*tabs = ft_regroup(shell, vars);
+	printf("\n\n END OF CONTROL COMMANDS RIGHT AFTER REGROUP  TMTC\n");
+	PRINT_SHELL(shell);
+	PRINT_CMDS(tabs);
 	ft_redops(tabs);
 	ft_paths(*vars, tabs);
-	free_shell(*shell);
+	//PRINT_SHELL(shell);
+	//free_shell(*shell);
+
 	return (TRUE);
 }
 
@@ -87,8 +96,14 @@ void	control_tower(t_vars *vars)
 			}
 			else
 			{
+				//printf("\n\nELSE COMMANDS \n");
+				// PRINT_SHELL(&shell);
+				// PRINT_CMDS(&tabs);
 				ft_pipex(tabs, vars);
 				ft_unset_export(tabs, vars, tabs->next->cmds[0]);
+				// printf("\n\nELSE COMMANDS AFTER PIPE\n");
+				// PRINT_SHELL(&shell);
+				// PRINT_CMDS(&tabs);
 				free_shell(shell);
 				free_tabs(tabs);
 				free(tabs);

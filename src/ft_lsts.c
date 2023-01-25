@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 18:45:45 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/23 23:21:27 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/25 14:37:58 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,20 +77,38 @@ void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input)
 	while (input)
 	{
 		if (input && input->next && input->index == SPACE)
+		{
 			input = input->next;
+		}
 		if (input && input->index == PIPE)
+		{
 			break ;
+		}
 		if (input && input->index == SPACE && !input->next)
+		{
 			break ;
+		}
 		if (input->index == DOUBLEQUOTE || input->index == SINGLEQUOTE)
+		{
+			printf("\n1SHELL->data before: input = %p	| input->data = %p	| input->data %s\n", input, input->data, input->data);
 			tmp->cmds[i] = ft_strdup(ft_trim_quotations(input->data), TRUE);
+			printf("1SHELL->data after: input = %p	| input->data = %p	| input->data %s\n", input, input->data, input->data);
+			printf("CMD->data after: cmd = %p	| cmd->data = %p	| cmd->data %s\n", tmp->cmds, tmp->cmds[i], tmp->cmds[i]);
+		}
 		else
+		{
+			printf("\n2SHELL->data before: input = %p	| input->data = %p	| input->data %s\n", input, input->data, input->data);
 			tmp->cmds[i] = ft_strdup(ft_trim_quotations(input->data), FALSE);
+			printf("2SHELL->data after: input = %p	| input->data = %p	| input->data %s\n", input, input->data, input->data);
+			printf("CMD->data after: cmd = %p	| cmd->data = %p	| cmd->data %s\n", tmp->cmds, tmp->cmds[i], tmp->cmds[i]);
+		}
 		input = input->next;
-		if (input)
 		while (input && input->index != SPACE && input->index != PIPE)
 		{
+			printf("\n3SHELL->data before: input = %p	| input->data = %p	| input->data %s\n", input, input->data, input->data);
 			tmp->cmds[i] = ft_strjoin(tmp->cmds[i], ft_trim_quotations(input->data), TRUE);
+			printf("3SHELL->data after: input = %p	| input->data = %p	| input->data %s\n", input, input->data, input->data);
+			printf("CMD->data after: cmd = %p	| cmd->data = %p	| cmd->data %s\n", tmp->cmds, tmp->cmds[i], tmp->cmds[i]);
 			input = input->next;
 		}
 		i++;

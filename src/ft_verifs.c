@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_verifs.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 15:38:41 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/21 21:39:44 by max              ###   ########.fr       */
+/*   Updated: 2023/01/25 14:47:44 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,14 @@ void	PRINT_SHELL(t_shell **a)
 	int		i;
 
 	i = 1;
+	printf("\n SHELL ELEMENTS\n");
 	if ((*a)->next != NULL)
 	{
 		tmpa = (*a);
 		(*a) = (*a)->next;
 		while ((*a) != NULL)
 		{
-			printf("SHELL Element %d	| address : %p	| index : %d | data : %s\n", i++, &(*a)->data, (*a)->index, (*a)->data);
+			printf("SHELL Element %d	| address data : %p	| index : %d | data : %s\n", i++, (*a), (*a)->index, (*a)->data);
 			(*a) = (*a)->next;
 		}
 		(*a) = tmpa;
@@ -52,7 +53,7 @@ void	PRINT_CMDS(t_tabs **a)
 			printf("CMDS ELEMENT %d:\n", lstnb + 1);
 			while ((*a)->cmds[i])
 			{
-				printf("lst %d | index %d	| data : %s\n", lstnb, i, (*a)->cmds[i]);
+				printf("lst %d | index %d	| address %p	| data : %s\n", lstnb, i, (*a)->cmds[i], (*a)->cmds[i]);
 				i++;
 			}
 			lstnb++;
