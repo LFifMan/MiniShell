@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:44:43 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/25 13:28:42 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/25 19:22:08 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-# include </Users/mstockli/.brew/Cellar/readline/8.2.1/include/readline/readline.h>
-# include </Users/mstockli/.brew/Cellar/readline/8.2.1/include/readline/history.h>
+// # include </Users/mstockli/newlib/include/readline/readline.h>
+// # include </Users/mstockli/newlib/include/readline/history.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <fcntl.h>

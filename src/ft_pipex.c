@@ -107,6 +107,8 @@ void	ft_pipex(t_tabs *tabs, t_vars *vars)
 			}
 			else
 			{
+				var = execve(tabs->cmds[0], tabs->cmds, vars->envp);
+
 				while (tabs->paths[i] && var < 0)
 				{
 					var = execve(tabs->paths[i], tabs->cmds, vars->envp);

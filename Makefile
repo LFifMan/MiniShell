@@ -3,7 +3,7 @@
 NAME	= minishell
 CC		= gcc
 RM		= rm -rf
-FLAGS	= -Werror -Wextra -Wall
+FLAGS	= -Werror -Wextra -Wall -g3
 LIBS	= -L $(HOME)/.brew/Cellar/readline/8.2.1/lib -lreadline -I $(HOME)/.brew/Cellar/readline/8.2.1/include/readline
 
 ##-----VARIABLES-----##

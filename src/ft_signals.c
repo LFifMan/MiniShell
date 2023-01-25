@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 00:01:15 by max               #+#    #+#             */
-/*   Updated: 2023/01/25 13:27:05 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/25 21:06:19 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 void	sigint_handler(int sig)
 {
 	(void)sig;
-	rl_on_new_line();
 	printf("\n");
+	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
 }

@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 23:14:47 by max               #+#    #+#             */
-/*   Updated: 2023/01/25 14:04:23 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/25 18:16:00 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ int	free_shell(t_shell *lst)
 
 	end = lst;
 	lst = lst->next;
-	//printf("FREE SHELL\n");
+	// printf("FREE SHELL\n");
 	while (lst != NULL)
 	{
 		tmp = lst;
-		//printf("tmp : %p	| tmp->data adress : %p	| tmp->data : %s\n", tmp, tmp->data, tmp->data);
+		// printf("tmp : %p	| tmp->data adress : %p	| tmp->data : %s\n", tmp, tmp->data, tmp->data);
 		lst = lst->next;
 		free(tmp->data);
 		free(tmp);
