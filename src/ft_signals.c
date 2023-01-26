@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 00:01:15 by max               #+#    #+#             */
-/*   Updated: 2023/01/25 21:06:19 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/26 13:21:44 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,18 @@ void	sigint_handler(int sig)
 	rl_redisplay();
 }
 
-void	disable_sigint_display(void)
+void	disable_sigint_display(struct termios original_settings)
 {
 	struct termios	t;
 
-	tcgetattr(STDIN_FILENO, &original_settings);
 	t = original_settings;
 	t.c_lflag &= ~ECHOCTL;
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &t);
 }
 
-void	ft_signals(void)
+void	ft_signals(struct termios original_settings)
 {
-	disable_sigint_display();
+	disable_sigint_display(original_settings);
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
 }

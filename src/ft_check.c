@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 23:15:26 by max               #+#    #+#             */
-/*   Updated: 2023/01/23 21:17:09 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/26 13:21:18 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int	ft_check_next_redirection(t_shell *shell)
 	}
 	else if (shell->index != CHARS && shell->index != DOUBLEQUOTE && shell->index != SINGLEQUOTE)
 		return (FALSE);
-
 	return (TRUE);
 }
 

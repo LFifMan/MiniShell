@@ -9,9 +9,6 @@ void	ft_pipex(t_tabs *tabs, t_vars *vars)
 	int		status;
 	int		var;
 
-	int in_fd, out_fd; //new
-	int input_redirection, output_redirection;
-
 	var = -1;
 	i = 0;
 	while (tabs)
@@ -22,8 +19,8 @@ void	ft_pipex(t_tabs *tabs, t_vars *vars)
 			printf("la sauce"); //ft_errors(3, tabs);
 		if (child == 0)
 		{
-			input_redirection = 0;
-			output_redirection = 0;
+			vars->redir_in = 0;
+			vars->redir_out = 0;
 			j = 0;
 			while (tabs->redop[j])
 			{
@@ -31,10 +28,10 @@ void	ft_pipex(t_tabs *tabs, t_vars *vars)
 				{
 					char	*delimiter;					
 					char	*input; // store the input from readline
-					// variable to store the file descriptor
-					int fd;
+					char	path[1024];
+					int		fd;
 
-					input_redirection = 1;
+					vars->redir_in = 1;
 					delimiter = tabs->redop[j + 1];
 					input = NULL;
 					while (1)
@@ -48,7 +45,6 @@ void	ft_pipex(t_tabs *tabs, t_vars *vars)
 						add_history(input);
 					}
 					// get the current working directory
-					char path[1024];
 					getcwd(path, sizeof(path));
 					// concatenate the current working directory with the file name
 					strcat(path, "/tempfile");
@@ -58,38 +54,38 @@ void	ft_pipex(t_tabs *tabs, t_vars *vars)
 					
 					write(fd, input, strlen(input)); // write the input to the file
 					close(fd);
-					in_fd = open("tempfile", O_RDONLY); // redirect input to the file
-					dup2(in_fd, 0);
-					close(in_fd);
+					vars->in_fd = open("tempfile", O_RDONLY); // redirect input to the file
+					dup2(vars->in_fd, 0);
+					close(vars->in_fd);
 					unlink("tempfile"); // remove the temporary file
 					free(input);
 				}
 				else if (ft_strcmp(tabs->redop[j], ">>") == TRUE)
 				{
-					output_redirection = 1;
-					out_fd = open(tabs->redop[j + 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
-					dup2(out_fd, 1);
-					close(out_fd);
+					vars->redir_out = 1;
+					vars->out_fd = open(tabs->redop[j + 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
+					dup2(vars->out_fd, 1);
+					close(vars->out_fd);
 				}
 				else if (ft_strcmp(tabs->redop[j], "<") == TRUE)
 				{
-					input_redirection = 1;
-					in_fd = open(tabs->redop[j + 1], O_RDONLY);
-					dup2(in_fd, 0);
-					close(in_fd);
+					vars->redir_in = 1;
+					vars->in_fd = open(tabs->redop[j + 1], O_RDONLY);
+					dup2(vars->in_fd, 0);
+					close(vars->in_fd);
 				}
 				else if (ft_strcmp(tabs->redop[j], ">") == TRUE)
 				{
-					output_redirection = 1;
-					out_fd = open(tabs->redop[j + 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-					dup2(out_fd, 1);
-					close(out_fd);
+					vars->redir_out = 1;
+					vars->out_fd = open(tabs->redop[j + 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+					dup2(vars->out_fd, 1);
+					close(vars->out_fd);
 				}
 				j++;
 			}
-			if (i != 0 && input_redirection == 0)
+			if (i != 0 && vars->redir_in == 0)
 				dup2(fd[0], 0);
-			if (tabs->next && output_redirection == 0)
+			if (tabs->next && vars->redir_out == 0)
 				dup2(fd[1], 1);
 			close(fd[0]);
 			close(fd[1]);

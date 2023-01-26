@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:44:43 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/25 19:22:08 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/26 13:57:23 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,10 @@ typedef struct s_vars
 {
 	char			**envp;
 
-	int				input_redirection;
-	int				output_redirection;
+	int				redir_in;
+	int				redir_out;
+	int				in_fd;
+	int				out_fd;
 
 }					t_vars;
 
@@ -61,15 +63,11 @@ typedef struct s_tabs
 	struct s_tabs	*next;
 }					t_tabs;
 
-
-struct termios original_settings;
-
-
 /* CONTROL_TOWER.C */
 void	control_tower(t_vars *vars);
 int		control_commands(t_tabs **tabs, t_shell **shell, t_vars *vars);
 int		control_parsing(t_shell **shell, t_vars *vars, char *input);
-char	*ft_prompt(char **input);
+char	*ft_prompt(void);
 
 /* PARSING_SHELL.C */
 char	*ft_parsing_sh(char *const *envp);
@@ -128,6 +126,7 @@ void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input);
 /* FT_FREE_LSTS.C */
 int		free_shell(t_shell *lst);
 int		free_tabs(t_tabs *lst);
+void	free_lsts(t_shell *shell, t_tabs *tabs, char *input, int index);
 
 /* FT_PIPEX.C */
 void	ft_pipex(t_tabs *tabs, t_vars *vars);
@@ -159,13 +158,12 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strcat(char *dest, char *src);
 char	*ft_strcpy(char *s1, const char *s2);
 
-
-void	ft_signals(void);
-void	disable_sigint_display(void);
-void	restore_terminal_settings(void);
+/* SIGNALS.c */
+void	ft_signals(struct termios original_settings);
+void	disable_sigint_display(struct termios original_settings);
+void	restore_terminal_settings(struct termios original_settings);
 void	sigint_handler(int sig);
 void	sigquit_handler(int sig);
-
 
 /* TO BE REMOVED */
 void	PRINT_SHELL(t_shell **a);

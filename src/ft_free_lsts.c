@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 23:14:47 by max               #+#    #+#             */
-/*   Updated: 2023/01/25 18:16:00 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/26 13:05:28 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,18 @@ int	free_tabs(t_tabs *lst)
 	lst = end;
 	lst->next = NULL;
 	return (0);
+}
+
+void	free_lsts(t_shell *shell, t_tabs *tabs, char *input, int index)
+{
+	free(input);
+	if (index > 0)
+	{
+		free_shell(shell);
+		if (index == 2)
+		{
+			free_tabs(tabs);
+			free(tabs);
+		}
+	}
 }

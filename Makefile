@@ -32,7 +32,9 @@ SRC		=	main.c \
 			ft_parsing_shell.c \
 			ft_parsing_input.c \
 			ft_parsing_regroup.c \
-			ft_utils.c \
+			ft_utils1.c \
+			ft_utils2.c \
+			ft_utils3.c \
 			ft_lsts.c \
 			ft_free_lsts.c \
 			ft_verifs.c \

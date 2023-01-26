@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:38:47 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/25 21:06:04 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/26 12:59:35 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	init_vars(t_vars *vars, char **envp)
 	vars->envp = new_envp;
 }
 
-void	restore_terminal_settings(void)
+void	restore_terminal_settings(struct termios original_settings)
 {
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &original_settings);
 }
@@ -41,10 +41,12 @@ int	main(int ac, char **av, char **ev)
 {
 	t_vars	vars;
 	int		i;
+	struct termios original_settings;
 
 	(void)av;
 	(void)ac;
-	ft_signals();
+	tcgetattr(STDIN_FILENO, &original_settings);
+	ft_signals(original_settings);
 	init_vars(&vars, ev);
 	control_tower(&vars);
 	i = 0;
@@ -54,6 +56,6 @@ int	main(int ac, char **av, char **ev)
 		i++;
 	}
 	free(vars.envp);
-	restore_terminal_settings();
+	restore_terminal_settings(original_settings);
 	return (0);
 }
