@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:44:43 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/26 13:57:23 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/27 17:50:50 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-// # include </Users/mstockli/newlib/include/readline/readline.h>
-// # include </Users/mstockli/newlib/include/readline/history.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <fcntl.h>
@@ -52,6 +50,11 @@ typedef struct s_vars
 	int				redir_out;
 	int				in_fd;
 	int				out_fd;
+	int				fd[2];
+	pid_t			child;
+	int				status;
+	int				var;
+	int				i;
 
 }					t_vars;
 

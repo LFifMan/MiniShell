@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:38:40 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/23 19:25:18 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/27 18:55:51 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	parsing_quotations(t_shell **shell, char *input)
 	char	type;
 
 	i = 0;
+
 	while (input[i])
 	{
 		j = 0;

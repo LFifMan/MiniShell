@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 18:45:45 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/25 21:22:07 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/27 18:55:52 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,9 @@ void	ft_lstadd_back(t_shell **lst, char *input, int index)
 	tmp->data[i] = 0;
 	curr = *lst;
 	while (curr->next != NULL)
+	{
 		curr = curr->next;
+	}
 	curr->next = tmp;
 	if (index == TRUE)
 		free (input);
@@ -64,16 +66,14 @@ void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input)
 {
 	t_tabs	*tmp;
 	t_tabs	*curr;
-	t_shell	*temp_remove;
 	int		i;
 
-	temp_remove  = input;
 	tmp = malloc(sizeof(t_tabs));
 	if (!tmp)
 		return ;
 	tmp->next = NULL;
 	i = 0;
-	tmp->cmds = malloc (sizeof(char*) *ft_lst_count_spaces(input) + 1);
+	tmp->cmds = malloc (sizeof(char *) * (ft_lst_count_spaces(input) + 1));
 	if (!tmp->cmds)
 		return ;
 	while (input)
@@ -112,6 +112,7 @@ void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input)
 			input = input->next;
 		}
 		i++;
+
 	}
 	tmp->cmds[i] = 0;
 	curr = *tabs;

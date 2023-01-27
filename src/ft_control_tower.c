@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 23:27:44 by max               #+#    #+#             */
-/*   Updated: 2023/01/26 13:21:19 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/27 18:56:58 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void	control_tower(t_vars *vars)
 	shell = malloc(sizeof(t_shell));
 	if (!shell)
 		return ;
+	shell->next = NULL;
 	while (1)
 	{
 		input = ft_prompt();

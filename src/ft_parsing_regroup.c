@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:25:12 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/25 18:15:44 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/27 18:56:20 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ t_tabs	*ft_regroup(t_shell **shell, t_vars *vars)
 	tmp = (*shell)->next;
 	while (tmp)
 	{
+
 		if (tmp->index == PIPE && tmp->next != NULL)
 			tmp = tmp->next;
 		ft_lstregroup_back(&tabs, tmp);

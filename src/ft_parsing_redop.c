@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 01:38:54 by max               #+#    #+#             */
-/*   Updated: 2023/01/23 19:50:54 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/27 19:03:25 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,8 @@ void	ft_redops(t_tabs **tabs)
 	{
 		i = 0;
 		j = 0;
-		tmp->redop = malloc (sizeof(char *) * ft_count_redops(tmp->cmds) + 1);
+		tmp->redop = malloc (sizeof(char *) * (ft_count_redops(tmp->cmds) + 1));
 		tmp->redop[0] = 0;
-		//printf("malloc = %d\n\n", ft_count_redops(tmp->cmds));
 		while (tmp->cmds[i])
 		{
 			if (tmp->cmds[i][0] == GREATER || tmp->cmds[i][0] ==  SMALLER)
@@ -91,6 +90,7 @@ void	ft_redops(t_tabs **tabs)
 			else
 				i++;
 		}
+		tmp->redop[j] = malloc (sizeof(char));
 		tmp->redop[j] = 0;
 		tmp->cmds[i] = 0;
 		tmp = tmp->next;
