@@ -5,6 +5,7 @@ CC		= gcc
 RM		= rm -rf
 FLAGS	= -Werror -Wextra -Wall -g3 #-fsanitize=address
 LIBS	= -L $(HOME)/.brew/Cellar/readline/8.2.1/lib -lreadline -I $(HOME)/.brew/Cellar/readline/8.2.1/include/readline
+MKDIR_P = mkdir -p
 
 ##-----VARIABLES-----##
 COLOR			= \033
@@ -24,6 +25,7 @@ RESET_BOLD		= $(COLOR)[21m
 PATH_SRC	= src/
 PATH_HEAD	= includes/
 PATH_OBJ	= obj/
+DIR_OBJ		= ./obj
 
 ##-----FILES-----##
 
@@ -62,12 +64,15 @@ HEADERS = $(addprefix $(PATH_HEAD),$(HEAD))
 
 all:						$(NAME)
 
-$(NAME):					$(OBJS) $(HEADERS)
+$(NAME):					$(DIR_OBJ) $(OBJS) $(HEADERS)
 							$(CC)  $(FLAGS) -I $(PATH_HEAD) -L $(HOME)/.brew/Cellar/readline/8.2.1/lib -lreadline -lhistory -o $(@) $(OBJS)
 
 $(PATH_OBJ)%.o:				$(PATH_SRC)%.c
 							$(CC) $(FLAGS) -c -I $(PATH_HEAD) -I $(HOME)/.brew/Cellar/readline/8.2.1/include/ -o $@ $<
 
+${DIR_OBJ} :
+		@mkdir -p ${DIR_OBJ}
+		
 clean:
 							$(RM) $(PATH_OBJ)*.o
 
