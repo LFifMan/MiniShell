@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 00:01:15 by max               #+#    #+#             */
-/*   Updated: 2023/01/27 20:24:53 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/27 21:04:06 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,7 @@ void	sigint_handler(int sig)
 
 void	silent_signal(int sig)
 {
-	if (sig == SIGQUIT)
-	{
-	}
-	if (sig == SIGINT)
+	if (sig == SIGQUIT || sig == SIGINT)
 	{
 	}
 }

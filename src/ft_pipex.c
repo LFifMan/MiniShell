@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 13:40:05 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/27 20:20:33 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/27 21:44:31 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void	ft_child(t_tabs *tabs, t_vars *vars)
 
 void	ft_parent(t_tabs *tabs, t_vars *vars)
 {
-	waitpid(vars->child, &vars->status, 0);
+	//waitpid(vars->child, &vars->status, 0);
 	if (vars->i != 0)
 		close(vars->fd[0]);
 	if (tabs->next != NULL)

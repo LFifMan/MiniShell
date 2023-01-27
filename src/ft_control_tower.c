@@ -6,11 +6,36 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 23:27:44 by max               #+#    #+#             */
-/*   Updated: 2023/01/27 20:22:12 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/27 21:54:02 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	build_exit(char *input)
+{
+	int	i;
+	if (ft_strcmp(input, "exit") == TRUE)
+	{
+		return (TRUE);
+	}
+	if (ft_strncmp(input, "exit ", 5) == TRUE)
+	{
+		i = 5;
+		while (input[i])
+		{
+			if (input[i] > '9' || input[i] < '0' )
+				return (FALSE);
+			i++;
+		}
+		exit(0);
+	}
+	else
+		return (FALSE);
+	return (TRUE);
+
+
+}
 
 char	*ft_prompt(void)
 {
@@ -22,7 +47,7 @@ char	*ft_prompt(void)
 		printf("\033[1A\033[3Cexit\n");
 		exit(0);
 	}
-	if (ft_strcmp(input, "exit") == TRUE)
+	if (build_exit(input) == TRUE)
 	{
 		exit(0);
 	}
@@ -34,7 +59,7 @@ int	control_parsing(t_shell **shell, t_vars *vars, char *input)
 {
 	if (parsing_quotations(shell, input) == FALSE)
 	{
-		printf("error: quote not finished\n");
+		write (2, "error: quote not finished\n", 26);
 		return (FALSE);
 	}
 	(*shell) = parsing_spaces(shell);

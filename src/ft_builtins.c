@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 16:17:05 by max               #+#    #+#             */
-/*   Updated: 2023/01/27 19:05:18 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/27 20:44:33 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ char	*get_root_cd(char **env)
 			j++;
 		}
 
-		root = malloc(sizeof(char) * j - 5 + 1); // pas sur?
+		root = malloc(sizeof(char) * (j - 5 + 2)); // pas sur?
 		if (!root)
 			return (NULL);
 		j = 5;
