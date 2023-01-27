@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:44:43 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/27 17:50:50 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/27 20:21:23 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,11 +161,14 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strcat(char *dest, char *src);
 char	*ft_strcpy(char *s1, const char *s2);
 
-/* SIGNALS.c */
-void	ft_signals(struct termios original_settings);
+/* SIGNALS.C */
+void	ft_signals(int index);
+void	sigint_handler(int sig);
+void	enable_signals(void);
+void	halt_signals(void);
+
 void	disable_sigint_display(struct termios original_settings);
 void	restore_terminal_settings(struct termios original_settings);
-void	sigint_handler(int sig);
 void	sigquit_handler(int sig);
 
 /* TO BE REMOVED */

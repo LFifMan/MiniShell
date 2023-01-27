@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 02:56:33 by max               #+#    #+#             */
-/*   Updated: 2023/01/27 18:13:16 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/27 20:20:32 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,8 +121,6 @@ char	**ft_split_bin(char *str, char c, char *argv)
 	j = 0;
 	while (str[j] != '\0' && i < count)
 	{
-		while (str[j] && str[j] == c)
-			j++;
 		if (str[j] && str[j] != c)
 		{
 			str_ptr = &str[j];
@@ -131,9 +129,10 @@ char	**ft_split_bin(char *str, char c, char *argv)
 				return (NULL);
 			i++;
 		}
-		if (str[j] == '\0')
-			break;
-
+		while (str[j] && str[j] != c)
+			j++;
+		if (str[j] == c)
+			j++;
 	}
 	dst[i] = 0;
 	return (dst);

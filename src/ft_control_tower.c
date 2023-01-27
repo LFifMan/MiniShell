@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 23:27:44 by max               #+#    #+#             */
-/*   Updated: 2023/01/27 18:56:58 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/27 20:22:12 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ void	control_tower(t_vars *vars)
 	while (1)
 	{
 		input = ft_prompt();
+		halt_signals();
+		ft_signals(FALSE);
 		if (check_only_spaces(input) == TRUE)
 			free_lsts(shell, tabs, input, 0);
 		else
@@ -89,6 +91,8 @@ void	control_tower(t_vars *vars)
 			else if (control_execution(tabs, vars) == TRUE)
 				free_lsts(shell, tabs, input, 2);
 		}
+		ft_signals(TRUE);
+		enable_signals();
 	}
 	rl_clear_history();
 }

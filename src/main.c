@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:38:47 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/26 12:59:35 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/27 20:20:47 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,11 @@ int	main(int ac, char **av, char **ev)
 {
 	t_vars	vars;
 	int		i;
-	struct termios original_settings;
 
 	(void)av;
 	(void)ac;
-	tcgetattr(STDIN_FILENO, &original_settings);
-	ft_signals(original_settings);
+	ft_signals(TRUE);
+	enable_signals();
 	init_vars(&vars, ev);
 	control_tower(&vars);
 	i = 0;
@@ -56,6 +55,7 @@ int	main(int ac, char **av, char **ev)
 		i++;
 	}
 	free(vars.envp);
-	restore_terminal_settings(original_settings);
+	ft_signals(FALSE);
+	halt_signals();
 	return (0);
 }
