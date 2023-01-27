@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 01:38:54 by max               #+#    #+#             */
-/*   Updated: 2023/01/27 19:05:09 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/27 22:02:49 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ void	ft_redops(t_tabs **tabs)
 			else
 				i++;
 		}
-		tmp->redop[j] = malloc (sizeof(char));
 		tmp->redop[j] = 0;
 		tmp->cmds[i] = 0;
 		tmp = tmp->next;
