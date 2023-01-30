@@ -30,6 +30,7 @@ DIR_OBJ		= ./obj
 ##-----FILES-----##
 
 SRC		=	main.c \
+			ft_init.c \
 			ft_control_tower.c \
 			ft_parsing_shell.c \
 			ft_parsing_input.c \

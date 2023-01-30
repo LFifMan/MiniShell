@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 16:17:05 by max               #+#    #+#             */
-/*   Updated: 2023/01/27 20:44:33 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/30 18:53:38 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,9 +269,9 @@ int	ft_builtins(t_tabs *tabs, t_vars *vars, char *cmd_one)
 	else if (ft_strcmp(cmd_one, "pwd") == TRUE)
 		return (ft_build_pwd(tabs, vars));
 	else if (ft_strcmp(cmd_one, "export") == TRUE)
-		return (ft_build_export(tabs, vars));
+		return (ft_build_export(tabs, vars, FALSE));
 	else if (ft_strcmp(cmd_one, "unset") == TRUE)
-		return (ft_build_unset(tabs, vars));
+		return (ft_build_unset(tabs, vars, FALSE));
 	else if (ft_strcmp(cmd_one, "env") == TRUE)
 		return (ft_build_env(tabs, vars));
 	return (FALSE);

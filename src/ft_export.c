@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 23:43:51 by max               #+#    #+#             */
-/*   Updated: 2023/01/27 19:05:21 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/30 19:10:15 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,19 @@ int	check_var(char *str)
 	i = 0;
 	if (str[0] == EQUAL)
 		return (FALSE);
-	while (str[i] && str[i] != EQUAL)
+	while (str[i] && str[i] != EQUAL && str[i] != SPACE)
 	{
 		if (ft_check_allowed_char(str[i], i + 1) == FALSE)
-			return (FALSE);
+		{
+			return (0);
+		}
 		i++;
 	}
 	if (str[i] == EQUAL)
-		return (TRUE);
-	return (FALSE);
+	{
+		return (2);
+	}
+	return (1);
 }
 
 char **replace_var(char **src, char *str, int place) 
@@ -96,16 +100,106 @@ void	ft_export_env(t_vars *vars, char *str)
 	vars->envp = replace_var(vars->envp, str, i);
 }
 
-int	ft_build_export(t_tabs *tabs, t_vars *vars)
+void	ft_sort_new_export(t_vars *vars)
+{
+	int		i;
+	int		envp_length;
+	char	*tmp;
+
+	i = 0;
+	envp_length = 0;
+	while (vars->export[envp_length])
+		envp_length++;
+	while (i < envp_length)
+	{
+		if (vars->export[i + 1] && ft_strcmp_ascii(vars->export[i], vars->export[i + 1]) < 0)
+		{
+			tmp = vars->export[i];
+			vars->export[i] = vars->export[i + 1];
+			vars->export[i + 1] = tmp;
+			i = 0;
+		}
+		else
+			i++;
+	}
+}
+
+void	ft_export_export(t_vars *vars, char *str, int index)
+{
+	int		i;
+	int		size;
+	char	*export;
+
+	export = ft_strdup("declare -x ", FALSE);
+	export = ft_strjoin_quotes(export, str, index);
+	i = 0;
+	size = 0;
+
+	while(export[size])
+	{
+		if (export[size] == EQUAL)
+			break;
+		size++;
+	}
+	while (vars->export[i])
+	{
+		if (ft_strncmp(vars->export[i], export, size + 1) == TRUE)
+		{
+			vars->export = replace_var(vars->export, export, i);
+			return ;
+		}
+		i++;
+	}
+	vars->export = replace_var(vars->export, export, i);
+	ft_sort_new_export(vars);
+}
+
+
+int	ft_printf_export(t_tabs *tabs, t_vars *vars)
+{
+	int	i;
+	int	len;
+
+	(void)tabs;
+	i = 0;
+	while (vars->export[i])
+	{
+		len = ft_strlen(vars->export[i]);
+		write(1, vars->export[i], len);
+		write(1, "\n", 1);
+		i++;
+	}
+	return (TRUE);
+}
+
+int	ft_build_export(t_tabs *tabs, t_vars *vars, int print)
 {
 	int	i;
 
 	i = 1;
+	if (!tabs->cmds[i] && print == TRUE)
+	{
+		ft_printf_export(tabs, vars);
+	}
 	while (tabs->cmds[i])
 	{
-		if (check_var(tabs->cmds[i]) == TRUE)
+		if (check_var(tabs->cmds[i]) == 2)
 		{
+			ft_export_export(vars, tabs->cmds[i], TRUE);
 			ft_export_env(vars, tabs->cmds[i]);
+		}
+		else if (check_var(tabs->cmds[i]) == 1)
+		{
+			ft_export_export(vars, tabs->cmds[i], FALSE);
+		}
+		else
+		{
+			if (print == TRUE)
+			{
+				write (2, "bash: export: `", ft_strlen("bash: export: `"));
+				write (2, tabs->cmds[i], ft_strlen(tabs->cmds[i]));
+				write (2, "': not a valid identifier\n", ft_strlen("': not a valid identifier\n"));
+			}
 		}
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:39:02 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/27 21:53:20 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/30 17:33:08 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,26 @@ char	*ft_strdup(char *src, int index)
 		i++;
 	}
 	dest[i] = src[i];
+	if (index == TRUE)
+		free(src);
+	return (dest);
+}
+
+char	*ft_strndup(char *src, int index, int size)
+{
+	char	*dest;
+	int		i;
+
+	i = 0;
+	dest = malloc (sizeof(char) * ft_strlen(src) + 1);
+	if (!dest)
+		return (0);
+	while (src[i] && i + 1 < size)
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = 0;
 	if (index == TRUE)
 		free(src);
 	return (dest);

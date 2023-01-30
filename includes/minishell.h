@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:44:43 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/27 21:41:40 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/30 18:53:34 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_shell
 typedef struct s_vars
 {
 	char			**envp;
+	char			**export;
 
 	int				redir_in;
 	int				redir_out;
@@ -65,6 +66,15 @@ typedef struct s_tabs
 	char			**redop;
 	struct s_tabs	*next;
 }					t_tabs;
+
+/* CONTROL_TOWER.C */
+void	init_vars(t_vars *vars, char **envp);
+void	sort_export(t_vars *vars, int envp_length);
+char	**dup_export(t_vars *vars, char **export, int envp_length);
+void	free_array(char **export, int envp_length);
+char	**create_export(int envp_length, char **input);
+int		ft_strcmp_ascii(char *input, char *str);
+char	*ft_strjoin_quotes(char *s1, char *s2, int index);
 
 /* CONTROL_TOWER.C */
 void	control_tower(t_vars *vars);
@@ -142,11 +152,11 @@ int		ft_build_env(t_tabs *tabs, t_vars *vars);
 int		ft_builtins(t_tabs *tabs, t_vars *vars, char *cmd_one);
 
 /* FT_EXPORT.C */
-int		ft_build_export(t_tabs *tabs, t_vars *vars);
+int		ft_build_export(t_tabs *tabs, t_vars *vars, int print);
 
 /* FT_UNSET.C */
 void	ft_unset_export(t_tabs *tabs, t_vars *vars, char *cmd_one);
-int		ft_build_unset(t_tabs *tabs, t_vars *vars);
+int		ft_build_unset(t_tabs *tabs, t_vars *vars, int print);
 
 /* UTILS.C */
 size_t	ft_strlen(const char *str);

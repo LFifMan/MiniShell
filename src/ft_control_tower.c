@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 23:27:44 by max               #+#    #+#             */
-/*   Updated: 2023/01/27 21:54:02 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/30 19:15:46 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	build_exit(char *input)
 {
 	int	i;
+
 	if (ft_strcmp(input, "exit") == TRUE)
 	{
 		return (TRUE);
@@ -28,13 +29,12 @@ int	build_exit(char *input)
 				return (FALSE);
 			i++;
 		}
-		exit(0);
+		//atoi(&input[5])
+		exit(atoi(&input[5])); //TODO ft_atoi
 	}
 	else
 		return (FALSE);
 	return (TRUE);
-
-
 }
 
 char	*ft_prompt(void)
@@ -59,7 +59,7 @@ int	control_parsing(t_shell **shell, t_vars *vars, char *input)
 {
 	if (parsing_quotations(shell, input) == FALSE)
 	{
-		write (2, "error: quote not finished\n", 26);
+		write (2, "minishell: error: quote not finished\n", ft_strlen("minishell: error: quote not finished\n"));
 		return (FALSE);
 	}
 	(*shell) = parsing_spaces(shell);

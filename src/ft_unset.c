@@ -6,14 +6,14 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 19:44:36 by max               #+#    #+#             */
-/*   Updated: 2023/01/27 19:52:19 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/30 19:10:14 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 
-void	ft_remove_var(t_vars *vars, char *str)
+void	ft_remove_env_var(t_vars *vars, char *str)
 {
 	int	i;
 	int	j;
@@ -39,22 +39,62 @@ void	ft_remove_var(t_vars *vars, char *str)
 	return ;
 }
 
-int	ft_build_unset(t_tabs *tabs, t_vars *vars)
+void	ft_remove_export_var(t_vars *vars, char *str)
+{
+	int		i;
+	int		j;
+	int		len;
+	char	*unset;
+
+	unset = ft_strdup("declare -x ", FALSE);
+	unset = ft_strjoin_quotes(unset, str, FALSE);
+
+	len = strlen(unset);
+	i = 0;
+	while (vars->export[i])
+	{
+		if (ft_strncmp(vars->export[i], unset, len) == TRUE && (vars->export[i][len] == '\0' || vars->export[i][len] == '='))
+		{
+			free(vars->export[i]);
+			j = i;
+			while (vars->export[j])
+			{
+				vars->export[j] = vars->export[j+1];
+				j++;
+			}
+		}
+		else
+			i++;
+	}
+	return ;
+}
+
+int	ft_build_unset(t_tabs *tabs, t_vars *vars, int print)
 {
 	int	i;
 
 	i = 1;
 	while (tabs->cmds[i])
 	{
-		if (check_var(tabs->cmds[i]) == TRUE)
+		if (check_var(tabs->cmds[i]) == 1)
 		{
-			ft_remove_var(vars, tabs->cmds[i]);
+			ft_remove_env_var(vars, tabs->cmds[i]);
+			ft_remove_export_var(vars, tabs->cmds[i]);
+		}
+		else
+		{
+			if (print == TRUE)
+			{
+				write (2, "bash: unset: `", ft_strlen("bash: unset: `"));
+				write (2, tabs->cmds[i], ft_strlen(tabs->cmds[i]));
+				write (2, "': not a valid identifier\n", ft_strlen("': not a valid identifier\n"));
+			}
 		}
 		i++;
 	}
 	return (TRUE);
 }
-
+ 
 void	ft_unset_export(t_tabs *tabs, t_vars *vars, char *cmd_one)
 {
 	int	i;
@@ -74,9 +114,9 @@ void	ft_unset_export(t_tabs *tabs, t_vars *vars, char *cmd_one)
 	while (tabs)
 	{
 		if (ft_strcmp(cmd_one, "export") == TRUE)
-			ft_build_export(tabs, vars);
+			ft_build_export(tabs, vars, TRUE);
 		else if (ft_strcmp(cmd_one, "unset") == TRUE)
-			ft_build_unset(tabs, vars);
+			ft_build_unset(tabs, vars, TRUE);
 		else if (ft_strcmp(cmd_one, "cd") == TRUE)
 			ft_build_cd(tabs, vars);
 		tabs = tabs->next;
