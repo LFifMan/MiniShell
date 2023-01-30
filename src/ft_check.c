@@ -52,7 +52,7 @@ int	ft_check_op(t_shell *shell)
 		{
 			if (!shell->next || ft_check_next_pipe(shell) == FALSE)
 			{
-				printf("bash: syntax error near unexpected token `|'\n");
+				printf("minishell: syntax error near unexpected token `|'\n");
 				return (FALSE);
 			}
 		}
@@ -60,7 +60,7 @@ int	ft_check_op(t_shell *shell)
 		{
 			if (!shell->next || ft_check_next_redirection(shell) == FALSE)
 			{
-				printf("bash: syntax error near unexpected token `%c'\n", shell->index);
+				printf("minishell: syntax error near unexpected token `%c'\n", shell->index);
 				return (FALSE);
 			}
 		}

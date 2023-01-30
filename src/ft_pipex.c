@@ -103,7 +103,7 @@ void	ft_child(t_tabs *tabs, t_vars *vars)
 			vars->var = execve(tabs->paths[vars->i], tabs->cmds, vars->envp);
 			vars->i++;
 		}
-		write(2, "bash: ", ft_strlen("bash: "));
+		write(2, "minishell: ", ft_strlen("minishell: "));
 		write(2, tabs->cmds[0], ft_strlen(tabs->cmds[0]));
 		write(2, ": command not found\n", ft_strlen(": command not found\n"));
 		exit(1);
