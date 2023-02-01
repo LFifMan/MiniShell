@@ -125,7 +125,7 @@ void	ft_export_export(t_vars *vars, char *str, int index)
 	char	*export;
 
 	export = ft_strdup("declare -x ", FALSE);
-	export = ft_strjoin_quotes(export, str, index);
+	export = ft_join_export(export, str, index);
 	i = 0;
 	size = 0;
 
@@ -197,6 +197,5 @@ int	ft_build_export(t_tabs *tabs, t_vars *vars, int print)
 		}
 		i++;
 	}
-
 	return (TRUE);
 }

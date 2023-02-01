@@ -40,6 +40,7 @@ char	*ft_prompt(void)
 {
 	char	*input;
 
+	g_status = 0;
 	input = readline("> ");
 	if (input == 0)
 	{
@@ -51,14 +52,16 @@ char	*ft_prompt(void)
 		exit(0);
 	}
 	add_history(input);
+	ft_signals(FALSE);
 	return (input);
 }
 
-int	control_parsing(t_shell **shell, t_vars *vars, char *input)
+int	control_parsing(t_shell **shell, t_vars *vars, char *input, t_tabs *tabs)
 {
 	if (parsing_quotations(shell, input) == FALSE)
 	{
-		write (2, "minishell: error: quote not finished\n", ft_strlen("minishell: error: quote not finished\n"));
+		write (2, "minishell: error: quote not finished\n", 37);
+		free_lsts(*shell, tabs, input, 1);
 		return (FALSE);
 	}
 	(*shell) = parsing_spaces(shell);
@@ -68,6 +71,7 @@ int	control_parsing(t_shell **shell, t_vars *vars, char *input)
 	(*shell) = parsing_spaces(shell);
 	if (ft_check_op(*shell) == FALSE)
 	{
+		free_lsts(*shell, tabs, input, 1);
 		return (FALSE);
 	}
 	(*shell) = ft_space_redops(shell);
@@ -102,24 +106,18 @@ void	control_tower(t_vars *vars)
 	while (1)
 	{
 		input = ft_prompt();
-		halt_signals();
-		ft_signals(FALSE);
-		g_status = 0;
 		if (check_only_spaces(input) == TRUE)
 			free_lsts(shell, tabs, input, 0);
 		else
 		{
-			if (control_parsing(&shell, vars, input) == FALSE)
-				free_lsts(shell, tabs, input, 1);
-			else if (control_commands(&tabs, &shell, vars) == FALSE)
+			if (control_parsing(&shell, vars, input, tabs) == TRUE)
+			{
+				control_commands(&tabs, &shell, vars);
+				control_execution(tabs, vars);
 				free_lsts(shell, tabs, input, 2);
-			else if (control_execution(tabs, vars) == TRUE)
-				free_lsts(shell, tabs, input, 2);
+			}
 		}
-		printf("global = %d\n", g_status);
-
 		ft_signals(TRUE);
-		enable_signals();
+		vars->tmp_g = g_status;
 	}
-	rl_clear_history();
 }

@@ -105,11 +105,10 @@ void	ft_split_pipes(t_shell **shell, char *input)
 
 t_shell	*parsing_pipes(t_shell **shell)
 {
-	t_shell *tmp;
-	t_shell *tmp2;
-	t_shell *new;
+	t_shell	*tmp;
+	t_shell	*tmp2;
+	t_shell	*new;
 	int		i;
-
 
 	new = malloc(sizeof(t_shell));
 	if (!new)
@@ -142,6 +141,5 @@ t_shell	*parsing_pipes(t_shell **shell)
 	*shell = tmp2;
 	free_shell(*shell);
 	free(*shell);
-
 	return (new);
 }

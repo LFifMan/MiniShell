@@ -91,3 +91,30 @@ void	free_lsts(t_shell *shell, t_tabs *tabs, char *input, int index)
 		}
 	}
 }
+
+void	ft_free_vars(t_vars vars)
+{
+	int	i;
+
+	i = 0;
+	while (vars.envp[i])
+		free(vars.envp[i++]);
+	free(vars.envp);
+	i = 0;
+	while (vars.export[i])
+		free(vars.export[i++]);
+	free(vars.export);
+}
+
+void	free_array(char **export, int envp_length)
+{
+	int	i;
+
+	i = 0;
+	while (i < envp_length)
+	{
+		free(export[i]);
+		i++;
+	}
+	free(export);
+}

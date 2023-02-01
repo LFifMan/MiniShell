@@ -31,6 +31,7 @@ int	check_option_n(char *str)
 		return (FALSE);
 	return (TRUE);
 }
+
 int	ft_build_echo(t_tabs *tabs, t_vars *vars)
 {
 	int	newline;
@@ -47,7 +48,7 @@ int	ft_build_echo(t_tabs *tabs, t_vars *vars)
 	i = newline + 1;
 	while (tabs->cmds[i])
 	{
-		len = ft_strlen(tabs->cmds[i]);
+		len = (int)ft_strlen(tabs->cmds[i]);
 		write(1, tabs->cmds[i], len);
 		if (tabs->cmds[i + 1])
 			write(1, " ", 1);
@@ -59,85 +60,53 @@ int	ft_build_echo(t_tabs *tabs, t_vars *vars)
 	return (TRUE);
 }
 
-char	*get_current_cd(char **env)
+char	*get_root_cd(char **env, int print)
 {
 	int		i;
 	int		j;
 	int		k;
-	char	*current = NULL;
+	char	*root;
+
 	i = 0;
 	k = 0;
-	while (env[i] && ft_memcmp((char *)env[i], "PWD=", 4) != 0)
+	root = NULL;
+	while (env[i] && ft_memcmp((char *)env[i], "HOME=", 5) != 0)
 		i++;
 	//if envp[i] == 0 -->stop
 	// also, if PWD was modified, like a / was removed
-	if (env[i][4] == '/')
+	if (!env[i] && print == TRUE)
 	{
-		j = 5;
-		while  (env[i][j])
-		{
-			j++;
-		}
-		current = malloc(sizeof(char) * j + 1);
-		if (!current)
-			exit (EXIT_FAILURE);
-		j = 4;
-		while  (env[i][j])
-		{
-			current[k] = env[i][j];
-			j++;
-			k++;
-		}
-		current[k] = 0;		
+		write(2, "minishell: cd: HOME not set\n", 28);
+		return (NULL);
 	}
-	return (current);
-}
-
-char	*get_root_cd(char **env)
-{
-	int		i;
-	int		j;
-	int		k;
-	char	*root = NULL;
-
-	i = 0;
-	k = 0;
-	while (env[i] && ft_memcmp((char *)env[i], "PWD=", 4) != 0) // TODO: PWD not path, change all j nb after
-		i++;
-	//if envp[i] == 0 -->stop
-	// also, if PWD was modified, like a / was removed
-	
-	if (env[i][4] == '/')
+	if (env[i][5] == '/')
 	{
-		j = 5;
-		while  (env[i][j] && env[i][j] != '/')
-		{
+		j = 6;
+		while (env[i][j])
 			j++;
-		}
-
-		root = malloc(sizeof(char) * (j - 5 + 2)); // pas sur?
+		root = malloc(sizeof(char) * (j - 6 + 2)); // pas sur?
 		if (!root)
 			exit (EXIT_FAILURE);
-		j = 5;
+		j = 6;
 		root[k] = '/';
 		k++;
-		while  (env[i][j] && env[i][j] != '/')
+		while (env[i][j])
 		{
 			root[k] = env[i][j];
 			j++;
 			k++;
 		}
-		root[k] = 0;	
+		root[k] = 0;
 	}
 	return (root);
 }
 
 int	check_directory_exists(const char* path)
 {
-	DIR* dir;
-	
+	DIR	*dir;
+
 	dir = opendir(path);
-	if (dir) 
+	if (dir)
 	{
 		closedir(dir);
 		return (TRUE);
@@ -145,13 +114,30 @@ int	check_directory_exists(const char* path)
 	return (FALSE);
 }
 
-void update_pwd(t_vars *vars, char *path)
+void	update_oldpwd(t_vars *vars, int i)
 {
-	char	*tmp;
+	int		j;
+	char	*tmp_env;
+
+	tmp_env = ft_strdup("OLDPWD=", FALSE);
+	j = 0;
+	while (vars->envp[j])
+	{
+		if (ft_strncmp(vars->envp[j], "OLDPWD=", 7) == TRUE)
+			break ;
+		j++;
+	}
+	free(vars->envp[j]);
+	vars->envp[j] = ft_strjoin(tmp_env, &vars->envp[i][4], FALSE);
+}
+
+void	update_pwd(t_vars *vars, char *path)
+{
+	char	*tmp_env;
 	int		i;
 
-	tmp = malloc(sizeof(char) * 5);
-	if (!tmp)
+	tmp_env = malloc(sizeof(char) * 5);
+	if (!tmp_env)
 		exit (EXIT_FAILURE);
 	i = 0;
 	while (vars->envp[i])
@@ -160,49 +146,129 @@ void update_pwd(t_vars *vars, char *path)
 			break ;
 		i++;
 	}
-	ft_strcpy(tmp, "PWD=");
-	tmp = ft_strjoin(tmp, path, FALSE);
+	update_oldpwd(vars, i);
+	ft_strcpy(tmp_env, "PWD=");
+	tmp_env = ft_strjoin(tmp_env, path, FALSE);
 	free(vars->envp[i]);
-	vars->envp[i] = tmp;
+	vars->envp[i] = tmp_env;
 }
+
+void	update_oldpwd_exp(t_vars *vars, int i)
+{
+	int		j;
+	char	*tmp_exp;
+
+	tmp_exp = ft_strdup("declare -x OLDPWD=", FALSE);
+	j = 0;
+	while (vars->export[j])
+	{
+		if (ft_strncmp(vars->export[j], "declare -x OLDPWD=", 18) == TRUE)
+			break ;
+		j++;
+	}
+	free(vars->export[j]);
+	vars->export[j] = ft_strjoin(tmp_exp, &vars->export[i][15], FALSE);
+}
+
+void	update_pwd_exp(t_vars *vars, char *path)
+{
+	char	*tmp_exp;
+	int		i;
+
+	tmp_exp = malloc(sizeof(char) * 16);
+	if (!tmp_exp)
+		exit (EXIT_FAILURE);
+	i = 0;
+	while (vars->export[i])
+	{
+		if (ft_strncmp(vars->export[i], "declare -x PWD=", 15) == TRUE)
+			break ;
+		i++;
+	}
+	update_oldpwd_exp(vars, i);
+	ft_strcpy(tmp_exp, "declare -x PWD=");
+	tmp_exp = ft_strjoin(tmp_exp, path, FALSE);
+	free(vars->export[i]);
+	vars->export[i] = tmp_exp;
+}
+
+
+
+
+void ft_cd_alone(char **env, int print, t_vars *vars)
+{
+	int		i;
+	int		j;
+	int		k;
+	char	*root;
+
+	i = 0;
+	k = 0;
+	root = NULL;
+	while (env[i] && ft_memcmp((char *)env[i], "HOME=", 5) != 0)
+		i++;
+	if (!env[i] && print == TRUE)
+	{
+		write(2, "minishell: cd: HOME not set\n", 28);
+		return ;
+	}
+	if (env[i][5])
+	{
+		j = 5;
+		while (env[i][j])
+			j++;
+		root = malloc(sizeof(char) * (j - 5 + 1)); // pas sur?
+		if (!root)
+			exit(EXIT_FAILURE);
+		j = 5;
+		while (env[i][j])
+		{
+			root[k] = env[i][j];
+			j++;
+			k++;
+		}
+		root[k] = 0;
+	}
+	if (chdir(root) == 0)
+	{
+		update_pwd_exp(vars, root);
+		update_pwd(vars, root);
+		g_status = 0;
+	}
+	else
+	{
+		if (print == TRUE && root)
+		{
+			write(2, "minishell: ", ft_strlen("minishell: "));
+			write(2, root, ft_strlen(root));
+			write(2, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
+			g_status = 1;
+		}
+	}
+}
+
 
 int	ft_build_cd(t_tabs *tabs, t_vars *vars, int print)
 {
-	g_status = 0;
-	/*
-	TODO: modify OLDPWD
-	*/
-	char	*root = NULL;
-	char	*current = NULL;
-	char	*relative = NULL;
+	char	*current;
+	char	*relative;
 
-	root = get_root_cd(vars->envp);
-	current = get_current_cd(vars->envp);
-	if (!tabs->cmds[1] || (ft_strncmp(tabs->cmds[1], root, ft_strlen(root)) == TRUE && tabs->cmds[1][ft_strlen(root)] == '\0'))
+	//root = get_root_cd(vars->envp, print);
+//	if (!root)
+//		return (TRUE);
+	current = getcwd(NULL, 0);
+	if (!tabs->cmds[1])
 	{
-		if (chdir(root) == 0)
-		{
-			update_pwd(vars, root);
-			free(current);
-			g_status = 0;
-		}
-		else
-		{
-			if (print == TRUE)
-			{
-				write(2, "minishell: ", ft_strlen("minishell: "));
-				write(2, tabs->cmds[1], ft_strlen(tabs->cmds[1]));
-				write(2, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
-				g_status = 1;
-			}
-		}
+		ft_cd_alone(vars->envp, print, vars);
+		free(current);
 	}
-	else if (ft_strncmp(tabs->cmds[1], root, ft_strlen(root)) == TRUE)
+	else if (ft_strncmp(tabs->cmds[1], vars->root, ft_strlen(vars->root)) == TRUE)
 	{
-		if (tabs->cmds[1][ft_strlen(root)] == '/' && check_directory_exists(tabs->cmds[1]) == TRUE)
+		if (check_directory_exists(tabs->cmds[1]) == TRUE)
 		{
 			if (chdir(tabs->cmds[1]) == 0) 
 			{
+				update_pwd_exp(vars, tabs->cmds[1]);
 				update_pwd(vars, tabs->cmds[1]);
 				g_status = 0;
 			}
@@ -224,44 +290,45 @@ int	ft_build_cd(t_tabs *tabs, t_vars *vars, int print)
 		relative = ft_strjoin(ft_strjoin(current, "/", FALSE), tabs->cmds[1], FALSE);
 		if (check_directory_exists(relative) == TRUE)
 		{
-			if (chdir(relative) == 0) 
+			if (chdir(relative) == 0)
 			{
+				update_pwd_exp(vars, relative);
 				update_pwd(vars, relative);
 				g_status = 0;
-			}
-			else
-			{
-				//useless? maybe chdir is already checked!
-				//but careful cause it should not print the message twice! (because of pipex and unset_export)
 			}
 		}
 		else
 		{
-			if (print == TRUE)
+			if (print == TRUE && errno == ENOENT)
 			{
-				write(2, "minishell: ", ft_strlen("minishell: "));
+				write(2, "minishell: cd: ", ft_strlen("minishell: cd: "));
 				write(2, tabs->cmds[1], ft_strlen(tabs->cmds[1]));
 				write(2, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
+				g_status = 1;
+			}
+			else if (print == TRUE && errno == EACCES)
+			{
+				write(2, "minishell: cd: ", ft_strlen("minishell: cd: "));
+				write(2, tabs->cmds[1], ft_strlen(tabs->cmds[1]));
+				write(2, ": Permission denied\n", ft_strlen(": Permission denied\n"));
 				g_status = 1;
 			}
 		}
 		free(relative);
 	}
-	//free(current);
-	free(root);
 	return (TRUE);
 }
 
 int	ft_build_pwd(t_tabs *tabs, t_vars *vars)
 {
-	char	*tmp;
+	char	*temp;
 
-	tmp = getcwd(NULL, 0);
+	temp = getcwd(NULL, 0);
 	(void)tabs;
 	(void)vars;
-	write(1, tmp, ft_strlen(tmp));
+	write(1, temp, ft_strlen(temp));
 	write(1, "\n", 1);
-	free(tmp);
+	free(temp);
 	g_status = 0;
 	return (TRUE);
 }
@@ -275,7 +342,7 @@ int	ft_build_env(t_tabs *tabs, t_vars *vars)
 	i = 0;
 	while (vars->envp[i])
 	{
-		len = ft_strlen(vars->envp[i]);
+		len = (int)ft_strlen(vars->envp[i]);
 		write(1, vars->envp[i], len);
 		write(1, "\n", 1);
 		i++;

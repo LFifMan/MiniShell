@@ -165,7 +165,6 @@ void	ft_pipex(t_tabs *tabs, t_vars *vars)
 	while (vars->i--)
 		wait(&vars->status);
 	g_status = 0;
-	printf("temp g 1= %d\n", g_status);
 	if (WIFEXITED(vars->status))
 	{
 		g_status = WEXITSTATUS(vars->status);
@@ -174,6 +173,4 @@ void	ft_pipex(t_tabs *tabs, t_vars *vars)
 	{
 		g_status = 1;
 	}
-	printf("temp g 2= %d\n", g_status);
-
 }

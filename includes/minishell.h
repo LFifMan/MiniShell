@@ -58,6 +58,8 @@ typedef struct s_vars
 	int				status;
 	int				var;
 	int				i;
+	int				tmp_g;
+	char 			*root;
 
 }					t_vars;
 
@@ -71,24 +73,18 @@ typedef struct s_tabs
 
 int	g_status;
 
-/* CONTROL_TOWER.C */
+/* INIT.C */
 void	init_vars(t_vars *vars, char **envp);
-void	sort_export(t_vars *vars, int envp_length);
-char	**dup_export(t_vars *vars, char **export, int envp_length);
-void	free_array(char **export, int envp_length);
+void	init_env(t_vars *vars, char **envp, int envp_length);
+void	sort_export(int envp_length, char **export);
+char	**dup_export(t_vars *vars, int envp_length);
 char	**create_export(int envp_length, char **input);
-int		ft_strcmp_ascii(char *input, char *str);
-char	*ft_strjoin_quotes(char *s1, char *s2, int index);
 
 /* CONTROL_TOWER.C */
 void	control_tower(t_vars *vars);
 int		control_commands(t_tabs **tabs, t_shell **shell, t_vars *vars);
-int		control_parsing(t_shell **shell, t_vars *vars, char *input);
+int		control_parsing(t_shell **shell, t_vars *vars, char *input, t_tabs *tabs);
 char	*ft_prompt(void);
-
-/* PARSING_SHELL.C */
-char	*ft_parsing_sh(char *const *envp);
-char	*ft_parsing_pwd(char *const *envp);
 
 /* PARSING_INPUT.C */
 t_shell	*parsing_spaces(t_shell **shell);
@@ -98,7 +94,6 @@ char	*parse_quotation(char *input, char index, int size, int i);
 
 /* PARSING_DOLLARS.C */
 int		ft_look_for_dollar(char *data);
-int		ft_find(char *data, char *envp);
 int		ft_look_in_envp(char *data, char *envp);
 int		ft_dollar_len(char *data, int start);
 int		ft_env_len(char *envp, int start);
@@ -144,6 +139,8 @@ void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input);
 int		free_shell(t_shell *lst);
 int		free_tabs(t_tabs *lst);
 void	free_lsts(t_shell *shell, t_tabs *tabs, char *input, int index);
+void	ft_free_vars(t_vars vars);
+void	free_array(char **export, int envp_length);
 
 /* FT_PIPEX.C */
 void	ft_pipex(t_tabs *tabs, t_vars *vars);
@@ -172,8 +169,11 @@ char	*ft_strdup(char *src, int index);
 size_t	ft_strlcpy(char *dest, const char *src, size_t size);
 int		ft_tolower(int c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
-char	*ft_strcat(char *dest, char *src);
 char	*ft_strcpy(char *s1, const char *s2);
+char	*ft_join(int index, char *s1, char *s2, char *dest);
+char	*ft_join_export(char *s1, char *s2, int index);
+int		ft_strcmp_ascii(char *input, char *str);
+
 
 /* SIGNALS.C */
 void	ft_signals(int index);

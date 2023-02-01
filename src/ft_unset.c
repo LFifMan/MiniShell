@@ -47,7 +47,7 @@ void	ft_remove_export_var(t_vars *vars, char *str)
 	char	*unset;
 
 	unset = ft_strdup("declare -x ", FALSE);
-	unset = ft_strjoin_quotes(unset, str, FALSE);
+	unset = ft_join_export(unset, str, FALSE);
 
 	len = strlen(unset);
 	i = 0;
@@ -118,7 +118,9 @@ void	ft_unset_export(t_tabs *tabs, t_vars *vars, char *cmd_one)
 		else if (ft_strcmp(cmd_one, "unset") == TRUE)
 			ft_build_unset(tabs, vars, TRUE);
 		else if (ft_strcmp(cmd_one, "cd") == TRUE)
+		{
 			ft_build_cd(tabs, vars, TRUE);
+		}
 		tabs = tabs->next;
 	}
 }

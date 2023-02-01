@@ -12,30 +12,21 @@
 
 #include "../includes/minishell.h"
 
-void	restore_terminal_settings(struct termios original_settings)
-{
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, &original_settings);
-}
-
 int	main(int ac, char **av, char **ev)
 {
 	t_vars	vars;
-	int		i;
 
 	(void)av;
-	(void)ac;
+	if (ac != 1)
+	{
+		write(2, "Too many arguments\n", 19);
+		write(2, "Run only the minishell program by itself\n", 41);
+		exit (1);
+	}
 	ft_signals(TRUE);
-	enable_signals();
 	init_vars(&vars, ev);
 	control_tower(&vars);
-	i = 0;
-	while (vars.envp[i])
-	{
-		free(vars.envp[i]);
-		i++;
-	}
-	free(vars.envp);
+	ft_free_vars(vars);
 	ft_signals(FALSE);
-	halt_signals();
 	return (0);
 }

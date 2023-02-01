@@ -75,3 +75,14 @@ int	ft_memcmp(void *s1, void *s2, size_t n)
 	}
 	return (0);
 }
+
+char	*ft_zero(const char *s)
+{
+	char	*new;
+
+	new = malloc(sizeof (char));
+	if (new == NULL)
+		exit (EXIT_FAILURE);
+	new[0] = s[0];
+	return (new);
+}
