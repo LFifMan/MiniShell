@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 22:03:36 by max               #+#    #+#             */
-/*   Updated: 2023/01/27 19:05:10 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/31 14:24:58 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_shell	*ft_space_redops(t_shell **shell)
 
 	new = malloc(sizeof(t_shell));
 	if (!new)
-		return (NULL);
+		exit (EXIT_FAILURE);
 	new->next = NULL;
 	tmp = (*shell)->next; // error check?
 	while (tmp)
@@ -84,7 +84,7 @@ t_shell	*parsing_redops(t_shell **shell)
 
 	new = malloc(sizeof(t_shell));
 	if (!new)
-		return (NULL);
+		exit (EXIT_FAILURE);
 	new->next = NULL;
 	tmp = (*shell)->next; // error check?
 	tmp2 = (*shell);

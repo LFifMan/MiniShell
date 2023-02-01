@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:25:12 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/27 21:53:35 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/31 14:23:31 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ char	*ft_trim_quotations(char *str)
 		if (ft_strlen(str) == 2)
 			return (ft_strdup("", FALSE));
 		dest = (char *)malloc(sizeof(char) * (ft_strlen(str) - 2 + 1)); // + 1 ?
+		if (!dest)
+			exit (EXIT_FAILURE);
 		ft_strlcpy(dest, (char *)str + 1, (ft_strlen(str) -2 + 1)); // + 1 ?
 		//free(str);
 		return (dest);
@@ -58,7 +60,7 @@ t_tabs	*ft_regroup(t_shell **shell, t_vars *vars)
 	(void)vars;
 	tabs = malloc(sizeof(t_tabs));
 	if (!tabs)
-		return (0);
+		exit (EXIT_FAILURE);
 	tabs->next = NULL;
 	tmp = (*shell)->next;
 	while (tmp)
@@ -111,7 +113,7 @@ t_shell	*parsing_pipes(t_shell **shell)
 
 	new = malloc(sizeof(t_shell));
 	if (!new)
-		return (NULL);
+		exit (EXIT_FAILURE);
 	new->next = NULL;
 	tmp = (*shell)->next; // error check?
 	tmp2 = (*shell); // error check?

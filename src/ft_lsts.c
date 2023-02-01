@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 18:45:45 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/27 21:53:46 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/31 14:20:52 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	ft_lstadd_back(t_shell **lst, char *input, int index)
 
 	tmp = malloc(sizeof(t_shell));
 	if (!tmp)
-		return ;
+		exit (EXIT_FAILURE);
 	tmp->next = NULL;
 	if (input[0] == DOUBLEQUOTE || input[0] == SINGLEQUOTE || input[0] == PIPE || input[0] == SPACE || input[0] == GREATER || input[0] == SMALLER) // create an index to know if the lst is a quotation or not
 		tmp->index = input[0];
@@ -44,7 +44,7 @@ void	ft_lstadd_back(t_shell **lst, char *input, int index)
 	i = 0;
 	tmp->data = malloc(sizeof(char) * ft_strlen(input) + 1);
 	if (!tmp->data)
-		return ;
+		exit (EXIT_FAILURE);
 	while (input[i])
 	{
 		tmp->data[i] = input[i];
@@ -70,12 +70,12 @@ void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input)
 
 	tmp = malloc(sizeof(t_tabs));
 	if (!tmp)
-		return ;
+		exit (EXIT_FAILURE);
 	tmp->next = NULL;
 	i = 0;
 	tmp->cmds = malloc (sizeof(char *) * (ft_lst_count_spaces(input) + 1));
 	if (!tmp->cmds)
-		return ;
+		exit (EXIT_FAILURE);
 	while (input)
 	{
 		if (input && input->next && input->index == SPACE)

@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 00:01:15 by max               #+#    #+#             */
-/*   Updated: 2023/01/27 21:04:06 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/31 17:31:23 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ void	halt_signals(void)
 	sig_quit.sa_flags = SA_RESTART;
 	sigaction(SIGQUIT, &sig_quit, NULL);
 }
-
-
 
 void	ft_signals(int index)
 {

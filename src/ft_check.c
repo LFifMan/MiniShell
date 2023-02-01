@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 23:15:26 by max               #+#    #+#             */
-/*   Updated: 2023/01/27 19:05:19 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/31 14:59:47 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int	ft_check_op(t_shell *shell)
 		{
 			if (!shell->next || ft_check_next_pipe(shell) == FALSE)
 			{
+				g_status = 258;
 				printf("bash: syntax error near unexpected token `|'\n");
 				return (FALSE);
 			}
@@ -60,6 +61,7 @@ int	ft_check_op(t_shell *shell)
 		{
 			if (!shell->next || ft_check_next_redirection(shell) == FALSE)
 			{
+				g_status = 258;
 				printf("bash: syntax error near unexpected token `%c'\n", shell->index);
 				return (FALSE);
 			}

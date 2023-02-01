@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 23:27:44 by max               #+#    #+#             */
-/*   Updated: 2023/01/30 19:15:46 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/31 18:41:56 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,7 @@ int	build_exit(char *input)
 				return (FALSE);
 			i++;
 		}
-		//atoi(&input[5])
-		exit(atoi(&input[5])); //TODO ft_atoi
+		exit(atoi(&input[5]) % 256); //TODO ft_atoi
 	}
 	else
 		return (FALSE);
@@ -98,13 +97,14 @@ void	control_tower(t_vars *vars)
 
 	shell = malloc(sizeof(t_shell));
 	if (!shell)
-		return ;
+		exit (EXIT_FAILURE);
 	shell->next = NULL;
 	while (1)
 	{
 		input = ft_prompt();
 		halt_signals();
 		ft_signals(FALSE);
+		g_status = 0;
 		if (check_only_spaces(input) == TRUE)
 			free_lsts(shell, tabs, input, 0);
 		else
@@ -116,6 +116,8 @@ void	control_tower(t_vars *vars)
 			else if (control_execution(tabs, vars) == TRUE)
 				free_lsts(shell, tabs, input, 2);
 		}
+		printf("global = %d\n", g_status);
+
 		ft_signals(TRUE);
 		enable_signals();
 	}

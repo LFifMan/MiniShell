@@ -6,12 +6,12 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 13:40:05 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/27 22:24:40 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/31 18:40:13 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
+#include <stdlib.h> 
 void	ft_heredoc(t_tabs *tabs, t_vars *vars, int j)
 {
 	char	*delimiter;					
@@ -63,6 +63,13 @@ void	ft_redops_handler(t_tabs *tabs, t_vars *vars)
 			vars->out_fd = open(tabs->redop[j + 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
 			dup2(vars->out_fd, 1);
 			close(vars->out_fd);
+			if (vars->out_fd < 0)
+			{
+				write(2, "minishell: ", ft_strlen("minishell: "));
+				write(2, tabs->redop[j + 1], ft_strlen(tabs->redop[j + 1]));
+				write(2, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
+				exit (1);
+			}
 		}
 		else if (ft_strcmp(tabs->redop[j], "<") == TRUE)
 		{
@@ -70,6 +77,13 @@ void	ft_redops_handler(t_tabs *tabs, t_vars *vars)
 			vars->in_fd = open(tabs->redop[j + 1], O_RDONLY);
 			dup2(vars->in_fd, 0);
 			close(vars->in_fd);
+			if (vars->in_fd < 0)
+			{
+				write(2, "minishell: ", ft_strlen("minishell: "));
+				write(2, tabs->redop[j + 1], ft_strlen(tabs->redop[j + 1]));
+				write(2, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
+				exit (1);
+			}
 		}
 		else if (ft_strcmp(tabs->redop[j], ">") == TRUE)
 		{
@@ -77,6 +91,13 @@ void	ft_redops_handler(t_tabs *tabs, t_vars *vars)
 			vars->out_fd = open(tabs->redop[j + 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			dup2(vars->out_fd, 1);
 			close(vars->out_fd);
+			if (vars->out_fd < 0)
+			{
+				write(2, "minishell: ", ft_strlen("minishell: "));
+				write(2, tabs->redop[j + 1], ft_strlen(tabs->redop[j + 1]));
+				write(2, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
+				exit (1);
+			}
 		}
 		j++;
 	}
@@ -94,7 +115,7 @@ void	ft_child(t_tabs *tabs, t_vars *vars)
 	close(vars->fd[0]);
 	close(vars->fd[1]);
 	if (ft_builtins(tabs, vars, tabs->cmds[0]) == TRUE)
-		exit(1);
+		exit(0);
 	else
 	{
 		vars->var = execve(tabs->cmds[0], tabs->cmds, vars->envp);
@@ -106,13 +127,12 @@ void	ft_child(t_tabs *tabs, t_vars *vars)
 		write(2, "minishell: ", ft_strlen("minishell: "));
 		write(2, tabs->cmds[0], ft_strlen(tabs->cmds[0]));
 		write(2, ": command not found\n", ft_strlen(": command not found\n"));
-		exit(1);
+		exit(127);
 	}
 }
 
 void	ft_parent(t_tabs *tabs, t_vars *vars)
 {
-	//waitpid(vars->child, &vars->status, 0);
 	if (vars->i != 0)
 		close(vars->fd[0]);
 	if (tabs->next != NULL)
@@ -144,4 +164,16 @@ void	ft_pipex(t_tabs *tabs, t_vars *vars)
 	}
 	while (vars->i--)
 		wait(&vars->status);
+	g_status = 0;
+	printf("temp g 1= %d\n", g_status);
+	if (WIFEXITED(vars->status))
+	{
+		g_status = WEXITSTATUS(vars->status);
+	}
+	else
+	{
+		g_status = 1;
+	}
+	printf("temp g 2= %d\n", g_status);
+
 }

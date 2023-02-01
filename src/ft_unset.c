@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 19:44:36 by max               #+#    #+#             */
-/*   Updated: 2023/01/30 19:10:14 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/31 18:02:45 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void	ft_unset_export(t_tabs *tabs, t_vars *vars, char *cmd_one)
 		else if (ft_strcmp(cmd_one, "unset") == TRUE)
 			ft_build_unset(tabs, vars, TRUE);
 		else if (ft_strcmp(cmd_one, "cd") == TRUE)
-			ft_build_cd(tabs, vars);
+			ft_build_cd(tabs, vars, TRUE);
 		tabs = tabs->next;
 	}
 }

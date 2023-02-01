@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 23:43:51 by max               #+#    #+#             */
-/*   Updated: 2023/01/30 19:10:15 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/31 14:17:18 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ char **replace_var(char **src, char *str, int place)
 	else
 	{
 		new_src = malloc(sizeof(char *) * (len + 2));
+		if (!new_src)
+			exit (EXIT_FAILURE);
 		while (i < len)
 		{
 			new_src[i] = src[i];
@@ -64,14 +66,6 @@ char **replace_var(char **src, char *str, int place)
 		free(src);
 		src = new_src;
 	}
-	/*
-	int t = 0;
-	while (src[t])
-	{
-		printf("%s\n", src[t]);
-		t++;
-	}
-	*/
 	return (src);
 }
 
@@ -143,7 +137,7 @@ void	ft_export_export(t_vars *vars, char *str, int index)
 	}
 	while (vars->export[i])
 	{
-		if (ft_strncmp(vars->export[i], export, size + 1) == TRUE)
+		if (ft_strncmp(vars->export[i], export, size) == TRUE)
 		{
 			vars->export = replace_var(vars->export, export, i);
 			return ;

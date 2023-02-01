@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:44:43 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/30 18:53:34 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/31 18:03:16 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@
 # include <signal.h>
 # include <dirent.h>
 # include <termios.h>
+# include <errno.h>
+# include <sys/wait.h>
 
 typedef struct s_shell
 {
@@ -66,6 +68,8 @@ typedef struct s_tabs
 	char			**redop;
 	struct s_tabs	*next;
 }					t_tabs;
+
+int	g_status;
 
 /* CONTROL_TOWER.C */
 void	init_vars(t_vars *vars, char **envp);
@@ -145,7 +149,7 @@ void	free_lsts(t_shell *shell, t_tabs *tabs, char *input, int index);
 void	ft_pipex(t_tabs *tabs, t_vars *vars);
 
 /* FT_BUILTINS.C */
-int		ft_build_cd(t_tabs *tabs, t_vars *vars);
+int		ft_build_cd(t_tabs *tabs, t_vars *vars, int print);
 int		ft_build_echo(t_tabs *tabs, t_vars *vars);
 int		ft_build_pwd(t_tabs *tabs, t_vars *vars);
 int		ft_build_env(t_tabs *tabs, t_vars *vars);

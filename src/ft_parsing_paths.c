@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 02:56:33 by max               #+#    #+#             */
-/*   Updated: 2023/01/27 20:20:32 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/31 14:23:01 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	**ft_create_paths(char *argv)
 
 	dst = malloc(sizeof(char *) * 2 + 1);
 	if (!dst)
-		return (NULL);
+		exit (EXIT_FAILURE);
 	dst[0] = ft_strjoin("/bin/", argv, FALSE); // TODO: NOT FREE S1
 	dst[1] = ft_strjoin("/usr/bin/", argv, FALSE);// TODO: NOT FREE S1
 	dst[2] = 0;
@@ -69,7 +69,7 @@ char	*ft_mallocfill_bin(char **str, char c, char *argv, int beg)
 		i++;
 	dst = malloc(sizeof(char) * i + 2 + ft_strlen(argv) - start);
 	if (!dst)
-		return (NULL);
+		exit (EXIT_FAILURE);
 	i = 0;
 	while (*(*str + start + i) && *(*str + start + i) != c)
 	{
@@ -116,7 +116,7 @@ char	**ft_split_bin(char *str, char c, char *argv)
 	count = ft_countwords(str, c);
 	dst = malloc(sizeof(char *) * (count + 1));
 	if (!dst)
-		return (NULL);
+		exit (EXIT_FAILURE);
 	i = 0;
 	j = 0;
 	while (str[j] != '\0' && i < count)
@@ -126,7 +126,7 @@ char	**ft_split_bin(char *str, char c, char *argv)
 			str_ptr = &str[j];
 			dst[i] = ft_mallocfill_bin(&str_ptr, c, argv, i);
 			if (!dst[i])
-				return (NULL);
+				exit (EXIT_FAILURE);
 			i++;
 		}
 		while (str[j] && str[j] != c)

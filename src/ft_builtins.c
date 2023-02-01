@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 16:17:05 by max               #+#    #+#             */
-/*   Updated: 2023/01/30 18:53:38 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/31 18:16:14 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ char	*get_current_cd(char **env)
 		}
 		current = malloc(sizeof(char) * j + 1);
 		if (!current)
-			return (NULL); // TODO: protect mallocs
+			exit (EXIT_FAILURE);
 		j = 4;
 		while  (env[i][j])
 		{
@@ -117,7 +117,7 @@ char	*get_root_cd(char **env)
 
 		root = malloc(sizeof(char) * (j - 5 + 2)); // pas sur?
 		if (!root)
-			return (NULL);
+			exit (EXIT_FAILURE);
 		j = 5;
 		root[k] = '/';
 		k++;
@@ -151,8 +151,8 @@ void update_pwd(t_vars *vars, char *path)
 	int		i;
 
 	tmp = malloc(sizeof(char) * 5);
-	if (!tmp) // TODO: malloc errors
-		return ;
+	if (!tmp)
+		exit (EXIT_FAILURE);
 	i = 0;
 	while (vars->envp[i])
 	{
@@ -166,8 +166,9 @@ void update_pwd(t_vars *vars, char *path)
 	vars->envp[i] = tmp;
 }
 
-int	ft_build_cd(t_tabs *tabs, t_vars *vars)
+int	ft_build_cd(t_tabs *tabs, t_vars *vars, int print)
 {
+	g_status = 0;
 	/*
 	TODO: modify OLDPWD
 	*/
@@ -183,6 +184,17 @@ int	ft_build_cd(t_tabs *tabs, t_vars *vars)
 		{
 			update_pwd(vars, root);
 			free(current);
+			g_status = 0;
+		}
+		else
+		{
+			if (print == TRUE)
+			{
+				write(2, "minishell: ", ft_strlen("minishell: "));
+				write(2, tabs->cmds[1], ft_strlen(tabs->cmds[1]));
+				write(2, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
+				g_status = 1;
+			}
 		}
 	}
 	else if (ft_strncmp(tabs->cmds[1], root, ft_strlen(root)) == TRUE)
@@ -192,12 +204,18 @@ int	ft_build_cd(t_tabs *tabs, t_vars *vars)
 			if (chdir(tabs->cmds[1]) == 0) 
 			{
 				update_pwd(vars, tabs->cmds[1]);
+				g_status = 0;
 			}
 		}
 		else
 		{
-			//TODO: error like in bash, stay in same repo 
-			//but careful cause it should not print the message twice!
+			if (print == TRUE)
+			{
+				write(2, "minishell: ", ft_strlen("minishell: "));
+				write(2, tabs->cmds[1], ft_strlen(tabs->cmds[1]));
+				write(2, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
+				g_status = 1;
+			}
 		}
 		free(current);
 	}
@@ -209,11 +227,23 @@ int	ft_build_cd(t_tabs *tabs, t_vars *vars)
 			if (chdir(relative) == 0) 
 			{
 				update_pwd(vars, relative);
-
+				g_status = 0;
 			}
 			else
-				printf("fuck\n"); // TODO: error like in bash, stay in same repo
-			//but careful cause it should not print the message twice! (because of pipex and unset_export)
+			{
+				//useless? maybe chdir is already checked!
+				//but careful cause it should not print the message twice! (because of pipex and unset_export)
+			}
+		}
+		else
+		{
+			if (print == TRUE)
+			{
+				write(2, "minishell: ", ft_strlen("minishell: "));
+				write(2, tabs->cmds[1], ft_strlen(tabs->cmds[1]));
+				write(2, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
+				g_status = 1;
+			}
 		}
 		free(relative);
 	}
@@ -232,6 +262,7 @@ int	ft_build_pwd(t_tabs *tabs, t_vars *vars)
 	write(1, tmp, ft_strlen(tmp));
 	write(1, "\n", 1);
 	free(tmp);
+	g_status = 0;
 	return (TRUE);
 }
 
@@ -265,7 +296,7 @@ int	ft_builtins(t_tabs *tabs, t_vars *vars, char *cmd_one)
 	if (ft_strcmp(cmd_one, "echo") == TRUE)
 		return (ft_build_echo(tabs, vars));
 	else if (ft_strcmp(cmd_one, "cd") == TRUE)
-		return (ft_build_cd(tabs, vars));
+		return (ft_build_cd(tabs, vars, FALSE));
 	else if (ft_strcmp(cmd_one, "pwd") == TRUE)
 		return (ft_build_pwd(tabs, vars));
 	else if (ft_strcmp(cmd_one, "export") == TRUE)

@@ -98,7 +98,7 @@ char	*ft_malloc_cpy(char *data, char *envp, int size)
 	ienvp = 0;
 	ret = malloc(sizeof(char) * size + 1);
 	if (!ret)
-		exit (0); // TODO : deal with this error.
+		exit (EXIT_FAILURE);
 	while (data[iret] && data[iret] != DOLLAR)
 	{
 		ret[iret] = data[iret];
@@ -161,6 +161,8 @@ char	*ft_remove_dollar(char *data)
 		end++;
 	size = ft_strlen(data) - end + start;
 	ret = malloc(sizeof(char) * size + 1);
+	if (!ret)
+		exit (EXIT_FAILURE);
 	size = 0;
 	i = 0;
 	while (data[i] && size < start)

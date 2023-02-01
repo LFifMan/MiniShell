@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 01:38:54 by max               #+#    #+#             */
-/*   Updated: 2023/01/27 22:02:49 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/31 14:23:00 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ char	**ft_remove_redop_cmds(char **cmd, int index)
 	while (cmd[size])
 		size++;
 	dst = malloc(sizeof(char *) * size - 2);
+	if (!dst)
+		exit (EXIT_FAILURE);
 	i = 0;
 	j = 0;
 	while (cmd[i])
@@ -77,6 +79,8 @@ void	ft_redops(t_tabs **tabs)
 		i = 0;
 		j = 0;
 		tmp->redop = malloc (sizeof(char *) * (ft_count_redops(tmp->cmds) + 1));
+		if (!tmp->redop)
+			exit (EXIT_FAILURE);
 		tmp->redop[0] = 0;
 		while (tmp->cmds[i])
 		{

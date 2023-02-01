@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 16:31:32 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/27 19:05:28 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/31 14:24:44 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ char	*ft_parsing_sh(char *const *envp)
 	}
 	j = j - count;
 	shell_paths = malloc (sizeof(char) * j + 2);
+	if (!shell_paths)
+		exit (EXIT_FAILURE);
 	j = 0;
 	count++;
 	while ((char)envp[i][count] != 0)
@@ -64,6 +66,8 @@ char	*ft_parsing_pwd(char *const *envp)
 	}
 	j -= 4;
 	pwd_path = malloc (sizeof(char) * j + 2);
+	if (!pwd_path)
+		exit (EXIT_FAILURE);
 	j = 0;
 	count = 4;
 	while ((char)envp[i][count] != 0)

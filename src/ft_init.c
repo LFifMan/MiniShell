@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 18:03:27 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/30 19:10:16 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/31 14:20:31 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*ft_strjoin_quotes(char *s1, char *s2, int index)
 	else
 		dest = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!dest)
-		return (0);
+		exit (EXIT_FAILURE);
 	i = 0;
 	j = 0;
 	if (!s1)
@@ -86,6 +86,8 @@ char	**create_export(int envp_length, char **input)
 
 	i = 0;
 	export = malloc(sizeof(char *) * (envp_length + 1));
+	if (!export)
+		exit (EXIT_FAILURE);
 	while (i < envp_length)
 	{
 		export[i] = ft_strdup("declare -x ", FALSE);
@@ -132,7 +134,7 @@ void	sort_export(t_vars *vars, int envp_length)
 
 	export = malloc(sizeof(char *) * (envp_length + 1));
 	if (!export)
-		return ;
+		exit (EXIT_FAILURE);
 	export = dup_export(vars, export, envp_length);
 	i = 0;
 	while (i < envp_length)
@@ -162,6 +164,8 @@ void	init_vars(t_vars *vars, char **envp)
 	while (envp[envp_length])
 		envp_length++;
 	new_envp = malloc(sizeof(char *) * (envp_length + 1));
+	if (!new_envp)
+		exit (EXIT_FAILURE);
 	while (i < envp_length)
 	{
 		new_envp[i] = ft_strdup(envp[i], FALSE);

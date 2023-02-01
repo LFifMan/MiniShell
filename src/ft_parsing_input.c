@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:38:40 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/27 19:05:25 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/01/31 14:21:48 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ char	*parse_quotation(char *input, char index, int size, int i)
 	if (index == DOUBLEQUOTE || index == SINGLEQUOTE)
 	{
 		data = malloc(sizeof(char) * size + 3);
+		if (!data)
+			exit (EXIT_FAILURE);
 		data[i] = index;
 		while (i < size)
 		{
@@ -41,6 +43,8 @@ char	*parse_quotation(char *input, char index, int size, int i)
 	else
 	{
 		data = malloc(sizeof(char) * size + 1);
+		if (!data)
+			exit (EXIT_FAILURE);
 		while (i < size)
 		{
 			data[i] = input[i];
@@ -133,7 +137,7 @@ t_shell	*parsing_spaces(t_shell **shell)
 
 	new = malloc(sizeof(t_shell));
 	if (!new)
-		return (NULL);
+		exit (EXIT_FAILURE);
 	new->next = NULL;
 	tmp = (*shell)->next; // error check?
 	while (tmp)
