@@ -173,6 +173,9 @@ char	*ft_strcpy(char *s1, const char *s2);
 char	*ft_join(int index, char *s1, char *s2, char *dest);
 char	*ft_join_export(char *s1, char *s2, int index);
 int		ft_strcmp_ascii(char *input, char *str);
+void	ft_write(char *str, int option, int status);
+int		ft_write_op(char *str, int status);
+
 
 
 /* SIGNALS.C */

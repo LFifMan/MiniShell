@@ -50,7 +50,8 @@ SRC		=	main.c \
 			ft_unset.c \
 			ft_export.c \
 			ft_parsing_redop.c \
-			ft_signals.c
+			ft_signals.c \
+			ft_write.c
 
 HEAD	=	minishell.h
 

@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include <stdlib.h> 
+
 void	ft_heredoc(t_tabs *tabs, t_vars *vars, int j)
 {
 	char	*delimiter;					
@@ -56,6 +56,7 @@ void	ft_redops_handler(t_tabs *tabs, t_vars *vars)
 		if (ft_strcmp(tabs->redop[j], "<<") == TRUE)
 		{
 			ft_heredoc(tabs, vars, j);
+			// todo : ft_write option == 3 (option 1 sans cd ? a tester)
 		}
 		else if (ft_strcmp(tabs->redop[j], ">>") == TRUE)
 		{
@@ -63,11 +64,12 @@ void	ft_redops_handler(t_tabs *tabs, t_vars *vars)
 			vars->out_fd = open(tabs->redop[j + 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
 			dup2(vars->out_fd, 1);
 			close(vars->out_fd);
-			if (vars->out_fd < 0)
+			if (vars->out_fd < 0) // todo : ft_write option == 3
 			{
-				write(2, "minishell: ", ft_strlen("minishell: "));
-				write(2, tabs->redop[j + 1], ft_strlen(tabs->redop[j + 1]));
-				write(2, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
+				ft_write(tabs->redop[j + 1], 3, 1);
+//				write(2, "minishell: ", ft_strlen("minishell: "));
+//				write(2, tabs->redop[j + 1], ft_strlen(tabs->redop[j + 1]));
+//				write(2, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
 				exit (1);
 			}
 		}
@@ -77,11 +79,12 @@ void	ft_redops_handler(t_tabs *tabs, t_vars *vars)
 			vars->in_fd = open(tabs->redop[j + 1], O_RDONLY);
 			dup2(vars->in_fd, 0);
 			close(vars->in_fd);
-			if (vars->in_fd < 0)
+			if (vars->in_fd < 0) // todo : ft_write option == 3
 			{
-				write(2, "minishell: ", ft_strlen("minishell: "));
-				write(2, tabs->redop[j + 1], ft_strlen(tabs->redop[j + 1]));
-				write(2, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
+				ft_write(tabs->redop[j + 1], 3, 1);
+//				write(2, "minishell: ", ft_strlen("minishell: "));
+//				write(2, tabs->redop[j + 1], ft_strlen(tabs->redop[j + 1]));
+//				write(2, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
 				exit (1);
 			}
 		}
@@ -91,11 +94,12 @@ void	ft_redops_handler(t_tabs *tabs, t_vars *vars)
 			vars->out_fd = open(tabs->redop[j + 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			dup2(vars->out_fd, 1);
 			close(vars->out_fd);
-			if (vars->out_fd < 0)
+			if (vars->out_fd < 0) // todo : ft_write option == 3
 			{
-				write(2, "minishell: ", ft_strlen("minishell: "));
-				write(2, tabs->redop[j + 1], ft_strlen(tabs->redop[j + 1]));
-				write(2, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
+				ft_write(tabs->redop[j + 1], 3, 1);
+//				write(2, "minishell: ", ft_strlen("minishell: "));
+//				write(2, tabs->redop[j + 1], ft_strlen(tabs->redop[j + 1]));
+//				write(2, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
 				exit (1);
 			}
 		}
@@ -124,9 +128,11 @@ void	ft_child(t_tabs *tabs, t_vars *vars)
 			vars->var = execve(tabs->paths[vars->i], tabs->cmds, vars->envp);
 			vars->i++;
 		}
-		write(2, "minishell: ", ft_strlen("minishell: "));
-		write(2, tabs->cmds[0], ft_strlen(tabs->cmds[0]));
-		write(2, ": command not found\n", ft_strlen(": command not found\n"));
+		// todo : ft_write option == 2
+		ft_write(tabs->cmds[0], 2, 127);
+//		write(2, "minishell: ", ft_strlen("minishell: "));
+//		write(2, tabs->cmds[0], ft_strlen(tabs->cmds[0]));
+//		write(2, ": command not found\n", ft_strlen(": command not found\n"));
 		exit(127);
 	}
 }
@@ -150,7 +156,7 @@ void	ft_pipex(t_tabs *tabs, t_vars *vars)
 		pipe(vars->fd);
 		vars->child = fork();
 		if (vars->child < 0)
-			printf("la sauce"); //ft_errors(3, tabs);
+			printf("la sauce"); //todo : ft_errors(3, tabs);
 		if (vars->child == 0)
 		{
 			ft_child(tabs, vars);

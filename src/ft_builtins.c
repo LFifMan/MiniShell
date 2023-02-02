@@ -60,47 +60,6 @@ int	ft_build_echo(t_tabs *tabs, t_vars *vars)
 	return (TRUE);
 }
 
-char	*get_root_cd(char **env, int print)
-{
-	int		i;
-	int		j;
-	int		k;
-	char	*root;
-
-	i = 0;
-	k = 0;
-	root = NULL;
-	while (env[i] && ft_memcmp((char *)env[i], "HOME=", 5) != 0)
-		i++;
-	//if envp[i] == 0 -->stop
-	// also, if PWD was modified, like a / was removed
-	if (!env[i] && print == TRUE)
-	{
-		write(2, "minishell: cd: HOME not set\n", 28);
-		return (NULL);
-	}
-	if (env[i][5] == '/')
-	{
-		j = 6;
-		while (env[i][j])
-			j++;
-		root = malloc(sizeof(char) * (j - 6 + 2)); // pas sur?
-		if (!root)
-			exit (EXIT_FAILURE);
-		j = 6;
-		root[k] = '/';
-		k++;
-		while (env[i][j])
-		{
-			root[k] = env[i][j];
-			j++;
-			k++;
-		}
-		root[k] = 0;
-	}
-	return (root);
-}
-
 int	check_directory_exists(const char* path)
 {
 	DIR	*dir;
@@ -192,10 +151,7 @@ void	update_pwd_exp(t_vars *vars, char *path)
 	vars->export[i] = tmp_exp;
 }
 
-
-
-
-void ft_cd_alone(char **env, int print, t_vars *vars)
+void	ft_cd_alone(char **env, int print, t_vars *vars)
 {
 	int		i;
 	int		j;
@@ -210,6 +166,7 @@ void ft_cd_alone(char **env, int print, t_vars *vars)
 	if (!env[i] && print == TRUE)
 	{
 		write(2, "minishell: cd: HOME not set\n", 28);
+		g_status = 1;
 		return ;
 	}
 	if (env[i][5])
@@ -236,15 +193,8 @@ void ft_cd_alone(char **env, int print, t_vars *vars)
 		g_status = 0;
 	}
 	else
-	{
 		if (print == TRUE && root)
-		{
-			write(2, "minishell: ", ft_strlen("minishell: "));
-			write(2, root, ft_strlen(root));
-			write(2, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
-			g_status = 1;
-		}
-	}
+			ft_write(root, 0, 1);
 }
 
 
@@ -253,9 +203,6 @@ int	ft_build_cd(t_tabs *tabs, t_vars *vars, int print)
 	char	*current;
 	char	*relative;
 
-	//root = get_root_cd(vars->envp, print);
-//	if (!root)
-//		return (TRUE);
 	current = getcwd(NULL, 0);
 	if (!tabs->cmds[1])
 	{
@@ -266,7 +213,7 @@ int	ft_build_cd(t_tabs *tabs, t_vars *vars, int print)
 	{
 		if (check_directory_exists(tabs->cmds[1]) == TRUE)
 		{
-			if (chdir(tabs->cmds[1]) == 0) 
+			if (chdir(tabs->cmds[1]) == 0)
 			{
 				update_pwd_exp(vars, tabs->cmds[1]);
 				update_pwd(vars, tabs->cmds[1]);
@@ -274,15 +221,8 @@ int	ft_build_cd(t_tabs *tabs, t_vars *vars, int print)
 			}
 		}
 		else
-		{
 			if (print == TRUE)
-			{
-				write(2, "minishell: ", ft_strlen("minishell: "));
-				write(2, tabs->cmds[1], ft_strlen(tabs->cmds[1]));
-				write(2, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
-				g_status = 1;
-			}
-		}
+				ft_write(tabs->cmds[1], 0, 1);
 		free(current);
 	}
 	else
@@ -300,19 +240,9 @@ int	ft_build_cd(t_tabs *tabs, t_vars *vars, int print)
 		else
 		{
 			if (print == TRUE && errno == ENOENT)
-			{
-				write(2, "minishell: cd: ", ft_strlen("minishell: cd: "));
-				write(2, tabs->cmds[1], ft_strlen(tabs->cmds[1]));
-				write(2, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
-				g_status = 1;
-			}
+				ft_write(tabs->cmds[1], 0, 1);
 			else if (print == TRUE && errno == EACCES)
-			{
-				write(2, "minishell: cd: ", ft_strlen("minishell: cd: "));
-				write(2, tabs->cmds[1], ft_strlen(tabs->cmds[1]));
-				write(2, ": Permission denied\n", ft_strlen(": Permission denied\n"));
-				g_status = 1;
-			}
+				ft_write(tabs->cmds[1], 1, 1);
 		}
 		free(relative);
 	}

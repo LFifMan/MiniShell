@@ -158,7 +158,7 @@ int	ft_printf_export(t_tabs *tabs, t_vars *vars)
 	i = 0;
 	while (vars->export[i])
 	{
-		len = ft_strlen(vars->export[i]);
+		len = (int)ft_strlen(vars->export[i]);
 		write(1, vars->export[i], len);
 		write(1, "\n", 1);
 		i++;
@@ -187,14 +187,8 @@ int	ft_build_export(t_tabs *tabs, t_vars *vars, int print)
 			ft_export_export(vars, tabs->cmds[i], FALSE);
 		}
 		else
-		{
 			if (print == TRUE)
-			{
-				write (2, "bash: export: `", ft_strlen("bash: export: `"));
-				write (2, tabs->cmds[i], ft_strlen(tabs->cmds[i]));
-				write (2, "': not a valid identifier\n", ft_strlen("': not a valid identifier\n"));
-			}
-		}
+				ft_write(tabs->cmds[i], 4, 1);
 		i++;
 	}
 	return (TRUE);

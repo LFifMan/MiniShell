@@ -48,8 +48,7 @@ void	ft_remove_export_var(t_vars *vars, char *str)
 
 	unset = ft_strdup("declare -x ", FALSE);
 	unset = ft_join_export(unset, str, FALSE);
-
-	len = strlen(unset);
+	len = (int)strlen(unset);
 	i = 0;
 	while (vars->export[i])
 	{
@@ -66,7 +65,6 @@ void	ft_remove_export_var(t_vars *vars, char *str)
 		else
 			i++;
 	}
-	return ;
 }
 
 int	ft_build_unset(t_tabs *tabs, t_vars *vars, int print)
@@ -82,19 +80,13 @@ int	ft_build_unset(t_tabs *tabs, t_vars *vars, int print)
 			ft_remove_export_var(vars, tabs->cmds[i]);
 		}
 		else
-		{
 			if (print == TRUE)
-			{
-				write (2, "bash: unset: `", ft_strlen("bash: unset: `"));
-				write (2, tabs->cmds[i], ft_strlen(tabs->cmds[i]));
-				write (2, "': not a valid identifier\n", ft_strlen("': not a valid identifier\n"));
-			}
-		}
+				ft_write(tabs->cmds[i], 5, 1);
 		i++;
 	}
 	return (TRUE);
 }
- 
+
 void	ft_unset_export(t_tabs *tabs, t_vars *vars, char *cmd_one)
 {
 	int	i;

@@ -15,7 +15,9 @@
 int	ft_check_next_pipe(t_shell *shell)
 {
 	if (ft_strlen(shell->data) > 1)
-		return (FALSE);
+		return (ft_write_op("||", 258));
+	if (!shell->next)
+		return (ft_write_op("|", 258));
 	shell = shell->next;
 	while (shell && shell->index != PIPE)
 	{
@@ -23,23 +25,31 @@ int	ft_check_next_pipe(t_shell *shell)
 			return (TRUE);
 		shell = shell->next;
 	}
-	return (FALSE);
+	return (ft_write_op("|", 258));
 }
 
 int	ft_check_next_redirection(t_shell *shell)
 {
-	if (ft_strlen(shell->data) > 2)
-		return (FALSE);
+	if (ft_strlen(shell->data) > 3 && shell->index == GREATER)
+		return (ft_write_op(">>", 258));
+	if (ft_strlen(shell->data) > 3 && shell->index == SMALLER)
+		return (ft_write_op("<<", 258));
+	if (ft_strlen(shell->data) > 2 && shell->index == GREATER)
+		return (ft_write_op(">", 258));
+	if (ft_strlen(shell->data) > 2 && shell->index == SMALLER)
+		return (ft_write_op("<", 258));
+	if (!shell->next)
+		return (ft_write_op("newline", 258));
 	shell = shell->next;
 	if (shell->index == SPACE)
 	{
-		if (!shell->next)
-			return (FALSE);
-		if (shell->next->index != CHARS && shell->next->index != DOUBLEQUOTE && shell->next->index != SINGLEQUOTE)
-			return (FALSE);
+		if (!shell->next || (shell->next->index != CHARS && \
+		shell->next->index != DOUBLEQUOTE && shell->next->index != SINGLEQUOTE))
+			return (ft_write_op("newline", 258));
 	}
-	else if (shell->index != CHARS && shell->index != DOUBLEQUOTE && shell->index != SINGLEQUOTE)
-		return (FALSE);
+	else if (shell->index != CHARS && shell->index \
+	!= DOUBLEQUOTE && shell->index != SINGLEQUOTE)
+		return (ft_write_op("newline", 258));
 	return (TRUE);
 }
 
@@ -50,22 +60,10 @@ int	ft_check_op(t_shell *shell)
 	{
 		if (shell->index == PIPE)
 		{
-			if (!shell->next || ft_check_next_pipe(shell) == FALSE)
-			{
-				g_status = 258;
-				printf("bash: syntax error near unexpected token `|'\n");
-				return (FALSE);
-			}
+			return (ft_check_next_pipe(shell));
 		}
 		else if (shell->index == GREATER || shell->index == SMALLER)
-		{
-			if (!shell->next || ft_check_next_redirection(shell) == FALSE)
-			{
-				g_status = 258;
-				printf("bash: syntax error near unexpected token `%c'\n", shell->index);
-				return (FALSE);
-			}
-		}
+			return (ft_check_next_redirection(shell));
 		shell = shell->next;
 	}
 	return (TRUE);

@@ -26,7 +26,7 @@ int	ft_check_allowed_char(char c, int pos)
 	return (FALSE);
 }
 
-int	ft_look_in_envp(char *data, char *envp) //TODO : check for allowed char in env variables
+int	ft_look_in_envp(char *data, char *envp)
 {
 	int	i;
 	int	j;

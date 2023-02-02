@@ -19,12 +19,18 @@ void	sigint_handler(int sig)
 	rl_on_new_line();
 	rl_replace_line("\0", 0);
 	rl_redisplay();
+	g_status = 1;
 }
 
 void	silent_signal(int sig)
 {
-	if (sig == SIGQUIT || sig == SIGINT)
+	if (sig == SIGINT)
 	{
+		g_status = 130;
+	}
+	if (sig == SIGQUIT)
+	{
+		g_status = 131;
 	}
 }
 
