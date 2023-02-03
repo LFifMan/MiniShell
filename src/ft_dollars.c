@@ -179,35 +179,38 @@ char	*ft_remove_dollar(char *data)
 	return (ret);
 }
 
+char	*ft_to_be_named(char **envp, char *data)
+{
+	int	j;
+	int	index;
+
+	j = 0;
+	index = FALSE;
+	while (envp[j])
+	{
+		if (ft_look_in_envp(data,envp[j]) == TRUE)
+		{
+			data = ft_replace(data, envp[j]);
+			index = TRUE;
+			break ;
+		}
+		j++;
+	}
+	if (index == FALSE)
+		data = ft_remove_dollar(data);
+	return (data);
+}
+
 void	parsing_dollars(t_shell **shell, t_vars *vars)
 {
 	t_shell	*tmp;
-	int		j;
-	int		index;
 
 	tmp = (*shell)->next;
 	while (tmp)
 	{
 		if (tmp->index == DOUBLEQUOTE || tmp->index == CHARS)
-		{
 			while (ft_look_for_dollar(tmp->data) == TRUE)
-			{
-				j = 0;
-				index = FALSE;
-				while (vars->envp[j])
-				{
-					if (ft_look_in_envp(tmp->data, vars->envp[j]) == TRUE)
-					{
-						tmp->data = ft_replace(tmp->data, vars->envp[j]);
-						index = TRUE;
-						break ;
-					}
-					j++;
-				}
-				if (index == FALSE)
-					tmp->data = ft_remove_dollar(tmp->data);
-			}
-		}
+				tmp->data = ft_to_be_named(vars->envp, tmp->data);
 		tmp = tmp->next;
 	}
 }
