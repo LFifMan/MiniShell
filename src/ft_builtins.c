@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 16:17:05 by max               #+#    #+#             */
-/*   Updated: 2023/01/31 18:16:14 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/03 18:09:21 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,19 @@ void	update_oldpwd(t_vars *vars, int i)
 		j++;
 	}
 	free(vars->envp[j]);
-	vars->envp[j] = ft_strjoin(tmp_env, &vars->envp[i][4], FALSE);
+	if (!vars->envp[i])
+	{
+		free(tmp_env);
+
+		vars->envp[j] = ft_strdup("OLDPWD=""", FALSE);
+	}
+	else
+		vars->envp[j] = ft_strjoin(tmp_env, &vars->envp[i][4], FALSE);
 }
 
 void	update_pwd(t_vars *vars, char *path)
 {
+	(void)path;
 	char	*tmp_env;
 	int		i;
 
@@ -106,8 +114,10 @@ void	update_pwd(t_vars *vars, char *path)
 		i++;
 	}
 	update_oldpwd(vars, i);
+	if (!vars->envp[i])
+		return ;
 	ft_strcpy(tmp_env, "PWD=");
-	tmp_env = ft_strjoin(tmp_env, path, FALSE);
+	tmp_env = ft_strjoin(tmp_env, getcwd(NULL, 0), FALSE);
 	free(vars->envp[i]);
 	vars->envp[i] = tmp_env;
 }
@@ -126,13 +136,20 @@ void	update_oldpwd_exp(t_vars *vars, int i)
 		j++;
 	}
 	free(vars->export[j]);
-	vars->export[j] = ft_strjoin(tmp_exp, &vars->export[i][15], FALSE);
+	if (!vars->export[i])
+	{
+		free(tmp_exp);
+		vars->export[j] = ft_strdup("declare -x OLDPWD=""", FALSE);
+	}
+	else
+		vars->export[j] = ft_strjoin(tmp_exp, &vars->export[i][15], FALSE);
 }
 
 void	update_pwd_exp(t_vars *vars, char *path)
 {
 	char	*tmp_exp;
 	int		i;
+	(void)path;
 
 	tmp_exp = malloc(sizeof(char) * 16);
 	if (!tmp_exp)
@@ -145,8 +162,10 @@ void	update_pwd_exp(t_vars *vars, char *path)
 		i++;
 	}
 	update_oldpwd_exp(vars, i);
+	if (!vars->export[i])
+		return ;
 	ft_strcpy(tmp_exp, "declare -x PWD=");
-	tmp_exp = ft_strjoin(tmp_exp, path, FALSE);
+	tmp_exp = ft_strjoin(tmp_exp, getcwd(NULL, 0), FALSE);
 	free(vars->export[i]);
 	vars->export[i] = tmp_exp;
 }
@@ -190,6 +209,7 @@ void	ft_cd_alone(char **env, int print, t_vars *vars)
 	{
 		update_pwd_exp(vars, root);
 		update_pwd(vars, root);
+		ft_sort_new_export(vars);
 		g_status = 0;
 	}
 	else
@@ -217,6 +237,7 @@ int	ft_build_cd(t_tabs *tabs, t_vars *vars, int print)
 			{
 				update_pwd_exp(vars, tabs->cmds[1]);
 				update_pwd(vars, tabs->cmds[1]);
+				ft_sort_new_export(vars);
 				g_status = 0;
 			}
 		}
@@ -234,6 +255,7 @@ int	ft_build_cd(t_tabs *tabs, t_vars *vars, int print)
 			{
 				update_pwd_exp(vars, relative);
 				update_pwd(vars, relative);
+				ft_sort_new_export(vars);
 				g_status = 0;
 			}
 		}

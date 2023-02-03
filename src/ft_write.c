@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_builtins.c                                      :+:      :+:    :+:   */
+/*   ft_write.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 16:17:05 by max               #+#    #+#             */
-/*   Updated: 2023/01/31 18:16:14 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/03 15:47:56 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	ft_write_op(char *str, int status)
+int	ft_write_op(char *str, int status, int print)
 {
-	write (2, "\"minishell: syntax error near unexpected token `", 49);
-	write (2, str, ft_strlen(str));
-	write (2, "'\n", 2);
-	g_status = status;
+	if (print == TRUE)
+	{
+		write (2, "\"minishell: syntax error near unexpected token `", 49);		write (2, str, ft_strlen(str));
+		write (2, "'\n", 2);
+		g_status = status;
+	}
 	return (FALSE);
 }
 

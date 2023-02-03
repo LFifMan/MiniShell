@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 02:56:33 by max               #+#    #+#             */
-/*   Updated: 2023/01/31 14:23:01 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/03 18:12:02 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,11 @@ char	**ft_parsing_binaries(char *const *envp, char *argv)
 	while (envp[i] && ft_memcmp((char *)envp[i], "PATH=", 5) != 0)
 		i++;
 	if (!envp[i])
-		binaries_paths = ft_create_paths(argv);
+	{
+		write (2, "bash: ls: No such file or directory", ft_strlen("bash: ls: No such file or directory"));
+		//binaries_paths = ft_create_paths(argv);
+		return (NULL);
+	}
 	else
 		binaries_paths = ft_split_bin((char *)envp[i], ':', argv);
 	if (!binaries_paths)

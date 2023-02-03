@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 18:03:27 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/31 14:20:31 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/03 16:49:25 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,24 @@ void	sort_export(int envp_length, char **export)
 	}
 }
 
+char *add_lvl(char *env)
+{
+	int		i;
+	int		lvl;
+	char	*ret;
+
+	i = 6;
+	while (env[i])
+	{
+		if (env[i] < '0' || env[i] > '9')
+			return (ft_strdup("SHLVL=1", FALSE));
+		i++;
+	}
+	lvl = atoi(&env[6]);
+	ret = ft_itoa(lvl + 1);
+	return (ft_strjoin(ft_strdup("SHLVL=", FALSE), ret, TRUE));
+}
+
 void	init_env(t_vars *vars, char **envp, int envp_length)
 {
 	int		i;
@@ -80,13 +98,15 @@ void	init_env(t_vars *vars, char **envp, int envp_length)
 		exit (EXIT_FAILURE);
 	while (i < envp_length)
 	{
-		new_envp[i] = ft_strdup(envp[i], FALSE);
+		if (ft_strncmp(envp[i], "SHLVL=", 6) == TRUE)
+			new_envp[i] = add_lvl(envp[i]);
+		else
+			new_envp[i] = ft_strdup(envp[i], FALSE);
 		i++;
 	}
 	new_envp[envp_length] = 0;
 	vars->envp = new_envp;
 }
-
 
 char	*get_root_new(char **env)
 {

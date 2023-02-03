@@ -37,6 +37,7 @@ SRC		=	main.c \
 			ft_utils1.c \
 			ft_utils2.c \
 			ft_utils3.c \
+			ft_utils4.c \
 			ft_lsts.c \
 			ft_free_lsts.c \
 			ft_verifs.c \
@@ -63,7 +64,7 @@ HEADERS = $(addprefix $(PATH_HEAD),$(HEAD))
 
 ##-----RULES-----##
 
-all:						$(NAME)
+all:						$(NAME) asciiart
 
 $(NAME):					$(DIR_OBJ) $(OBJS) $(HEADERS)
 							$(CC)  $(FLAGS) -I $(PATH_HEAD) -L $(HOME)/.brew/Cellar/readline/8.2.1/lib -lreadline -lhistory -o $(@) $(OBJS)

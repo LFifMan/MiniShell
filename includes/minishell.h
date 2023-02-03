@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:44:43 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/31 18:03:16 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/03 17:52:48 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # define GREATER 62
 # define SMALLER 60
 # define EQUAL 61
+# define QUESTION 63
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -117,7 +118,7 @@ t_shell	*ft_space_redops(t_shell **shell);
 
 /* PARSING_REDOP.C */
 void	ft_redops(t_tabs **tabs);
-int		check_var(char *str);
+int		check_var(char *str, t_vars *vars, int index);
 
 /* CHECK.C */
 int		ft_check_op(t_shell *shell);
@@ -154,6 +155,7 @@ int		ft_builtins(t_tabs *tabs, t_vars *vars, char *cmd_one);
 
 /* FT_EXPORT.C */
 int		ft_build_export(t_tabs *tabs, t_vars *vars, int print);
+void	ft_sort_new_export(t_vars *vars);
 
 /* FT_UNSET.C */
 void	ft_unset_export(t_tabs *tabs, t_vars *vars, char *cmd_one);
@@ -174,9 +176,9 @@ char	*ft_join(int index, char *s1, char *s2, char *dest);
 char	*ft_join_export(char *s1, char *s2, int index);
 int		ft_strcmp_ascii(char *input, char *str);
 void	ft_write(char *str, int option, int status);
-int		ft_write_op(char *str, int status);
-
-
+int		ft_write_op(char *str, int status, int print);
+char	*dest(int n, int count);
+char	*ft_itoa(int n);
 
 /* SIGNALS.C */
 void	ft_signals(int index);
