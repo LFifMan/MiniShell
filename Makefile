@@ -32,7 +32,6 @@ DIR_OBJ		= ./obj
 SRC		=	main.c \
 			ft_init.c \
 			ft_control_tower.c \
-			ft_parsing_shell.c \
 			ft_parsing_input.c \
 			ft_parsing_regroup.c \
 			ft_utils1.c \

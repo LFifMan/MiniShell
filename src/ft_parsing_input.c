@@ -12,16 +12,6 @@
 
 #include "../includes/minishell.h"
 
-/*
-PARSING LV 1: split quotes from unquotes
-parse_quotation receives the input string starting at the next element, the size of the said element, and its type (index)
-i.e. index
-- 1 if ""
-- 2 if ''
-- 0 if both
-
-it returns the final string of the new element and sends it to ft_lstadd_back
-*/
 char	*parse_quotation(char *input, char index, int size, int i)
 {
 	char	*data;
@@ -32,11 +22,9 @@ char	*parse_quotation(char *input, char index, int size, int i)
 		if (!data)
 			exit (EXIT_FAILURE);
 		data[i] = index;
-		while (i < size)
-		{
+		i--;
+		while (++i < size)
 			data[i + 1] = input[i];
-			i++;
-		}
 		data[++i] = index;
 		data[++i] = 0;
 	}
@@ -45,20 +33,14 @@ char	*parse_quotation(char *input, char index, int size, int i)
 		data = malloc(sizeof(char) * size + 1);
 		if (!data)
 			exit (EXIT_FAILURE);
-		while (i < size)
-		{
+		i--;
+		while (++i < size)
 			data[i] = input[i];
-			i++;
-		}
 		data[i] = 0;
 	}
 	return (data);
 }
 
-/*
-parsing_input receives the lst and the input. it splits the input into chunks of quotes / unquotes
-it returns 1 if one of the quotation mark is not closed
-*/
 int	parsing_quotations(t_shell **shell, char *input)
 {
 	int		i;
@@ -66,7 +48,6 @@ int	parsing_quotations(t_shell **shell, char *input)
 	char	type;
 
 	i = 0;
-
 	while (input[i])
 	{
 		j = 0;
@@ -75,28 +56,23 @@ int	parsing_quotations(t_shell **shell, char *input)
 			type = input[i++];
 			while (input[i + j] && input[i + j] != type)
 				j++;
-			if (!input[i + j]) // error check if there is a missing quotation
+			if (!input[i + j])
 				return (FALSE);
 			ft_lstadd_back(shell, parse_quotation(&input[i], type, j, 0), TRUE);
 			i++;
-
 		}
 		else
 		{
 			while (input[i + j] && input[i + j] != SINGLEQUOTE && input[i + j] != DOUBLEQUOTE)
 				j++;
-			ft_lstadd_back(shell, parse_quotation(&input[i], 0, j, 0), TRUE);
+			ft_lstadd_back(shell, parse_quotation(&input[i], \
+            0, j, 0), TRUE);
 		}
 		i += j;
 	}
 	return (TRUE);
 }
 
-/* PARSING LV 2: keep quotation strings, split unquotes */
-
-/*
-split_spaces splits unquotes, ignores all spaces, and add a new element to the list for each
-*/
 void	split_spaces(t_shell **shell, char *input)
 {
 	int	i;
@@ -110,7 +86,6 @@ void	split_spaces(t_shell **shell, char *input)
 		{
 			while (input[i + j] == SPACE)
 				j++;
-
 			ft_lstadd_back(shell, parse_quotation(&input[i], SPACE, j, 0), TRUE);
 		}
 		else if (input[i])
@@ -125,28 +100,21 @@ void	split_spaces(t_shell **shell, char *input)
 	}
 }
 
-
-/*
-parsing_spaces is pasring level two. It creates a new lst, splits unquoted strings and keeps strings in quotations. 
-Note: it makes a "pointer being freed was not allocated" sometimes...
-*/
 t_shell	*parsing_spaces(t_shell **shell)
 {
-	t_shell *tmp;
-	t_shell *new;
+	t_shell	*tmp;
+	t_shell	*new;
 
 	new = malloc(sizeof(t_shell));
 	if (!new)
 		exit (EXIT_FAILURE);
 	new->next = NULL;
-	tmp = (*shell)->next; // error check?
+	tmp = (*shell)->next;
 	while (tmp)
 	{
-		if (tmp->index == SINGLEQUOTE || tmp->index == DOUBLEQUOTE) // if the data is a quotation string, just keep it as it is
-		{
-				ft_lstadd_back(&new, tmp->data, FALSE);
-		}
-		else // otherwise, split it
+		if (tmp->index == SINGLEQUOTE || tmp->index == DOUBLEQUOTE)
+			ft_lstadd_back(&new, tmp->data, FALSE);
+		else
 			split_spaces(&new, tmp->data);
 		tmp = tmp->next;
 	}

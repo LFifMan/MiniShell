@@ -95,7 +95,6 @@ char	*ft_malloc_cpy(char *data, char *envp, int size)
 	char	*ret;
 
 	iret = 0;
-	ienvp = 0;
 	ret = malloc(sizeof(char) * size + 1);
 	if (!ret)
 		exit (EXIT_FAILURE);
@@ -116,7 +115,7 @@ char	*ft_malloc_cpy(char *data, char *envp, int size)
 	{
 		ret[iret] = data[idata];
 		iret++;
-		idata++;
+		ienvp++;
 	}
 	ret[iret] = 0;
 	return (ret);
@@ -143,6 +142,14 @@ char	*ft_replace(char *data, char *envp)
 	return (ret);
 }
 
+int	ft_iteration(char c)
+{
+	if ((c == 95 || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') \
+	|| (c >= '0' && c <= '9')))
+		return (TRUE);
+	return (FALSE);
+}
+
 char	*ft_remove_dollar(char *data)
 {
 	char	*ret;
@@ -153,31 +160,20 @@ char	*ft_remove_dollar(char *data)
 
 	start = 0;
 	while (data[start] && data[start] != DOLLAR)
-	{
 		start++;
-	}
 	end = start + 1;
-	while (data[end] && (data[end] == 95 || (data[end] >= 'a' && data[end] <= 'z') || (data[end] >= 'A' && data[end] <= 'Z') || (data[end] >= '0' && data[end] <= '9')))
+	while (data[end] && ft_iteration(data[end]) == TRUE)
 		end++;
-	size = ft_strlen(data) - end + start;
+	size = (int)ft_strlen(data) - end + start;
 	ret = malloc(sizeof(char) * size + 1);
 	if (!ret)
 		exit (EXIT_FAILURE);
 	size = 0;
 	i = 0;
 	while (data[i] && size < start)
-	{
-		ret[size] = data[i];
-		i++;
-		size++;
-	}
+		ret[size++] = data[i++];
 	while (data[end])
-	{
-		ret[size] = data[end];
-		end++;
-		size++;
-
-	}
+		ret[size++] = data[end++];
 	free(data);
 	ret[size] = 0;
 	return (ret);
