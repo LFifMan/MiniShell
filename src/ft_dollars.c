@@ -106,17 +106,9 @@ char	*ft_malloc_cpy(char *data, char *envp, int size)
 	ienvp = ft_dollar_len(data, iret + 1) + 1;
 	idata = ienvp + iret;
 	while (envp[ienvp])
-	{
-		ret[iret] = envp[ienvp];
-		iret++;
-		ienvp++;
-	}
+		ret[iret++] = envp[ienvp++];
 	while (data[idata])
-	{
-		ret[iret] = data[idata];
-		iret++;
-		ienvp++;
-	}
+		ret[iret++] = data[idata++];
 	ret[iret] = 0;
 	return (ret);
 }
