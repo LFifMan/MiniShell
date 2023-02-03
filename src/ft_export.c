@@ -6,15 +6,16 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 23:43:51 by max               #+#    #+#             */
-/*   Updated: 2023/01/31 14:17:18 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/03 13:51:22 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	check_var(char *str)
+int	check_var(char *str, t_vars *vars, int index)
 {
 	int	i;
+	int	j;
 
 	i = 0;
 	if (str[0] == EQUAL)
@@ -30,6 +31,13 @@ int	check_var(char *str)
 	if (str[i] == EQUAL)
 	{
 		return (2);
+	}
+	j = 0;
+	while (vars->envp[j] && index == TRUE)
+	{
+		if (ft_strncmp(vars->envp[j], str, i) == TRUE)
+			return (4);
+		j++;
 	}
 	return (1);
 }
@@ -148,7 +156,6 @@ void	ft_export_export(t_vars *vars, char *str, int index)
 	ft_sort_new_export(vars);
 }
 
-
 int	ft_printf_export(t_tabs *tabs, t_vars *vars)
 {
 	int	i;
@@ -177,16 +184,16 @@ int	ft_build_export(t_tabs *tabs, t_vars *vars, int print)
 	}
 	while (tabs->cmds[i])
 	{
-		if (check_var(tabs->cmds[i]) == 2)
+		if (check_var(tabs->cmds[i], vars, TRUE) == 2)
 		{
 			ft_export_export(vars, tabs->cmds[i], TRUE);
 			ft_export_env(vars, tabs->cmds[i]);
 		}
-		else if (check_var(tabs->cmds[i]) == 1)
+		else if (check_var(tabs->cmds[i], vars, TRUE) == 1)
 		{
 			ft_export_export(vars, tabs->cmds[i], FALSE);
 		}
-		else
+		else if (check_var(tabs->cmds[i], vars, TRUE) == 0)
 			if (print == TRUE)
 				ft_write(tabs->cmds[i], 4, 1);
 		i++;

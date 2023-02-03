@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 19:44:36 by max               #+#    #+#             */
-/*   Updated: 2023/01/31 18:02:45 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/03 13:52:21 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	ft_build_unset(t_tabs *tabs, t_vars *vars, int print)
 	i = 1;
 	while (tabs->cmds[i])
 	{
-		if (check_var(tabs->cmds[i]) == 1)
+		if (check_var(tabs->cmds[i], vars, FALSE) == 1)
 		{
 			ft_remove_env_var(vars, tabs->cmds[i]);
 			ft_remove_export_var(vars, tabs->cmds[i]);

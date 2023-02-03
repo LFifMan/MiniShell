@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:44:43 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/31 18:03:16 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/03 13:51:23 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ t_shell	*ft_space_redops(t_shell **shell);
 
 /* PARSING_REDOP.C */
 void	ft_redops(t_tabs **tabs);
-int		check_var(char *str);
+int		check_var(char *str, t_vars *vars, int index);
 
 /* CHECK.C */
 int		ft_check_op(t_shell *shell);
@@ -175,8 +175,6 @@ char	*ft_join_export(char *s1, char *s2, int index);
 int		ft_strcmp_ascii(char *input, char *str);
 void	ft_write(char *str, int option, int status);
 int		ft_write_op(char *str, int status);
-
-
 
 /* SIGNALS.C */
 void	ft_signals(int index);
