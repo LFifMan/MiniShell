@@ -12,10 +12,26 @@
 
 #include "../includes/minishell.h"
 
+void	ft_to_name(t_shell *tmp, t_shell *new, int option)
+{
+	if (option == 0)
+	{
+		ft_lstadd_back(&new, tmp->data, FALSE);
+		if (tmp->next && tmp->index != SPACE && (tmp->next->index == GREATER || tmp->next->index == SMALLER))
+			ft_lstadd_back(&new, " ", FALSE);
+	}
+	else
+	{
+		ft_lstadd_back(&new, tmp->data, FALSE);
+		if (tmp->next && tmp->next->index != SPACE)
+			ft_lstadd_back(&new, " ", FALSE);
+	}
+}
+
 t_shell	*ft_space_redops(t_shell **shell)
 {
-	t_shell *tmp;
-	t_shell *new;
+	t_shell	*tmp;
+	t_shell	*new;
 
 	new = malloc(sizeof(t_shell));
 	if (!new)
@@ -25,43 +41,32 @@ t_shell	*ft_space_redops(t_shell **shell)
 	while (tmp)
 	{
 		if (tmp->index != GREATER && tmp->index != SMALLER)
-		{
-				ft_lstadd_back(&new, tmp->data, FALSE);
-				if (tmp->next && tmp->index != SPACE && (tmp->next->index == GREATER || tmp->next->index == SMALLER))
-					ft_lstadd_back(&new, " ", FALSE);
-		}
-		else 
-		{
-			ft_lstadd_back(&new, tmp->data, FALSE);
-			if (tmp->next && tmp->next->index != SPACE)
-				ft_lstadd_back(&new, " ", FALSE);
-		}
+			ft_to_name(tmp, new, 0);
+		else
+			ft_to_name(tmp, new, 1);
 		tmp = tmp->next;
 	}
 	free_shell(*shell);
 	free(*shell);
 	return (new);
 }
+
 void	ft_split_redirections(t_shell **shell, char *input)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
+	char	type;
 
 	i = 0;
 	while (input[i])
 	{
 		j = 0;
-		if (input[i] == GREATER)
+		if (input[i] == GREATER || input[i] == SMALLER)
 		{
-			while (input[i + j] == GREATER)
+			type = input[i];
+			while (input[i + j] == type)
 				j++;
-			ft_lstadd_back(shell, parse_quotation(&input[i], GREATER, j, 0), TRUE);
-		}
-		else if (input[i] == SMALLER)
-		{
-			while (input[i + j] == SMALLER)
-				j++;
-			ft_lstadd_back(shell, parse_quotation(&input[i], SMALLER, j, 0), TRUE);
+			ft_lstadd_back(shell, parse_quotation(&input[i], type, j, 0), TRUE);
 		}
 		else if (input[i])
 		{
