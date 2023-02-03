@@ -6,24 +6,24 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 19:44:36 by max               #+#    #+#             */
-/*   Updated: 2023/02/03 13:52:21 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/03 15:51:01 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
 
 void	ft_remove_env_var(t_vars *vars, char *str)
 {
 	int	i;
 	int	j;
 	int	len;
-	
-	len = strlen(str);
+
+	len = (int)strlen(str);
 	i = 0;
 	while (vars->envp[i])
 	{
-		if (ft_strncmp(vars->envp[i], str, len) == TRUE && (vars->envp[i][len] == '\0' || vars->envp[i][len] == '='))
+		if (ft_strncmp(vars->envp[i], str, len) == TRUE && \
+		(vars->envp[i][len] == '\0' || vars->envp[i][len] == '='))
 		{
 			free(vars->envp[i]);
 			j = i;
@@ -36,7 +36,6 @@ void	ft_remove_env_var(t_vars *vars, char *str)
 		else
 			i++;
 	}
-	return ;
 }
 
 void	ft_remove_export_var(t_vars *vars, char *str)
@@ -52,7 +51,8 @@ void	ft_remove_export_var(t_vars *vars, char *str)
 	i = 0;
 	while (vars->export[i])
 	{
-		if (ft_strncmp(vars->export[i], unset, len) == TRUE && (vars->export[i][len] == '\0' || vars->export[i][len] == '='))
+		if (ft_strncmp(vars->export[i], unset, len) == TRUE && \
+		(vars->export[i][len] == '\0' || vars->export[i][len] == '='))
 		{
 			free(vars->export[i]);
 			j = i;
@@ -93,12 +93,11 @@ void	ft_unset_export(t_tabs *tabs, t_vars *vars, char *cmd_one)
 
 	i = 0;
 	tabs = tabs->next;
-
 	if (!cmd_one)
 		return ;
 	while (cmd_one[i])
 	{
-		cmd_one[i] = ft_tolower(cmd_one[i]);
+		cmd_one[i] = (char)ft_tolower(cmd_one[i]);
 		i++;
 	}
 	if (tabs->next)

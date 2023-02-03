@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 23:27:44 by max               #+#    #+#             */
-/*   Updated: 2023/01/31 18:41:56 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/03 16:18:56 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int	control_parsing(t_shell **shell, t_vars *vars, char *input, t_tabs *tabs)
 	if (parsing_quotations(shell, input) == FALSE)
 	{
 		write (2, "minishell: error: quote not finished\n", 37);
+		g_status = 1;
 		free_lsts(*shell, tabs, input, 1);
 		return (FALSE);
 	}

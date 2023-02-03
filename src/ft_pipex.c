@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 13:40:05 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/31 18:40:13 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/03 15:51:41 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,6 @@ void	ft_redops_handler(t_tabs *tabs, t_vars *vars)
 			if (vars->out_fd < 0) // todo : ft_write option == 3
 			{
 				ft_write(tabs->redop[j + 1], 3, 1);
-//				write(2, "minishell: ", ft_strlen("minishell: "));
-//				write(2, tabs->redop[j + 1], ft_strlen(tabs->redop[j + 1]));
-//				write(2, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
 				exit (1);
 			}
 		}
@@ -82,9 +79,6 @@ void	ft_redops_handler(t_tabs *tabs, t_vars *vars)
 			if (vars->in_fd < 0) // todo : ft_write option == 3
 			{
 				ft_write(tabs->redop[j + 1], 3, 1);
-//				write(2, "minishell: ", ft_strlen("minishell: "));
-//				write(2, tabs->redop[j + 1], ft_strlen(tabs->redop[j + 1]));
-//				write(2, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
 				exit (1);
 			}
 		}
@@ -97,9 +91,6 @@ void	ft_redops_handler(t_tabs *tabs, t_vars *vars)
 			if (vars->out_fd < 0) // todo : ft_write option == 3
 			{
 				ft_write(tabs->redop[j + 1], 3, 1);
-//				write(2, "minishell: ", ft_strlen("minishell: "));
-//				write(2, tabs->redop[j + 1], ft_strlen(tabs->redop[j + 1]));
-//				write(2, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
 				exit (1);
 			}
 		}
@@ -128,11 +119,7 @@ void	ft_child(t_tabs *tabs, t_vars *vars)
 			vars->var = execve(tabs->paths[vars->i], tabs->cmds, vars->envp);
 			vars->i++;
 		}
-		// todo : ft_write option == 2
 		ft_write(tabs->cmds[0], 2, 127);
-//		write(2, "minishell: ", ft_strlen("minishell: "));
-//		write(2, tabs->cmds[0], ft_strlen(tabs->cmds[0]));
-//		write(2, ": command not found\n", ft_strlen(": command not found\n"));
 		exit(127);
 	}
 }

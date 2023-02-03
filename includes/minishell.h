@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:44:43 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/03 13:51:23 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/03 16:39:28 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # define GREATER 62
 # define SMALLER 60
 # define EQUAL 61
+# define QUESTION 63
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -174,7 +175,9 @@ char	*ft_join(int index, char *s1, char *s2, char *dest);
 char	*ft_join_export(char *s1, char *s2, int index);
 int		ft_strcmp_ascii(char *input, char *str);
 void	ft_write(char *str, int option, int status);
-int		ft_write_op(char *str, int status);
+int		ft_write_op(char *str, int status, int print);
+char	*dest(int n, int count);
+char	*ft_itoa(int n);
 
 /* SIGNALS.C */
 void	ft_signals(int index);

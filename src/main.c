@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:38:47 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/03 13:52:01 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/03 15:47:12 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,5 @@ int	main(int ac, char **av, char **ev)
 	control_tower(&vars);
 	ft_free_vars(vars);
 	ft_signals(FALSE);
-	return (0);
+	return (42);
 }
