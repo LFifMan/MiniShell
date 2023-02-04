@@ -38,15 +38,13 @@ char	*ft_join(int index, char *s1, char *s2, char *dest)
 	if (index == TRUE && count == 0)
 		dest[j++] = DOUBLEQUOTE;
 	if (index == TRUE)
-	{
 		dest[j++] = DOUBLEQUOTE;
-	}
 	dest[j] = '\0';
 	free(s1);
 	return (dest);
 }
 
-char	*ft_join_export(char *s1, char *s2, int index)
+char	*ft_join_exp(char *s1, char *s2, int index)
 {
 	char	*dest;
 	size_t	size;

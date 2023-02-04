@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free_lsts.c                                     :+:      :+:    :+:   */
+/*   ft_ft_free_lst.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,18 +12,16 @@
 
 #include "../includes/minishell.h"
 
-int	free_shell(t_shell *lst)
+int	ft_free_shell(t_shell *lst)
 {
 	t_shell	*tmp;
 	t_shell	*end;
 
 	end = lst;
 	lst = lst->next;
-	// printf("FREE SHELL\n");
 	while (lst != NULL)
 	{
 		tmp = lst;
-		// printf("tmp : %p	| tmp->data adress : %p	| tmp->data : %s\n", tmp, tmp->data, tmp->data);
 		lst = lst->next;
 		free(tmp->data);
 		free(tmp);
@@ -33,7 +31,7 @@ int	free_shell(t_shell *lst)
 	return (0);
 }
 
-int	free_tabs(t_tabs *lst)
+int	ft_free_tabs(t_tabs *lst)
 {
 	t_tabs	*tmp;
 	t_tabs	*end;
@@ -78,15 +76,15 @@ int	free_tabs(t_tabs *lst)
 	return (0);
 }
 
-void	free_lsts(t_shell *shell, t_tabs *tabs, char *input, int index)
+void	ft_free_lst(t_shell *shell, t_tabs *tabs, char *input, int index)
 {
 	free(input);
 	if (index > 0)
 	{
-		free_shell(shell);
+		ft_free_shell(shell);
 		if (index == 2)
 		{
-			free_tabs(tabs);
+			ft_free_tabs(tabs);
 			free(tabs);
 		}
 	}
@@ -106,15 +104,15 @@ void	ft_free_vars(t_vars vars)
 	free(vars.export);
 }
 
-void	free_array(char **export, int envp_length)
+void	ft_free_array(char **exp, int len_env)
 {
 	int	i;
 
 	i = 0;
-	while (i < envp_length)
+	while (i < len_env)
 	{
-		free(export[i]);
+		free(exp[i]);
 		i++;
 	}
-	free(export);
+	free(exp);
 }

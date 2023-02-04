@@ -12,26 +12,26 @@
 
 #include "../includes/minishell.h"
 
-char	**create_export(int envp_length, char **input)
+char	**ft_create_exp(int envp_length, char **input)
 {
 	int		i;
-	char	**export;
+	char	**exp;
 
 	i = 0;
-	export = malloc(sizeof(char *) * (envp_length + 1));
-	if (!export)
+	exp = malloc(sizeof(char *) * (envp_length + 1));
+	if (!exp)
 		exit (EXIT_FAILURE);
 	while (i < envp_length)
 	{
-		export[i] = ft_strdup("declare -x ", FALSE);
-		export[i] = ft_join_export(export[i], input[i], TRUE);
+		exp[i] = ft_strdup("declare -x ", FALSE);
+		exp[i] = ft_join_exp(exp[i], input[i], TRUE);
 		i++;
 	}
-	export[i] = 0;
-	return (export);
+	exp[i] = 0;
+	return (exp);
 }
 
-char	**dup_export(t_vars *vars, int envp_length)
+char	**ft_dup_exp(t_vars *vars, int envp_length)
 {
 	int		i;
 	char	**export;
@@ -49,7 +49,7 @@ char	**dup_export(t_vars *vars, int envp_length)
 	return (export);
 }
 
-void	sort_export(int envp_length, char **export)
+void	ft_sort_exp(int envp_length, char **export)
 {
 	int		i;
 	char	*tmp;
@@ -69,7 +69,7 @@ void	sort_export(int envp_length, char **export)
 	}
 }
 
-char *add_lvl(char *env)
+char	*ft_shlvl(char *env)
 {
 	int		i;
 	int		lvl;
@@ -82,55 +82,7 @@ char *add_lvl(char *env)
 			return (ft_strdup("SHLVL=1", FALSE));
 		i++;
 	}
-	lvl = atoi(&env[6]);
+	lvl = ft_atoi(&env[6]);
 	ret = ft_itoa(lvl + 1);
 	return (ft_strjoin(ft_strdup("SHLVL=", FALSE), ret, TRUE));
-}
-
-void	init_env(t_vars *vars, char **envp, int envp_length)
-{
-	int		i;
-	char	**new_envp;
-
-	i = 0;
-	new_envp = malloc(sizeof(char *) * (envp_length + 1));
-	if (!new_envp)
-		exit (EXIT_FAILURE);
-	while (i < envp_length)
-	{
-		if (ft_strncmp(envp[i], "SHLVL=", 6) == TRUE)
-			new_envp[i] = add_lvl(envp[i]);
-		else
-			new_envp[i] = ft_strdup(envp[i], FALSE);
-		i++;
-	}
-	new_envp[envp_length] = 0;
-	vars->envp = new_envp;
-}
-
-char	*get_root_new(char **env)
-{
-	int		i;
-
-	i = 0;
-	while (env[i] && ft_memcmp((char *)env[i], "HOME=", 5) != 0)
-		i++;
-	return (ft_strdup(&env[i][5], FALSE));
-
-}
-
-void	init_vars(t_vars *vars, char **envp)
-{
-	int		envp_length;
-	char	**export;
-
-	envp_length = 0;
-	while (envp[envp_length])
-		envp_length++;
-	init_env(vars, envp, envp_length);
-	export = dup_export(vars, envp_length);
-	sort_export(envp_length, export);
-	vars->export = create_export(envp_length, export);
-	free_array(export, envp_length);
-	vars->root = get_root_new(envp);
 }

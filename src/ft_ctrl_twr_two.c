@@ -1,32 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_ft_ctrl_twr.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/17 14:38:47 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/03 15:47:12 by mstockli         ###   ########.fr       */
+/*   Created: 2023/01/22 23:27:44 by max               #+#    #+#             */
+/*   Updated: 2023/02/03 16:18:56 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	main(int ac, char **av, char **ev)
-{
-	t_vars	vars;
 
-	(void)av;
-	if (ac != 1)
+
+char	*ft_prompt(void)
+{
+	char	*input;
+
+	g_status = 0;
+	input = readline("> ");
+	if (input == 0)
 	{
-		write(2, "Too many arguments\n", 19);
-		write(2, "Run the minishell program by itself\n", 36);
-		exit (1);
+		printf("\033[1A\033[3Cexit\n");
+		exit(0);
 	}
-	ft_signals(TRUE);
-	ft_init_vars(&vars, ev);
-	ft_ctrl_twr(&vars);
-	ft_free_vars(vars);
+	if (ft_build_exit(input) == TRUE)
+	{
+		exit(0);
+	}
+	add_history(input);
 	ft_signals(FALSE);
-	return (42);
+	return (input);
+}
+
+int	ft_execution(t_tabs *tabs, t_vars *vars)
+{
+	ft_pipex(tabs, vars);
+	ft_unset_export(tabs, vars, tabs->next->cmds[0]);
+	return (TRUE);
 }

@@ -21,7 +21,7 @@ int	ft_count_redops(char **cmd)
 	count = 0;
 	while (cmd[i])
 	{
-		if (cmd[i][0] == GREATER || cmd[i][0] ==  SMALLER)
+		if (cmd[i][0] == GREAT || cmd[i][0] ==  SMALL)
 			count++;
 		i++;
 	}
@@ -84,7 +84,7 @@ void	ft_redops(t_tabs **tabs)
 		tmp->redop[0] = 0;
 		while (tmp->cmds[i])
 		{
-			if (tmp->cmds[i][0] == GREATER || tmp->cmds[i][0] ==  SMALLER)
+			if (tmp->cmds[i][0] == GREAT || tmp->cmds[i][0] ==  SMALL)
 			{
 				tmp->redop[j] = tmp->cmds[i];
 				tmp->redop[j + 1] = tmp->cmds[i + 1];

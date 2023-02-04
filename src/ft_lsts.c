@@ -12,54 +12,53 @@
 
 #include "../includes/minishell.h"
 
-int	ft_lstsize(t_shell **lst)
+char	ft_add_index(char c)
 {
-	t_shell	*tmp;
-	int		i;
-
-	tmp = (*lst)->next;
-	i = 0;
-	while (tmp != NULL)
-	{
-		i++;
-		tmp = tmp->next;
-	}
-	return (i);
+	if (c == DOUBLEQUOTE || c == SINGLEQUOTE || c == PIPE || c == SPACE || c == GREAT || c == SMALL)
+		return (c);
+	return (CHARS);
 }
 
-void	ft_lstadd_back(t_shell **lst, char *input, int index)
+char	*ft_add_data(char *input)
 {
-	t_shell	*tmp;
-	t_shell	*curr;
 	int		i;
+	char	*data;
 
-	tmp = malloc(sizeof(t_shell));
-	if (!tmp)
-		exit (EXIT_FAILURE);
-	tmp->next = NULL;
-	if (input[0] == DOUBLEQUOTE || input[0] == SINGLEQUOTE || input[0] == PIPE || input[0] == SPACE || input[0] == GREATER || input[0] == SMALLER) // create an index to know if the lst is a quotation or not
-		tmp->index = input[0];
-	else
-		tmp->index = CHARS;
 	i = 0;
-	tmp->data = malloc(sizeof(char) * ft_strlen(input) + 1);
-	if (!tmp->data)
+	data = malloc (sizeof(char) * ft_strlen(input) + 1);
+	if (!data)
 		exit (EXIT_FAILURE);
 	while (input[i])
 	{
-		tmp->data[i] = input[i];
+		data[i] = input[i];
 		i++;
 	}
-	tmp->data[i] = 0;
+	data[i] = 0;
+	return (data);
+}
+
+void	ft_lst_new(t_shell **lst, char *input, int index)
+{
+	t_shell	*new;
+	t_shell	*curr;
+
+	new = malloc(sizeof(t_shell));
+	if (!new)
+		exit (EXIT_FAILURE);
+	new->next = NULL;
+	new->index = (int)ft_add_index(input[0]);
+	new->data = ft_add_data(input);
+	if (*lst == NULL)
+	{
+		*lst = new;
+		return ;
+	}
 	curr = *lst;
 	while (curr->next != NULL)
-	{
 		curr = curr->next;
-	}
-	curr->next = tmp;
+	curr->next = new;
 	if (index == TRUE)
 		free (input);
-
 }
 
 void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input)
@@ -112,7 +111,6 @@ void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input)
 			input = input->next;
 		}
 		i++;
-
 	}
 	tmp->cmds[i] = 0;
 	curr = *tabs;

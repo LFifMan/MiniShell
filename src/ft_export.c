@@ -133,7 +133,7 @@ void	ft_export_export(t_vars *vars, char *str, int index)
 	char	*export;
 
 	export = ft_strdup("declare -x ", FALSE);
-	export = ft_join_export(export, str, index);
+	export = ft_join_exp(export, str, index);
 	i = 0;
 	size = 0;
 

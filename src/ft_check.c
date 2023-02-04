@@ -30,13 +30,13 @@ int	ft_check_next_pipe(t_shell *shell, int print)
 
 int	ft_check_next_redirection(t_shell *shell, int print)
 {
-	if (ft_strlen(shell->data) > 3 && shell->index == GREATER)
+	if (ft_strlen(shell->data) > 3 && shell->index == GREAT)
 		return (ft_write_op(">>", 258, print));
-	if (ft_strlen(shell->data) > 3 && shell->index == SMALLER)
+	if (ft_strlen(shell->data) > 3 && shell->index == SMALL)
 		return (ft_write_op("<<", 258, print));
-	if (ft_strlen(shell->data) > 2 && shell->index == GREATER)
+	if (ft_strlen(shell->data) > 2 && shell->index == GREAT)
 		return (ft_write_op(">", 258, print));
-	if (ft_strlen(shell->data) > 2 && shell->index == SMALLER)
+	if (ft_strlen(shell->data) > 2 && shell->index == SMALL)
 		return (ft_write_op("<", 258, print));
 	if (!shell->next)
 		return (ft_write_op("newline", 258, print));
@@ -63,7 +63,7 @@ int	ft_check_op(t_shell *shell)
 			if (ft_check_next_pipe(shell, FALSE) == FALSE)
 				return (ft_check_next_pipe(shell, TRUE));
 		}
-		else if (shell->index == GREATER || shell->index == SMALLER)
+		else if (shell->index == GREAT || shell->index == SMALL)
 		{
 			if (ft_check_next_redirection(shell, FALSE) == FALSE)
 				return (ft_check_next_redirection(shell, TRUE));

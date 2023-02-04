@@ -30,14 +30,16 @@ DIR_OBJ		= ./obj
 ##-----FILES-----##
 
 SRC		=	main.c \
-			ft_init.c \
-			ft_control_tower.c \
+			ft_init_one.c \
+			ft_init_two.c \
+			ft_ctrl_twr_one.c \
+			ft_ctrl_twr_two.c \
 			ft_parsing_input.c \
 			ft_parsing_regroup.c \
-			ft_utils1.c \
-			ft_utils2.c \
-			ft_utils3.c \
-			ft_utils4.c \
+			ft_utils_one.c \
+			ft_utils_two.c \
+			ft_utils_three.c \
+			ft_utils_four.c \
 			ft_lsts.c \
 			ft_free_lsts.c \
 			ft_verifs.c \
@@ -47,6 +49,9 @@ SRC		=	main.c \
 			ft_check.c \
 			ft_parsing_paths.c \
 			ft_builtins.c \
+			alternative_build_cd.c \
+			ft_builtins_utils.c \
+			ft_builtins_utils_pwd.c \
 			ft_unset.c \
 			ft_export.c \
 			ft_parsing_redop.c \

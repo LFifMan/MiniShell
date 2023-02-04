@@ -29,7 +29,7 @@ void	ft_remove_env_var(t_vars *vars, char *str)
 			j = i;
 			while (vars->envp[j])
 			{
-				vars->envp[j] = vars->envp[j+1];
+				vars->envp[j] = vars->envp[j + 1];
 				j++;
 			}
 		}
@@ -46,7 +46,7 @@ void	ft_remove_export_var(t_vars *vars, char *str)
 	char	*unset;
 
 	unset = ft_strdup("declare -x ", FALSE);
-	unset = ft_join_export(unset, str, FALSE);
+	unset = ft_join_exp(unset, str, FALSE);
 	len = (int)strlen(unset);
 	i = 0;
 	while (vars->export[i])
@@ -58,7 +58,7 @@ void	ft_remove_export_var(t_vars *vars, char *str)
 			j = i;
 			while (vars->export[j])
 			{
-				vars->export[j] = vars->export[j+1];
+				vars->export[j] = vars->export[j + 1];
 				j++;
 			}
 		}

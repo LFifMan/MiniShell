@@ -16,7 +16,8 @@ int	ft_write_op(char *str, int status, int print)
 {
 	if (print == TRUE)
 	{
-		write (2, "\"minishell: syntax error near unexpected token `", 49);		write (2, str, ft_strlen(str));
+		write (2, "\"minishell: syntax error near unexpected token `", 49);
+		write (2, str, ft_strlen(str));
 		write (2, "'\n", 2);
 		g_status = status;
 	}

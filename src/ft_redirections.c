@@ -16,15 +16,16 @@ void	ft_to_name(t_shell *tmp, t_shell *new, int option)
 {
 	if (option == 0)
 	{
-		ft_lstadd_back(&new, tmp->data, FALSE);
-		if (tmp->next && tmp->index != SPACE && (tmp->next->index == GREATER || tmp->next->index == SMALLER))
-			ft_lstadd_back(&new, " ", FALSE);
+		ft_lst_new(&new, tmp->data, FALSE);
+		if (tmp->next && tmp->index != SPACE && \
+		(tmp->next->index == GREAT || tmp->next->index == SMALL))
+			ft_lst_new(&new, " ", FALSE);
 	}
 	else
 	{
-		ft_lstadd_back(&new, tmp->data, FALSE);
+		ft_lst_new(&new, tmp->data, FALSE);
 		if (tmp->next && tmp->next->index != SPACE)
-			ft_lstadd_back(&new, " ", FALSE);
+			ft_lst_new(&new, " ", FALSE);
 	}
 }
 
@@ -37,42 +38,42 @@ t_shell	*ft_space_redops(t_shell **shell)
 	if (!new)
 		exit (EXIT_FAILURE);
 	new->next = NULL;
-	tmp = (*shell)->next; // error check?
+	tmp = (*shell)->next;
 	while (tmp)
 	{
-		if (tmp->index != GREATER && tmp->index != SMALLER)
+		if (tmp->index != GREAT && tmp->index != SMALL)
 			ft_to_name(tmp, new, 0);
 		else
 			ft_to_name(tmp, new, 1);
 		tmp = tmp->next;
 	}
-	free_shell(*shell);
+	ft_free_shell(*shell);
 	free(*shell);
 	return (new);
 }
 
-void	ft_split_redirections(t_shell **shell, char *input)
+void	ft_split_redirections(t_shell **shell, char *str)
 {
 	int		i;
 	int		j;
 	char	type;
 
 	i = 0;
-	while (input[i])
+	while (str[i])
 	{
 		j = 0;
-		if (input[i] == GREATER || input[i] == SMALLER)
+		if (str[i] == GREAT || str[i] == SMALL)
 		{
-			type = input[i];
-			while (input[i + j] == type)
+			type = str[i];
+			while (str[i + j] == type)
 				j++;
-			ft_lstadd_back(shell, parse_quotation(&input[i], type, j, 0), TRUE);
+			ft_lst_new(shell, parse_quotation(&str[i], type, j, 0), TRUE);
 		}
-		else if (input[i])
+		else if (str[i])
 		{
-			while (input[i + j] && input[i + j] != SMALLER && input[i + j] != GREATER)
+			while (str[i + j] && str[i + j] != SMALL && str[i + j] != GREAT)
 				j++;
-			ft_lstadd_back(shell, parse_quotation(&input[i], 0, j, 0), TRUE);
+			ft_lst_new(shell, parse_quotation(&str[i], 0, j, 0), TRUE);
 		}
 		else
 			return ;
@@ -80,44 +81,45 @@ void	ft_split_redirections(t_shell **shell, char *input)
 	}
 }
 
+void	ft_split_add(t_shell *tmp, t_shell *new)
+{
+	int	i;
+
+	i = 0;
+	if (tmp->index == GREAT || tmp->index == SMALL)
+		tmp->index = CHARS;
+	if (tmp->index == CHARS)
+	{
+		while (tmp->data[i] != GREAT && tmp->data[i] != SMALL && tmp->data[i])
+			i++;
+		if (tmp->data[i] == GREAT || tmp->data[i] == SMALL)
+			ft_split_redirections(&new, tmp->data);
+		else
+			ft_lst_new(&new, tmp->data, FALSE);
+	}
+	else
+		ft_lst_new(&new, tmp->data, FALSE);
+}
+
 t_shell	*parsing_redops(t_shell **shell)
 {
-	t_shell *tmp;
-	t_shell *tmp2;
-	t_shell *new;
-	int		i;
+	t_shell	*tmp;
+	t_shell	*tmp2;
+	t_shell	*new;
 
 	new = malloc(sizeof(t_shell));
 	if (!new)
 		exit (EXIT_FAILURE);
 	new->next = NULL;
-	tmp = (*shell)->next; // error check?
+	tmp = (*shell)->next;
 	tmp2 = (*shell);
 	while (tmp)
 	{
-		i = 0;
-		if (tmp->index == GREATER || tmp->index == SMALLER)
-			tmp->index = CHARS;
-		if (tmp->index == CHARS)
-		{
-			while (tmp->data[i] != GREATER && tmp->data[i] != SMALLER && tmp->data[i])
-			{
-				i++;
-			}
-			if (tmp->data[i] == GREATER || tmp->data[i] == SMALLER)
-			{
-				//printf("tmp data %c\n\n\n\n", tmp->data[i]);
-				ft_split_redirections(&new, tmp->data);
-			}
-			else
-				ft_lstadd_back(&new, tmp->data, FALSE);
-		}
-		else
-			ft_lstadd_back(&new, tmp->data, FALSE);
+		ft_split_add(tmp, new);
 		tmp = tmp->next;
 	}
 	*shell = tmp2;
-	free_shell(*shell);
+	ft_free_shell(*shell);
 	free(*shell);
 	return (new);
 }

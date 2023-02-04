@@ -41,7 +41,7 @@ int	ft_lst_count_spaces(t_shell *lst)
 	{
 		if (lst->index == SPACE && lst->next && lst->next->index != PIPE)
 			i++;
-		else if (lst->index == GREATER || lst->index == SMALLER)
+		else if (lst->index == GREAT || lst->index == SMALL)
 			i++;
 		else if (lst->index == PIPE)
 			return (i);
@@ -89,13 +89,13 @@ void	ft_split_pipes(t_shell **shell, char *input)
 		{
 			while (input[i + j] == PIPE)
 				j++;
-			ft_lstadd_back(shell, parse_quotation(&input[i], PIPE, j, 0), TRUE);
+			ft_lst_new(shell, parse_quotation(&input[i], PIPE, j, 0), TRUE);
 		}
 		else if (input[i])
 		{
 			while (input[i + j] && input[i + j] != PIPE)
 				j++;
-			ft_lstadd_back(shell, parse_quotation(&input[i], 0, j, 0), TRUE);
+			ft_lst_new(shell, parse_quotation(&input[i], 0, j, 0), TRUE);
 		}
 		else
 			return ;
@@ -121,7 +121,7 @@ t_shell	*parsing_pipes(t_shell **shell)
 		i = 0;
 		if (tmp->index == PIPE)
 			tmp->index = CHARS;
-		if (tmp->index == CHARS || tmp->index == GREATER || tmp->index == SMALLER)
+		if (tmp->index == CHARS || tmp->index == GREAT || tmp->index == SMALL)
 		{
 			while (tmp->data[i] != PIPE && tmp->data[i])
 			{
@@ -132,14 +132,14 @@ t_shell	*parsing_pipes(t_shell **shell)
 				ft_split_pipes(&new, tmp->data);
 			}
 			else
-				ft_lstadd_back(&new, tmp->data, FALSE);
+				ft_lst_new(&new, tmp->data, FALSE);
 		}
 		else
-			ft_lstadd_back(&new, tmp->data, FALSE);
+			ft_lst_new(&new, tmp->data, FALSE);
 		tmp = tmp->next;
 	}
 	*shell = tmp2;
-	free_shell(*shell);
+	ft_free_shell(*shell);
 	free(*shell);
 	return (new);
 }
