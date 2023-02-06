@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ft_free_lst.c                                   :+:      :+:    :+:   */
+/*   ft_free_lsts_one.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 23:14:47 by max               #+#    #+#             */
-/*   Updated: 2023/01/31 14:19:39 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/06 21:29:21 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	ft_free_lst(t_shell *shell, t_tabs *tabs, char *input, int index)
 		ft_free_shell(shell);
 		if (index == 2)
 		{
-			ft_free_tabs(tabs);
+			//ft_free_tabs(tabs);
 			free(tabs);
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 16:17:05 by max               #+#    #+#             */
-/*   Updated: 2023/02/06 20:55:47 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/06 21:35:36 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,39 @@ void	ft_pwd(t_var *var, char *path)
 	var->env[i] = tmp_env;
 }
 
+char	**deset_env(t_var *var)
+{
+	int		i;
+	int		j;
+	char	**dest;
+
+	i = 0;
+	j = 0;
+	while (var->env[i])
+	{
+		i++;
+	}
+	dest = malloc(sizeof(char *) * (i));
+	i = 0;
+	while (var->env[i])
+	{
+		if (ft_strncmp(var->env[i], "OLDPWD=", 7) == TRUE)
+		{
+			free(var->env[i]);
+			i++;
+		}
+		dest[j] = ft_strdup(var->env[i], TRUE);
+		i++;
+		j++;
+	}
+	free(var->env);
+	dest[j] = 0;
+	return (dest);
+}
+
 char	**reset_env(t_var *var, char *src)
 {
-	int	i;
+	int		i;
 	char	**dest;
 
 	i = 0;
@@ -72,7 +102,7 @@ char	**reset_env(t_var *var, char *src)
 	{
 		i++;
 	}
-	dest = malloc(sizeof(char *) * i + 2);
+	dest = malloc(sizeof(char *) * (i + 2));
 	i = 0;
 	while (var->env[i])
 	{
@@ -80,7 +110,7 @@ char	**reset_env(t_var *var, char *src)
 		i++;
 	}
 	free(var->env);
-	dest[i++] = ft_strdup(&src[11], FALSE);
+	dest[i++] = ft_strjoin(ft_strdup("OLDPWD=", FALSE), ft_strdup(ft_trim_quotations(&src[18]), TRUE), TRUE);
 	dest[i] = 0;
 	return (dest);
 }
@@ -102,9 +132,9 @@ void	ft_old_pwd(t_var *var, int i)
 	k = 0;
 	while (var->exp[k])
 	{
-		if (ft_strncmp(var->exp[k], "declare -x OLDPWD", 17) == TRUE) // check for other OLDPWD, like OLDPWD1
+		if (ft_strncmp(var->exp[k], "declare -x OLDPWD=\"", 19) == TRUE)
 		{
-			if (var->exp[k][17] == EQUAL)
+			if (var->exp[k][20] != DOUBLEQUOTE)
 			{
 				break ;
 			}
@@ -112,7 +142,10 @@ void	ft_old_pwd(t_var *var, int i)
 		k++;
 	}
 	if (!var->exp[k])
+	{
+		var->env = deset_env(var);
 		return ;
+	}
 	if (!var->env[j])
 	{
 		var->env = reset_env(var, var->exp[k]);
@@ -152,7 +185,7 @@ void	ft_old_pwd_exp(t_var *var, int i)
 	if (!var->exp[i])
 	{
 		free(tmp_exp);
-		var->exp[j] = ft_strdup("declare -x OLDPWD=""", FALSE);
+		var->exp[j] = ft_strdup("declare -x OLDPWD=\"\"", FALSE);
 	}
 	else
 		var->exp[j] = ft_strjoin(tmp_exp, &var->exp[i][15], FALSE);
