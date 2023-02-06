@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_builtins.c                                      :+:      :+:    :+:   */
+/*   ft_built_utils_one.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 16:17:05 by max               #+#    #+#             */
-/*   Updated: 2023/01/31 18:16:14 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/06 19:16:02 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,8 @@ char	*ft_create_root(char *env, int j)
 
 void	ft_update_pwd(t_var *var, char *root)
 {
-	printf("ici1\n");
 	ft_pwd_exp(var, root);
-	printf("ici2\n");
 	ft_pwd(var, root);
-	printf("ici3\n");
 	g_status = 0;
 }
 
@@ -92,9 +89,7 @@ void	ft_cd_alone(char **env, int print, t_var *var)
 		root = ft_create_root(env[i], 5);
 	if (chdir(root) == 0)
 	{
-		printf("ici\n");
 		ft_update_pwd(var, root);
-		printf("la\n");
 	}
 	else if (print == TRUE && root)
 		ft_write(root, 0, 1);

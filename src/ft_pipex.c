@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 13:40:05 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/03 15:51:41 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/06 20:32:56 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@ void	ft_heredoc(t_tabs *tabs, t_var *var, int j)
 
 void	ft_child(t_tabs *tabs, t_var *var)
 {
+	int	k;
+
+	k = 0;
 	var->redir_in = 0;
 	var->redir_out = 0;
 	ft_redops_handler(tabs, var);
@@ -56,10 +59,10 @@ void	ft_child(t_tabs *tabs, t_var *var)
 	else
 	{
 		var->var = execve(tabs->cmds[0], tabs->cmds, var->env);
-		while (tabs->paths[var->i] && var->var < 0)
+		while (tabs->paths[k] && var->var < 0)
 		{
-			var->var = execve(tabs->paths[var->i], tabs->cmds, var->env);
-			var->i++;
+			var->var = execve(tabs->paths[k], tabs->cmds, var->env);
+			k++;
 		}
 		ft_write(tabs->cmds[0], 2, 127);
 		exit(127);

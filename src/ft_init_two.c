@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_init.c                                          :+:      :+:    :+:   */
+/*   ft_init_two.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 18:03:27 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/03 16:49:25 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/06 20:04:15 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ char	**ft_create_exp(int len_env, char **exp)
 	while (i < len_env)
 	{
 		new_exp[i] = ft_strdup("declare -x ", FALSE);
-		new_exp[i] = ft_join_exp(new_exp[i], exp[i], TRUE);
+		if (ft_strncmp(exp[i], "OLDPWD", 6) == TRUE)
+			new_exp[i] = ft_join_exp(new_exp[i], exp[i], FALSE);
+		else
+			new_exp[i] = ft_join_exp(new_exp[i], exp[i], TRUE);
 		i++;
 	}
 	new_exp[i] = 0;
@@ -40,11 +43,13 @@ char	**ft_dup_exp(t_var *var, int len_env)
 	if (!new_exp)
 		exit (EXIT_FAILURE);
 	i = 0;
-	while (i < len_env)
+	while (i < len_env - 1)
 	{
 		new_exp[i] = ft_strdup(var->env[i], FALSE);
 		i++;
 	}
+	new_exp[i] = ft_strdup("OLDPWD", FALSE);
+	i++;
 	new_exp[i] = 0;
 	return (new_exp);
 }
