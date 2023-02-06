@@ -12,8 +12,6 @@
 
 #include "../includes/minishell.h"
 
-
-
 char	*ft_prompt(void)
 {
 	char	*input;
@@ -34,9 +32,9 @@ char	*ft_prompt(void)
 	return (input);
 }
 
-int	ft_execution(t_tabs *tabs, t_vars *vars)
+int	ft_execution(t_tabs *tabs, t_var *var)
 {
-	ft_pipex(tabs, vars);
-	ft_unset_export(tabs, vars, tabs->next->cmds[0]);
+	ft_pipex(tabs, var);
+	ft_unset_export(tabs, var, tabs->next->cmds[0]);
 	return (TRUE);
 }

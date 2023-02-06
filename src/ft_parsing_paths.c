@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-void	ft_paths(t_vars vars, t_tabs **tabs)
+void	ft_paths(t_var var, t_tabs **tabs)
 {
 	t_tabs	*tmp;
 
@@ -20,7 +20,7 @@ void	ft_paths(t_vars vars, t_tabs **tabs)
 	tmp = tmp->next;
 	while (tmp)
 	{
-		tmp->paths = ft_parsing_binaries(vars.envp, tmp->cmds[0]);
+		tmp->paths = ft_parsing_binaries(var.env, tmp->cmds[0]);
 		tmp = tmp->next;
 	}
 }
@@ -32,8 +32,8 @@ char	**ft_create_paths(char *argv)
 	dst = malloc(sizeof(char *) * 2 + 1);
 	if (!dst)
 		exit (EXIT_FAILURE);
-	dst[0] = ft_strjoin("/bin/", argv, FALSE); // TODO: NOT FREE S1
-	dst[1] = ft_strjoin("/usr/bin/", argv, FALSE);// TODO: NOT FREE S1
+	dst[0] = ft_strjoin("/bin/", argv, FALSE);
+	dst[1] = ft_strjoin("/usr/bin/", argv, FALSE);
 	dst[2] = 0;
 	return (dst);
 }

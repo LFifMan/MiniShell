@@ -63,8 +63,14 @@ char	**ft_remove_redop_cmds(char **cmd, int index)
 	}
 	free(cmd);
 	i = 0;
-	return (dst);	
+	return (dst);
 }
+//
+//int	ft_uugt(t_tabs *tmp, int i, int j)
+//{
+//
+//	return (j);
+//}
 
 void	ft_redops(t_tabs **tabs)
 {
@@ -84,7 +90,7 @@ void	ft_redops(t_tabs **tabs)
 		tmp->redop[0] = 0;
 		while (tmp->cmds[i])
 		{
-			if (tmp->cmds[i][0] == GREAT || tmp->cmds[i][0] ==  SMALL)
+			if (tmp->cmds[i][0] == GREAT || tmp->cmds[i][0] == SMALL)
 			{
 				tmp->redop[j] = tmp->cmds[i];
 				tmp->redop[j + 1] = tmp->cmds[i + 1];

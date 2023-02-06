@@ -35,25 +35,31 @@ SRC		=	main.c \
 			ft_ctrl_twr_one.c \
 			ft_ctrl_twr_two.c \
 			ft_parsing_input.c \
-			ft_parsing_regroup.c \
+			ft_parsing_regroup_one.c \
+			ft_parsing_regroup_two.c \
 			ft_utils_one.c \
 			ft_utils_two.c \
 			ft_utils_three.c \
 			ft_utils_four.c \
 			ft_lsts.c \
-			ft_free_lsts.c \
+			ft_free_lsts_one.c \
+			ft_free_lsts_two.c \
 			ft_verifs.c \
-			ft_dollars.c \
+			ft_dollar_one.c \
+			ft_dollar_two.c \
+			ft_dollar_three.c \
 			ft_pipex.c \
+			ft_redops_handler.c \
 			ft_redirections.c \
 			ft_check.c \
 			ft_parsing_paths.c \
-			ft_builtins.c \
-			alternative_build_cd.c \
-			ft_builtins_utils.c \
-			ft_builtins_utils_pwd.c \
+			ft_built.c \
+			ft_built_utils_one.c \
+			ft_built_utils_two.c \
+			ft_built_pwd.c \
 			ft_unset.c \
-			ft_export.c \
+			ft_export_one.c \
+			ft_export_two.c \
 			ft_parsing_redop.c \
 			ft_signals.c \
 			ft_write.c

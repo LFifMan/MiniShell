@@ -12,56 +12,56 @@
 
 #include "../includes/minishell.h"
 
-char	**ft_create_exp(int envp_length, char **input)
+char	**ft_create_exp(int len_env, char **exp)
 {
 	int		i;
-	char	**exp;
+	char	**new_exp;
 
 	i = 0;
-	exp = malloc(sizeof(char *) * (envp_length + 1));
-	if (!exp)
+	new_exp = malloc(sizeof(char *) * (len_env + 1));
+	if (!new_exp)
 		exit (EXIT_FAILURE);
-	while (i < envp_length)
+	while (i < len_env)
 	{
-		exp[i] = ft_strdup("declare -x ", FALSE);
-		exp[i] = ft_join_exp(exp[i], input[i], TRUE);
+		new_exp[i] = ft_strdup("declare -x ", FALSE);
+		new_exp[i] = ft_join_exp(new_exp[i], exp[i], TRUE);
 		i++;
 	}
-	exp[i] = 0;
-	return (exp);
+	new_exp[i] = 0;
+	return (new_exp);
 }
 
-char	**ft_dup_exp(t_vars *vars, int envp_length)
+char	**ft_dup_exp(t_var *var, int len_env)
 {
 	int		i;
-	char	**export;
+	char	**new_exp;
 
-	export = malloc(sizeof(char *) * (envp_length + 1));
-	if (!export)
+	new_exp = malloc(sizeof(char *) * (len_env + 1));
+	if (!new_exp)
 		exit (EXIT_FAILURE);
 	i = 0;
-	while (i < envp_length)
+	while (i < len_env)
 	{
-		export[i] = ft_strdup(vars->envp[i], FALSE);
+		new_exp[i] = ft_strdup(var->env[i], FALSE);
 		i++;
 	}
-	export[i] = 0;
-	return (export);
+	new_exp[i] = 0;
+	return (new_exp);
 }
 
-void	ft_sort_exp(int envp_length, char **export)
+void	ft_sort_exp(int len_env, char **exp)
 {
 	int		i;
 	char	*tmp;
 
 	i = 0;
-	while (i < envp_length)
+	while (i < len_env)
 	{
-		if (export[i + 1] && ft_strcmp_ascii(export[i], export[i + 1]) < 0)
+		if (exp[i + 1] && ft_cmp_ascii(exp[i], exp[i + 1]) < 0)
 		{
-			tmp = export[i];
-			export[i] = export[i + 1];
-			export[i + 1] = tmp;
+			tmp = exp[i];
+			exp[i] = exp[i + 1];
+			exp[i + 1] = tmp;
 			i = 0;
 		}
 		else
@@ -73,7 +73,7 @@ char	*ft_shlvl(char *env)
 {
 	int		i;
 	int		lvl;
-	char	*ret;
+	char	*new_lvl;
 
 	i = 6;
 	while (env[i])
@@ -83,6 +83,6 @@ char	*ft_shlvl(char *env)
 		i++;
 	}
 	lvl = ft_atoi(&env[6]);
-	ret = ft_itoa(lvl + 1);
-	return (ft_strjoin(ft_strdup("SHLVL=", FALSE), ret, TRUE));
+	new_lvl = ft_itoa(lvl + 1);
+	return (ft_strjoin(ft_strdup("SHLVL=", FALSE), new_lvl, TRUE));
 }

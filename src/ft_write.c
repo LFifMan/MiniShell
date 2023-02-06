@@ -46,6 +46,8 @@ void	ft_write(char *str, int option, int status)
 	if (option == 5)
 		buf = ft_strjoin(ft_strjoin(ft_strdup("minishell: unset: `", FALSE), \
 		str, FALSE), "': not a valid identifier\n", FALSE);
+	if (option == 6)
+		buf = ft_strdup("Problem with child opening\n", FALSE);
 	write(2, buf, ft_strlen(buf));
 	g_status = status;
 	free(buf);

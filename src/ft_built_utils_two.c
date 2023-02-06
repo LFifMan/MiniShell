@@ -12,23 +12,48 @@
 
 #include "../includes/minishell.h"
 
-void	ft_cd_absolute(t_tabs *tabs, t_vars *vars, int print)
+int	ft_build_exit(char *input)
+{
+	int	i;
+
+	if (ft_strcmp(input, "exit") == TRUE)
+	{
+		return (TRUE);
+	}
+	if (ft_strncmp(input, "exit ", 5) == TRUE)
+	{
+		i = 5;
+		while (input[i])
+		{
+			if (input[i] > '9' || input[i] < '0' )
+				return (FALSE);
+			i++;
+		}
+		exit(ft_atoi(&input[5]) % 256);
+	}
+	else
+		return (FALSE);
+}
+
+void	ft_cd_absolute(t_tabs *tabs, t_var *var, int print)
 {
 	if (ft_find_dir(tabs->cmds[1]) == TRUE)
 	{
 		if (chdir(tabs->cmds[1]) == 0)
 		{
-			ft_pwd_exp(vars, tabs->cmds[1]);
-			ft_pwd(vars, tabs->cmds[1]);
+			ft_pwd_exp(var, tabs->cmds[1]);
+			ft_pwd(var, tabs->cmds[1]);
 			g_status = 0;
 		}
 	}
 	else
+	{
 		if (print == TRUE)
 			ft_write(tabs->cmds[1], 0, 1);
+	}
 }
 
-void	ft_cd_relative(t_tabs *tabs, t_vars *vars, int print, char *current)
+void	ft_cd_relative(t_tabs *tabs, t_var *var, int print, char *current)
 {
 	char	*str;
 
@@ -37,8 +62,8 @@ void	ft_cd_relative(t_tabs *tabs, t_vars *vars, int print, char *current)
 	{
 		if (chdir(str) == 0)
 		{
-			ft_pwd_exp(vars, str);
-			ft_pwd(vars, str);
+			ft_pwd_exp(var, str);
+			ft_pwd(var, str);
 			g_status = 0;
 		}
 		free(str);
@@ -52,25 +77,3 @@ void	ft_cd_relative(t_tabs *tabs, t_vars *vars, int print, char *current)
 		free(str);
 	}
 }
-
-int	ft_build_cd(t_tabs *tabs, t_vars *vars, int print)
-{
-	char	*curr;
-
-	curr = getcwd(NULL, 0);
-	if (!tabs->cmds[1])
-	{
-		ft_cd_alone(vars->envp, print, vars);
-		free(curr);
-	}
-	else if (ft_strncmp(tabs->cmds[1], vars->root, ft_strlen(vars->root)) == TRUE)
-	{
-		ft_cd_absolute(tabs, vars, print);
-		free(curr);
-	}
-	else
-		ft_cd_relative(tabs, vars, print, curr);
-	return (TRUE);
-}
-
-

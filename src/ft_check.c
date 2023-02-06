@@ -73,7 +73,7 @@ int	ft_check_op(t_shell *shell)
 	return (TRUE);
 }
 
-int	check_only_spaces(char *input)
+int	ft_check_spaces(char *input)
 {
 	int	i;
 

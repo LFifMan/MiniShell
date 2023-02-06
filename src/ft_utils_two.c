@@ -19,27 +19,23 @@ char	*ft_join(int index, char *s1, char *s2, char *dest)
 	int		count;
 
 	count = 0;
-	i = 0;
-	j = -1;
+	i = -1;
+	j = 0;
 	if (!s1)
 		s1 = ft_zero("\0");
-	if (s1)
-		while (s1[++j])
-			dest[j] = s1[j];
-	if (s2)
+	while (s1[++i])
+		dest[i] = s1[i];
+	while (s2 && s2[j])
 	{
-		while (s2[i])
-		{
-			if (i > 1 && s2[i - 1] == EQUAL && count++ == 0)
-				dest[j++] = DOUBLEQUOTE;
-			dest[j++] = s2[i++];
-		}
+		if (j > 1 && s2[j - 1] == EQUAL && count++ == 0)
+			dest[i++] = DOUBLEQUOTE;
+		dest[i++] = s2[j++];
 	}
 	if (index == TRUE && count == 0)
-		dest[j++] = DOUBLEQUOTE;
+		dest[i++] = DOUBLEQUOTE;
 	if (index == TRUE)
-		dest[j++] = DOUBLEQUOTE;
-	dest[j] = '\0';
+		dest[i++] = DOUBLEQUOTE;
+	dest[i] = 0;
 	free(s1);
 	return (dest);
 }
@@ -58,7 +54,7 @@ char	*ft_join_exp(char *s1, char *s2, int index)
 	return (ft_join(index, s1, s2, dest));
 }
 
-int	ft_strcmp_ascii(char *input, char *str)
+int	ft_cmp_ascii(char *input, char *str)
 {
 	int	i;
 

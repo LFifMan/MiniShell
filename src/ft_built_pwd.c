@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-void	ft_pwd_exp(t_vars *vars, char *path)
+void	ft_pwd_exp(t_var *var, char *path)
 {
 	char	*tmp_exp;
 	int		i;
@@ -21,20 +21,25 @@ void	ft_pwd_exp(t_vars *vars, char *path)
 	if (!tmp_exp)
 		exit (EXIT_FAILURE);
 	i = 0;
-	while (vars->export[i])
+	while (var->exp[i])
 	{
-		if (ft_strncmp(vars->export[i], "declare -x PWD=", 15) == TRUE)
+		if (ft_strncmp(var->exp[i], "declare -x PWD=", 15) == TRUE)
 			break ;
 		i++;
 	}
-	ft_old_pwd_exp(vars, i);
+	printf("ici4\n");
+	ft_old_pwd_exp(var, i);
+	if (!var->exp[i])
+		return ;
+	printf("ici5\n");
 	ft_strcpy(tmp_exp, "declare -x PWD=");
+	printf("ici6\n");
 	tmp_exp = ft_strjoin(tmp_exp, path, FALSE);
-	free(vars->export[i]);
-	vars->export[i] = tmp_exp;
+	free(var->exp[i]);
+	var->exp[i] = tmp_exp;
 }
 
-void	ft_pwd(t_vars *vars, char *path)
+void	ft_pwd(t_var *var, char *path)
 {
 	char	*tmp_env;
 	int		i;
@@ -43,51 +48,55 @@ void	ft_pwd(t_vars *vars, char *path)
 	if (!tmp_env)
 		exit (EXIT_FAILURE);
 	i = 0;
-	while (vars->envp[i])
+	while (var->env[i])
 	{
-		if (ft_strncmp(vars->envp[i], "PWD=", 4) == TRUE)
+		if (ft_strncmp(var->env[i], "PWD=", 4) == TRUE)
 			break ;
 		i++;
 	}
-	ft_old_pwd(vars, i);
+	ft_old_pwd(var, i);
 	ft_strcpy(tmp_env, "PWD=");
 	tmp_env = ft_strjoin(tmp_env, path, FALSE);
-	free(vars->envp[i]);
-	vars->envp[i] = tmp_env;
+	free(var->env[i]);
+	var->env[i] = tmp_env;
 }
 
-void	ft_old_pwd(t_vars *vars, int i)
+void	ft_old_pwd(t_var *var, int i)
 {
 	int		j;
 	char	*tmp_env;
 
 	tmp_env = ft_strdup("OLDPWD=", FALSE);
 	j = 0;
-	while (vars->envp[j])
+	while (var->env[j])
 	{
-		if (ft_strncmp(vars->envp[j], "OLDPWD=", 7) == TRUE)
+		if (ft_strncmp(var->env[j], "OLDPWD=", 7) == TRUE)
 			break ;
 		j++;
 	}
-	free(vars->envp[j]);
-	vars->envp[j] = ft_strjoin(tmp_env, &vars->envp[i][4], FALSE);
+	free(var->env[j]);
+	var->env[j] = ft_strjoin(tmp_env, &var->env[i][4], FALSE);
 }
 
-void	ft_old_pwd_exp(t_vars *vars, int i)
+void	ft_old_pwd_exp(t_var *var, int i)
 {
 	int		j;
 	char	*tmp_exp;
 
 	tmp_exp = ft_strdup("declare -x OLDPWD=", FALSE);
 	j = 0;
-	while (vars->export[j])
+	while (var->exp[j])
 	{
-		if (ft_strncmp(vars->export[j], "declare -x OLDPWD=", 18) == TRUE)
+		if (ft_strncmp(var->exp[j], "declare -x OLDPWD=", 18) == TRUE)
 			break ;
 		j++;
 	}
-	free(vars->export[j]);
-	vars->export[j] = ft_strjoin(tmp_exp, &vars->export[i][15], FALSE);
+	free(var->exp[j]);
+	if (!var->exp[i])
+	{
+		free(tmp_exp);
+	}
+	var->exp[j] = ft_strjoin(tmp_exp, &var->exp[i][15], FALSE);
 }
 
 int	ft_find_pwd(char **env)
@@ -99,4 +108,3 @@ int	ft_find_pwd(char **env)
 		i++;
 	return (i);
 }
-

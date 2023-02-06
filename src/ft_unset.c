@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-void	ft_remove_env_var(t_vars *vars, char *str)
+void	ft_remove_env_var(t_var *var, char *str)
 {
 	int	i;
 	int	j;
@@ -20,16 +20,16 @@ void	ft_remove_env_var(t_vars *vars, char *str)
 
 	len = (int)strlen(str);
 	i = 0;
-	while (vars->envp[i])
+	while (var->env[i])
 	{
-		if (ft_strncmp(vars->envp[i], str, len) == TRUE && \
-		(vars->envp[i][len] == '\0' || vars->envp[i][len] == '='))
+		if (ft_strncmp(var->env[i], str, len) == TRUE && \
+		(var->env[i][len] == '\0' || var->env[i][len] == '='))
 		{
-			free(vars->envp[i]);
+			free(var->env[i]);
 			j = i;
-			while (vars->envp[j])
+			while (var->env[j])
 			{
-				vars->envp[j] = vars->envp[j + 1];
+				var->env[j] = var->env[j + 1];
 				j++;
 			}
 		}
@@ -38,7 +38,7 @@ void	ft_remove_env_var(t_vars *vars, char *str)
 	}
 }
 
-void	ft_remove_export_var(t_vars *vars, char *str)
+void	ft_remove_export_var(t_var *var, char *str)
 {
 	int		i;
 	int		j;
@@ -49,16 +49,16 @@ void	ft_remove_export_var(t_vars *vars, char *str)
 	unset = ft_join_exp(unset, str, FALSE);
 	len = (int)strlen(unset);
 	i = 0;
-	while (vars->export[i])
+	while (var->exp[i])
 	{
-		if (ft_strncmp(vars->export[i], unset, len) == TRUE && \
-		(vars->export[i][len] == '\0' || vars->export[i][len] == '='))
+		if (ft_strncmp(var->exp[i], unset, len) == TRUE && \
+		(var->exp[i][len] == '\0' || var->exp[i][len] == '='))
 		{
-			free(vars->export[i]);
+			free(var->exp[i]);
 			j = i;
-			while (vars->export[j])
+			while (var->exp[j])
 			{
-				vars->export[j] = vars->export[j + 1];
+				var->exp[j] = var->exp[j + 1];
 				j++;
 			}
 		}
@@ -67,17 +67,17 @@ void	ft_remove_export_var(t_vars *vars, char *str)
 	}
 }
 
-int	ft_build_unset(t_tabs *tabs, t_vars *vars, int print)
+int	ft_build_unset(t_tabs *tabs, t_var *var, int print)
 {
 	int	i;
 
 	i = 1;
 	while (tabs->cmds[i])
 	{
-		if (check_var(tabs->cmds[i], vars, FALSE) == 1)
+		if (ft_check_var(tabs->cmds[i], var, FALSE) == 1)
 		{
-			ft_remove_env_var(vars, tabs->cmds[i]);
-			ft_remove_export_var(vars, tabs->cmds[i]);
+			ft_remove_env_var(var, tabs->cmds[i]);
+			ft_remove_export_var(var, tabs->cmds[i]);
 		}
 		else
 			if (print == TRUE)
@@ -87,7 +87,7 @@ int	ft_build_unset(t_tabs *tabs, t_vars *vars, int print)
 	return (TRUE);
 }
 
-void	ft_unset_export(t_tabs *tabs, t_vars *vars, char *cmd_one)
+void	ft_unset_export(t_tabs *tabs, t_var *var, char *cmd_one)
 {
 	int	i;
 
@@ -105,12 +105,12 @@ void	ft_unset_export(t_tabs *tabs, t_vars *vars, char *cmd_one)
 	while (tabs)
 	{
 		if (ft_strcmp(cmd_one, "export") == TRUE)
-			ft_build_export(tabs, vars, TRUE);
+			ft_build_export(tabs, var, TRUE);
 		else if (ft_strcmp(cmd_one, "unset") == TRUE)
-			ft_build_unset(tabs, vars, TRUE);
+			ft_build_unset(tabs, var, TRUE);
 		else if (ft_strcmp(cmd_one, "cd") == TRUE)
 		{
-			ft_build_cd(tabs, vars, TRUE);
+			ft_build_cd(tabs, var, TRUE);
 		}
 		tabs = tabs->next;
 	}

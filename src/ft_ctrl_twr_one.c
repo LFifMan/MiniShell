@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-int	ft_ctrl_prs(t_shell **shell, t_vars *vars, char *input, t_tabs *tabs)
+int	ft_ctrl_prs(t_shell **shell, t_var *var, char *input, t_tabs *tabs)
 {
 	if (parsing_quotations(shell, input) == FALSE)
 	{
@@ -22,9 +22,9 @@ int	ft_ctrl_prs(t_shell **shell, t_vars *vars, char *input, t_tabs *tabs)
 		return (FALSE);
 	}
 	(*shell) = parsing_spaces(shell);
-	(*shell) = parsing_pipes(shell);
+	(*shell) = parsing_pipes(*shell);
 	(*shell) = parsing_redops(shell);
-	parsing_dollars(shell, vars);
+	ft_pars_dollar(shell, var);
 	(*shell) = parsing_spaces(shell);
 	if (ft_check_op(*shell) == FALSE)
 	{
@@ -35,15 +35,15 @@ int	ft_ctrl_prs(t_shell **shell, t_vars *vars, char *input, t_tabs *tabs)
 	return (TRUE);
 }
 
-int	ft_ctrl_cmd(t_tabs **tabs, t_shell **shell, t_vars *vars)
+int	ft_ctrl_cmd(t_tabs **tabs, t_shell **shell, t_var *var)
 {
-	*tabs = ft_regroup(shell, vars);
+	*tabs = ft_regroup(shell, var);
 	ft_redops(tabs);
-	ft_paths(*vars, tabs);
+	ft_paths(*var, tabs);
 	return (TRUE);
 }
 
-void	ft_ctrl_twr(t_vars *vars)
+void	ft_ctrl_twr(t_var *var)
 {
 	t_shell	*shell;
 	t_tabs	*tabs;
@@ -56,19 +56,18 @@ void	ft_ctrl_twr(t_vars *vars)
 	while (1)
 	{
 		input = ft_prompt();
-		if (check_only_spaces(input) == TRUE)
+		if (ft_check_spaces(input) == TRUE)
 			ft_free_lst(shell, tabs, input, 0);
 		else
 		{
-			if (ft_ctrl_prs(&shell, vars, input, tabs) == TRUE)
+			if (ft_ctrl_prs(&shell, var, input, tabs) == TRUE)
 			{
-				ft_ctrl_cmd(&tabs, &shell, vars);
-				ft_execution(tabs, vars);
+				ft_ctrl_cmd(&tabs, &shell, var);
+				ft_execution(tabs, var);
 				ft_free_lst(shell, tabs, input, 2);
 			}
 		}
 		ft_signals(TRUE);
-		vars->tmp_g = g_status;
+		var->tmp_g = g_status;
 	}
 }
-

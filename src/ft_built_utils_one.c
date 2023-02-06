@@ -65,14 +65,17 @@ char	*ft_create_root(char *env, int j)
 	return (root);
 }
 
-void	ft_update_pwd(t_vars *vars, char *root)
+void	ft_update_pwd(t_var *var, char *root)
 {
-	ft_pwd_exp(vars, root);
-	ft_pwd(vars, root);
+	printf("ici1\n");
+	ft_pwd_exp(var, root);
+	printf("ici2\n");
+	ft_pwd(var, root);
+	printf("ici3\n");
 	g_status = 0;
 }
 
-void	ft_cd_alone(char **env, int print, t_vars *vars) //todo : if we don't find pwd, root stays NULL, is it a problem later if we try to free it or access it?
+void	ft_cd_alone(char **env, int print, t_var *var)
 {
 	int		i;
 	char	*root;
@@ -88,7 +91,11 @@ void	ft_cd_alone(char **env, int print, t_vars *vars) //todo : if we don't find 
 	if (env[i][5])
 		root = ft_create_root(env[i], 5);
 	if (chdir(root) == 0)
-		ft_update_pwd(vars, root);
+	{
+		printf("ici\n");
+		ft_update_pwd(var, root);
+		printf("la\n");
+	}
 	else if (print == TRUE && root)
 		ft_write(root, 0, 1);
 }
