@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pipex.c                                         :+:      :+:    :+:   */
+/*   ft_redops_handler.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 13:40:05 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/03 15:51:41 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/06 22:49:12 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	ft_handle_heredoc(t_tabs *tabs, t_var *var, int i)
 {
 	ft_heredoc(tabs, var, i);
 	i += 1;
-	ft_write(tabs->redop[i], 3, 1);
+	//ft_write(tabs->redop[i], 3, 1);
 	//todo : ft_write(option = 3 || 1 withno cd ?)
 }
 

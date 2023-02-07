@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lsts.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 18:45:45 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/31 14:20:52 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/06 22:54:09 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	ft_add_index(char c)
 {
-	if (c == DOUBLEQUOTE || c == SINGLEQUOTE || c == PIPE || c == SPACE || c == GREAT || c == SMALL)
+	if (c == DOUBLEQUOTE || c == SINGLEQUOTE || c == PIPE || c == SPACE || c == GREAT || c == SMALL) // todo: change DQ & SQ
 		return (c);
 	return (CHARS);
 }
@@ -78,36 +78,22 @@ void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input)
 	while (input)
 	{
 		if (input && input->next && input->index == SPACE)
-		{
 			input = input->next;
-		}
 		if (input && input->index == PIPE)
-		{
 			break ;
-		}
 		if (input && input->index == SPACE && !input->next)
-		{
 			break ;
-		}
 		if (input->index == DOUBLEQUOTE || input->index == SINGLEQUOTE)
-		{
 			tmp->cmds[i] = ft_strdup(ft_trim_quotations(input->data), TRUE);
-		}
 		else
-		{
 			tmp->cmds[i] = ft_strdup(ft_trim_quotations(input->data), FALSE);
-		}
 		input = input->next;
 		while (input && input->index != SPACE && input->index != PIPE)
 		{
 			if (input->index == DOUBLEQUOTE || input->index == SINGLEQUOTE)
-			{
 				tmp->cmds[i] = ft_strjoin(tmp->cmds[i], ft_trim_quotations(input->data), TRUE);
-			}
 			else
-			{
 				tmp->cmds[i] = ft_strjoin(tmp->cmds[i], ft_trim_quotations(input->data), FALSE);
-			}
 			input = input->next;
 		}
 		i++;
@@ -115,9 +101,7 @@ void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input)
 	tmp->cmds[i] = 0;
 	curr = *tabs;
 	while (tabs && (*tabs)->next != NULL)
-	{
 		(*tabs) = (*tabs)->next;
-	}
 	(*tabs)->next = tmp;
 	(*tabs) = curr;
 }

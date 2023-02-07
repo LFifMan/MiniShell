@@ -17,7 +17,7 @@ char	*ft_prompt(void)
 	char	*input;
 
 	g_status = 0;
-	input = readline("> ");
+	input = readline("minishell> ");
 	if (input == 0)
 	{
 		printf("\033[1A\033[3Cexit\n");
