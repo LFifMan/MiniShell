@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 18:03:27 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/06 20:06:01 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/07 14:22:46 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ void	ft_init_env(t_var *var, char **env, int len_env)
 	{
 		if (ft_strncmp(env[j], "SHLVL=", 6) == TRUE)
 			new_env[i++] = ft_shlvl(env[j]);
-		else if (ft_strncmp(env[j], "OLDPWD=", 7) == FALSE && ft_strncmp(env[j], "PWD=", 4) == FALSE)
+		else if (ft_strncmp(env[j], "OLDPWD=", 7) == FALSE && \
+		ft_strncmp(env[j], "PWD=", 4) == FALSE)
 			new_env[i++] = ft_strdup(env[j], FALSE);
 		j++;
 	}
@@ -56,7 +57,8 @@ void	ft_init_var(t_var *var, char **env)
 	pwds = 2;
 	while (env[len_env])
 	{
-		if (ft_strncmp(env[len_env], "OLDPWD=", 7) == TRUE || ft_strncmp(env[len_env], "PWD=", 4) == TRUE)
+		if (ft_strncmp(env[len_env], "OLDPWD=", 7) == TRUE || \
+		ft_strncmp(env[len_env], "PWD=", 4) == TRUE)
 			pwds--;
 		len_env++;
 	}

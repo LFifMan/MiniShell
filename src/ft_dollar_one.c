@@ -85,7 +85,7 @@ void	ft_pars_dollar(t_shell **shell, t_var *var)
 	tmp = (*shell)->next;
 	while (tmp)
 	{
-		if (tmp->index == DOUBLEQUOTE || tmp->index == CHARS)
+		if (tmp->index == DQ || tmp->index == CHARS || tmp->index == DOLLAR)
 			while (ft_look_for_dollar(tmp->data) == TRUE)
 				tmp->data = ft_to_be_named(var->env, tmp->data, var->tmp_g);
 		tmp = tmp->next;

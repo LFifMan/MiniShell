@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:44:43 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/03 16:39:28 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/07 17:29:07 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 # define MINISHELL_H
 # define TRUE 1
 # define FALSE 0
-# define DOUBLEQUOTE 34
-# define SINGLEQUOTE 39
+# define DQ 34
+# define SQ 39
 # define SPACE 32
 # define CHARS 0
 # define DOLLAR 36
@@ -229,14 +229,19 @@ void	ft_cd_alone(char **env, int print, t_var *var);
 int		ft_build_exit(char *input);
 void	ft_cd_absolute(t_tabs *tabs, t_var *var, int print);
 void	ft_cd_relative(t_tabs *tabs, t_var *var, int print, char *current);
+int		ft_find_home(char **env);
 
 
-/* FT_BUILTINS_UTILS_PWD.C */
-void	ft_pwd_exp(t_var *var, char *path);
-void	ft_pwd(t_var *var, char *path);
-void	ft_old_pwd(t_var *var, int i);
-void	ft_old_pwd_exp(t_var *var, int i);
-int		ft_find_pwd(char **env);
+/* FT_UPDATE_ENV.C */
+int		ft_check_old(t_var *var);
+void	ft_update_env (t_var *var, char *path);
+void	ft_old_env(t_var *var, int i);
+void	reset_env(t_var *var, char *src);
+void	deset_env(t_var *var);
+
+/* FT_UPDATE_EXP.C */
+void	ft_old_exp(t_var *var, int i);
+void	ft_update_exp(t_var *var, char *path);
 
 
 /* FT_EXPORT_ONE.C */
@@ -291,8 +296,9 @@ int		ft_atoi(char *str);
 int		ft_is_whitespace(char *str);
 
 
-
-
+/* FT_MALLOC.C */
+char	**ft_malloc_array(int size);
+char	*ft_malloc_str(int size);
 
 /* TO BE REMOVED */
 void	PRINT_SHELL(t_shell **a);

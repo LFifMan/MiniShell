@@ -22,6 +22,8 @@ int	ft_ctrl_prs(t_shell **shell, t_var *var, char *input, t_tabs *tabs)
 		return (FALSE);
 	}
 	(*shell) = parsing_spaces(shell);
+	// printf("Pipes $$\n");
+	// PRINT_SHELL(shell);
 	(*shell) = parsing_pipes(*shell);
 	(*shell) = parsing_redops(shell);
 	ft_pars_dollar(shell, var);

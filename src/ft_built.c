@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 16:17:05 by max               #+#    #+#             */
-/*   Updated: 2023/02/06 21:06:50 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/07 15:50:26 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,10 @@ int	ft_build_cd(t_tabs *tabs, t_var *var, int print)
 		ft_cd_alone(var->env, print, var);
 		free(curr);
 	}
-	else if (ft_strcmp(tabs->cmds[1], "-") == TRUE)
-	{
-		printf("hellow\n");
-	}
-	else if (ft_strncmp(tabs->cmds[1], var->home, ft_strlen(var->home)) == TRUE)
+	else if (ft_strcmp(tabs->cmds[1], "-") == TRUE || \
+	ft_strcmp(tabs->cmds[1], "~") == TRUE)
+		ft_write(tabs->cmds[1], 7, 1);
+	else if (ft_strncmp(tabs->cmds[1], "/", 1) == TRUE)
 	{
 		ft_cd_absolute(tabs, var, print);
 		free(curr);

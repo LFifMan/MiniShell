@@ -3,18 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lsts.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 18:45:45 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/06 22:54:09 by max              ###   ########.fr       */
+/*   Updated: 2023/02/07 17:28:47 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	ft_add_index(char c)
+char	ft_add_index(char c) // int index to avoid pipes in $
 {
-	if (c == DOUBLEQUOTE || c == SINGLEQUOTE || c == PIPE || c == SPACE || c == GREAT || c == SMALL) // todo: change DQ & SQ
+	// if (c == PIPE && index == DOLLAR)
+	// 	return (DOLLAR);
+	if (c == DQ || c == SQ || c == PIPE || \
+	c == SPACE || c == GREAT || c == SMALL || c == DOLLAR)
 		return (c);
 	return (CHARS);
 }
@@ -61,6 +64,15 @@ void	ft_lst_new(t_shell **lst, char *input, int index)
 		free (input);
 }
 
+void	ft_build_cmds(t_shell *input, t_tabs *tmp, int i)
+{
+	if (input->index == DQ || input->index == SQ)
+		tmp->cmds[i] = ft_strjoin(tmp->cmds[i], ft_trim_quotations(input->data), TRUE);
+	else
+		tmp->cmds[i] = ft_strjoin(tmp->cmds[i], ft_trim_quotations(input->data), FALSE);
+	input = input->next;
+
+}
 void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input)
 {
 	t_tabs	*tmp;
@@ -79,18 +91,16 @@ void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input)
 	{
 		if (input && input->next && input->index == SPACE)
 			input = input->next;
-		if (input && input->index == PIPE)
+		if ((input && input->index == PIPE) || (input && input->index == SPACE && !input->next))
 			break ;
-		if (input && input->index == SPACE && !input->next)
-			break ;
-		if (input->index == DOUBLEQUOTE || input->index == SINGLEQUOTE)
+		if (input->index == DQ || input->index == SQ)
 			tmp->cmds[i] = ft_strdup(ft_trim_quotations(input->data), TRUE);
 		else
 			tmp->cmds[i] = ft_strdup(ft_trim_quotations(input->data), FALSE);
 		input = input->next;
 		while (input && input->index != SPACE && input->index != PIPE)
 		{
-			if (input->index == DOUBLEQUOTE || input->index == SINGLEQUOTE)
+			if (input->index == DQ || input->index == SQ)
 				tmp->cmds[i] = ft_strjoin(tmp->cmds[i], ft_trim_quotations(input->data), TRUE);
 			else
 				tmp->cmds[i] = ft_strjoin(tmp->cmds[i], ft_trim_quotations(input->data), FALSE);

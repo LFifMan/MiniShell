@@ -1,32 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_malloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/17 14:38:47 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/07 15:01:34 by mstockli         ###   ########.fr       */
+/*   Created: 2023/02/07 13:33:33 by mstockli          #+#    #+#             */
+/*   Updated: 2023/02/07 13:55:07 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	main(int ac, char **av, char **ev)
+char	*ft_malloc_str(int size)
 {
-	t_var	var;
+	char	*dest;
 
-	(void)av;
-	if (ac != 1)
-	{
-		write(2, "Too many arguments\n", 19);
-		write(2, "Run the minishell program by itself\n", 36);
-		exit (1);
-	}
-	ft_signals(TRUE);
-	ft_init_var(&var, ev);
-	ft_ctrl_twr(&var);
-	ft_free_var(var);
-	ft_signals(FALSE);
-	return (42);
+	dest = malloc(sizeof(char) * (size));
+	if (!dest)
+		exit (EXIT_FAILURE);
+	return (dest);
+}
+
+char	**ft_malloc_array(int size)
+{
+	char	**dest;
+
+	dest = malloc(sizeof(char *) * (size + 1));
+	if (!dest)
+		exit (EXIT_FAILURE);
+	return (dest);
 }

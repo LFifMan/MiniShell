@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 16:17:05 by max               #+#    #+#             */
-/*   Updated: 2023/02/06 19:16:02 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/07 14:24:49 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ char	*ft_create_root(char *env, int j)
 
 void	ft_update_pwd(t_var *var, char *root)
 {
-	ft_pwd_exp(var, root);
-	ft_pwd(var, root);
+	ft_update_exp(var, root);
+	ft_update_env(var, root);
 	g_status = 0;
 }
 
@@ -78,7 +78,7 @@ void	ft_cd_alone(char **env, int print, t_var *var)
 	char	*root;
 
 	root = NULL;
-	i = ft_find_pwd(env);
+	i = ft_find_home(env);
 	if (!env[i] && print == TRUE)
 	{
 		write(2, "minishell: cd: HOME not set\n", 28);

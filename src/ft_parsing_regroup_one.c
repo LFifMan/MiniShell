@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_parsing_regroup.c                               :+:      :+:    :+:   */
+/*   ft_parsing_regroup_one.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:25:12 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/31 14:23:31 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/07 15:01:32 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*ft_trim_quotations(char *str)
 {
 	char	*dest;
 
-	if (str[0] == SINGLEQUOTE || str[0] == DOUBLEQUOTE)
+	if (str[0] == SQ || str[0] == DQ)
 	{
 		if (ft_strlen(str) == 2)
 			return (ft_strdup("", FALSE));

@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 23:15:26 by max               #+#    #+#             */
-/*   Updated: 2023/02/03 15:36:24 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/07 14:59:03 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,11 @@ int	ft_check_next_redirection(t_shell *shell, int print)
 	if (shell->index == SPACE)
 	{
 		if (!shell->next || (shell->next->index != CHARS && \
-		shell->next->index != DOUBLEQUOTE && shell->next->index != SINGLEQUOTE))
+		shell->next->index != DQ && shell->next->index != SQ))
 			return (ft_write_op("newline", 258, print));
 	}
 	else if (shell->index != CHARS && shell->index \
-	!= DOUBLEQUOTE && shell->index != SINGLEQUOTE)
+	!= DQ && shell->index != SQ)
 		return (ft_write_op("newline", 258, print));
 	return (TRUE);
 }
@@ -56,6 +56,15 @@ int	ft_check_next_redirection(t_shell *shell, int print)
 int	ft_check_op(t_shell *shell)
 {
 	shell = shell->next;
+	while (shell->index == SPACE)
+		shell = shell->next;
+	if (shell->index == PIPE)
+	{
+		if (ft_strlen(shell->data) > 1)
+			return (ft_write_op("||", 258, TRUE));
+		else
+			return (ft_write_op("|", 258, TRUE));
+	}
 	while (shell)
 	{
 		if (shell->index == PIPE)

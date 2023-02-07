@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:38:40 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/31 14:21:48 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/07 16:39:17 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*parse_quotation(char *input, char index, int size, int i)
 {
 	char	*data;
 
-	if (index == DOUBLEQUOTE || index == SINGLEQUOTE)
+	if (index == DQ || index == SQ)
 	{
 		data = malloc(sizeof(char) * size + 3);
 		if (!data)
@@ -51,7 +51,7 @@ int	parsing_quotations(t_shell **shell, char *input)
 	while (input[i])
 	{
 		j = 0;
-		if (input[i] == DOUBLEQUOTE || input[i] == SINGLEQUOTE)
+		if (input[i] == DQ || input[i] == SQ)
 		{
 			type = input[i++];
 			while (input[i + j] && input[i + j] != type)
@@ -63,10 +63,10 @@ int	parsing_quotations(t_shell **shell, char *input)
 		}
 		else
 		{
-			while (input[i + j] && input[i + j] != SINGLEQUOTE && input[i + j] != DOUBLEQUOTE)
+			while (input[i + j] && input[i + j] != SQ && input[i + j] != DQ)
 				j++;
 			ft_lst_new(shell, parse_quotation(&input[i], \
-            0, j, 0), TRUE);
+			0, j, 0), TRUE);
 		}
 		i += j;
 	}
@@ -112,7 +112,7 @@ t_shell	*parsing_spaces(t_shell **shell)
 	tmp = (*shell)->next;
 	while (tmp)
 	{
-		if (tmp->index == SINGLEQUOTE || tmp->index == DOUBLEQUOTE)
+		if (tmp->index == SQ || tmp->index == DQ)
 			ft_lst_new(&new, tmp->data, FALSE);
 		else
 			split_spaces(&new, tmp->data);

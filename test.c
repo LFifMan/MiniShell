@@ -1,2 +1,10 @@
-int main()
-{}
+iiqerg
+qre
+gqer
+g
+q
+er
+g
+et
+h
+qt

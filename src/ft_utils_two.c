@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:39:02 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/06 20:04:18 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/07 15:01:34 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ char	*ft_join(int index, char *s1, char *s2, char *dest)
 	while (s2 && s2[j])
 	{
 		if (j > 1 && s2[j - 1] == EQUAL && count++ == 0)
-			dest[i++] = DOUBLEQUOTE;
+			dest[i++] = DQ;
 		dest[i++] = s2[j++];
 	}
 	if (index == TRUE && count == 0)
-		dest[i++] = DOUBLEQUOTE;
+		dest[i++] = DQ;
 	if (index == TRUE)
-		dest[i++] = DOUBLEQUOTE;
+		dest[i++] = DQ;
 	dest[i] = 0;
 	free(s1);
 	return (dest);

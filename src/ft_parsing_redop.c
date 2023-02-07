@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 01:38:54 by max               #+#    #+#             */
-/*   Updated: 2023/01/31 14:23:00 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/07 13:47:09 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	ft_count_redops(char **cmd)
 	count = 0;
 	while (cmd[i])
 	{
-		if (cmd[i][0] == GREAT || cmd[i][0] ==  SMALL)
+		if (cmd[i][0] == GREAT || cmd[i][0] == SMALL)
 			count++;
 		i++;
 	}
@@ -32,16 +32,13 @@ int	ft_count_redops(char **cmd)
 char	**ft_remove_redop_cmds(char **cmd, int index)
 {
 	char	**dst;
-	int		size;
 	int		i;
 	int		j;
 
-	size = 0;
-	while (cmd[size])
-		size++;
-	dst = malloc(sizeof(char *) * size - 2);
-	if (!dst)
-		exit (EXIT_FAILURE);
+	i = 0;
+	while (cmd[i])
+		i++;
+	dst = ft_malloc_array(i - 2);
 	i = 0;
 	j = 0;
 	while (cmd[i])
@@ -49,28 +46,24 @@ char	**ft_remove_redop_cmds(char **cmd, int index)
 		if (i == index || i == index + 1)
 			i++;
 		else
-		{
-			dst[j] = cmd[i];
-			i++;
-			j++;
-		}
+			dst[j++] = cmd[i++];
 	}
 	dst[j] = 0;
 	while (cmd[i])
-	{
-		free(cmd[i]);
-		i++;
-	}
+		free(cmd[i++]);
 	free(cmd);
 	i = 0;
 	return (dst);
 }
-//
-//int	ft_uugt(t_tabs *tmp, int i, int j)
-//{
-//
-//	return (j);
-//}
+
+int	ft_tmp_redop(t_tabs *tmp, int i, int j)
+{
+	tmp->redop[j] = tmp->cmds[i];
+	tmp->redop[j + 1] = tmp->cmds[i + 1];
+	tmp->cmds = ft_remove_redop_cmds(tmp->cmds, i);
+	j = j + 2;
+	return (j);
+}
 
 void	ft_redops(t_tabs **tabs)
 {
@@ -84,19 +77,12 @@ void	ft_redops(t_tabs **tabs)
 	{
 		i = 0;
 		j = 0;
-		tmp->redop = malloc (sizeof(char *) * (ft_count_redops(tmp->cmds) + 1));
-		if (!tmp->redop)
-			exit (EXIT_FAILURE);
+		tmp->redop = ft_malloc_array((ft_count_redops(tmp->cmds) + 1));
 		tmp->redop[0] = 0;
 		while (tmp->cmds[i])
 		{
 			if (tmp->cmds[i][0] == GREAT || tmp->cmds[i][0] == SMALL)
-			{
-				tmp->redop[j] = tmp->cmds[i];
-				tmp->redop[j + 1] = tmp->cmds[i + 1];
-				tmp->cmds = ft_remove_redop_cmds(tmp->cmds, i);
-				j = j + 2;
-			}
+				j = ft_tmp_redop(tmp, i, j);
 			else
 				i++;
 		}

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_builtins.c                                      :+:      :+:    :+:   */
+/*   ft_built_utils_two.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 16:17:05 by max               #+#    #+#             */
-/*   Updated: 2023/01/31 18:16:14 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/07 14:24:52 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ void	ft_cd_absolute(t_tabs *tabs, t_var *var, int print)
 	{
 		if (chdir(tabs->cmds[1]) == 0)
 		{
-			ft_pwd_exp(var, tabs->cmds[1]);
-			ft_pwd(var, tabs->cmds[1]);
+			ft_update_exp(var, tabs->cmds[1]);
+			ft_update_env(var, tabs->cmds[1]);
 			g_status = 0;
 		}
 	}
@@ -62,8 +62,8 @@ void	ft_cd_relative(t_tabs *tabs, t_var *var, int print, char *current)
 	{
 		if (chdir(str) == 0)
 		{
-			ft_pwd_exp(var, str);
-			ft_pwd(var, str);
+			ft_update_exp(var, str);
+			ft_update_env(var, str);
 			g_status = 0;
 		}
 		free(str);
@@ -76,4 +76,14 @@ void	ft_cd_relative(t_tabs *tabs, t_var *var, int print, char *current)
 			ft_write(tabs->cmds[1], 1, 1);
 		free(str);
 	}
+}
+
+int	ft_find_home(char **env)
+{
+	int	i;
+
+	i = 0;
+	while (env[i] && ft_memcmp((char *)env[i], "HOME=", 5) != 0)
+		i++;
+	return (i);
 }
