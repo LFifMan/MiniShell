@@ -32,6 +32,25 @@ char	*ft_prompt(void)
 	return (input);
 }
 
+int	ft_check_builtins(char *cmd_one)
+{
+	int	i;
+
+	i = 0;
+	while (cmd_one[i])
+	{
+		cmd_one[i] = (char)ft_tolower(cmd_one[i]);
+		i++;
+	}
+	if (ft_strcmp(cmd_one, "cd") == TRUE)
+		return (TRUE);
+	else if (ft_strcmp(cmd_one, "export") == TRUE)
+		return (TRUE);
+	else if (ft_strcmp(cmd_one, "unset") == TRUE)
+		return (TRUE);
+	return (FALSE);
+}
+
 int	ft_execution(t_tabs *tabs, t_var *var)
 {
 	ft_pipex(tabs, var);

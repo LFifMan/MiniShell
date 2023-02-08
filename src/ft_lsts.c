@@ -6,16 +6,16 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 18:45:45 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/07 17:28:47 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/08 19:57:58 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	ft_add_index(char c) // int index to avoid pipes in $
+char	ft_add_index(char c, int index)
 {
-	// if (c == PIPE && index == DOLLAR)
-	// 	return (DOLLAR);
+	if (c == PIPE && index == DOLLAR)
+	 	return (DOLLAR);
 	if (c == DQ || c == SQ || c == PIPE || \
 	c == SPACE || c == GREAT || c == SMALL || c == DOLLAR)
 		return (c);
@@ -40,7 +40,7 @@ char	*ft_add_data(char *input)
 	return (data);
 }
 
-void	ft_lst_new(t_shell **lst, char *input, int index)
+void	ft_lst_new(t_shell **lst, char *input, int index, int old_index)
 {
 	t_shell	*new;
 	t_shell	*curr;
@@ -49,7 +49,7 @@ void	ft_lst_new(t_shell **lst, char *input, int index)
 	if (!new)
 		exit (EXIT_FAILURE);
 	new->next = NULL;
-	new->index = (int)ft_add_index(input[0]);
+	new->index = (int)ft_add_index(input[0], old_index);
 	new->data = ft_add_data(input);
 	if (*lst == NULL)
 	{

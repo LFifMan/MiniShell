@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ft_ctrl_twr.c                                 :+:      :+:    :+:   */
+/*   ft_dollar_one.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 23:27:44 by max               #+#    #+#             */
-/*   Updated: 2023/02/03 16:18:56 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/08 19:58:28 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 char	*ft_replace_status(char *data, int status)
-{
+{ 
 	int		i;
 	int		j;
 	int		k;

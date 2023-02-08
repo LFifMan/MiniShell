@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 16:17:05 by max               #+#    #+#             */
-/*   Updated: 2023/02/07 15:08:25 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/08 21:23:34 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,20 @@ void	ft_update_env(t_var *var, char *path)
 	var->env[i] = tmp_env;
 }
 
+int	ft_check_old_env(t_var *var)
+{
+	int	i;
+
+	i = 0;
+	while (var->env[i])
+	{
+		if (ft_strncmp(var->env[i], "OLDPWD=", 7) == TRUE)
+			return (TRUE);
+		i++;
+	}
+	return (FALSE);
+}
+
 void	deset_env(t_var *var)
 {
 	int		i;
@@ -45,6 +59,8 @@ void	deset_env(t_var *var)
 
 	i = 0;
 	j = 0;
+	if (ft_check_old_env(var) == FALSE)
+		return ;
 	while (var->env[i])
 		i++;
 	dest = malloc(sizeof(char *) * (i));
@@ -54,7 +70,7 @@ void	deset_env(t_var *var)
 		dest[j] = ft_strdup(var->env[i], TRUE);
 		i++;
 		j++;
-		if (ft_strncmp(var->env[i], "OLDPWD=", 7) == TRUE)
+		if (var->env[i] && ft_strncmp(var->env[i], "OLDPWD=", 7) == TRUE)
 			free(var->env[i++]);
 	}
 	free(var->env);
@@ -119,7 +135,11 @@ int	ft_check_old(t_var *var)
 	k = -1;
 	while (var->exp[++k])
 		if (ft_strncmp(var->exp[k], "declare -x OLDPWD=\"", 19) == TRUE)
-			if (var->exp[k][20] != DQ)
+		{
+			if (var->exp[k][19] != DQ)
+			{
 				break ;
+			}
+		}
 	return (k);
 }

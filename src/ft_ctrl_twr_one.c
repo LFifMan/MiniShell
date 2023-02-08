@@ -22,11 +22,16 @@ int	ft_ctrl_prs(t_shell **shell, t_var *var, char *input, t_tabs *tabs)
 		return (FALSE);
 	}
 	(*shell) = parsing_spaces(shell);
-	// printf("Pipes $$\n");
-	// PRINT_SHELL(shell);
 	(*shell) = parsing_pipes(*shell);
 	(*shell) = parsing_redops(shell);
+	(void)var;
 	ft_pars_dollar(shell, var);
+	PRINT_SHELL(shell);
+	// if (ft_check_ambibuity(shell, var) == FALSE)
+	// {
+	// 	ft_free_lst(*shell, tabs, input, 1);
+	// 	return (FALSE);
+	// }
 	(*shell) = parsing_spaces(shell);
 	if (ft_check_op(*shell) == FALSE)
 	{
@@ -41,6 +46,7 @@ int	ft_ctrl_cmd(t_tabs **tabs, t_shell **shell, t_var *var)
 {
 	*tabs = ft_regroup(shell, var);
 	ft_redops(tabs);
+	//ft_pars_dollar2(tabs, var);
 	ft_paths(*var, tabs);
 	return (TRUE);
 }

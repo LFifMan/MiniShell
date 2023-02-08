@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 22:03:36 by max               #+#    #+#             */
-/*   Updated: 2023/02/03 15:47:40 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/08 16:13:36 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,16 @@ void	ft_to_name(t_shell *tmp, t_shell *new, int option)
 {
 	if (option == 0)
 	{
-		ft_lst_new(&new, tmp->data, FALSE);
+		ft_lst_new(&new, tmp->data, FALSE, tmp->index);
 		if (tmp->next && tmp->index != SPACE && \
 		(tmp->next->index == GREAT || tmp->next->index == SMALL))
-			ft_lst_new(&new, " ", FALSE);
+			ft_lst_new(&new, " ", FALSE, 0);
 	}
 	else
 	{
-		ft_lst_new(&new, tmp->data, FALSE);
+		ft_lst_new(&new, tmp->data, FALSE, tmp->index);
 		if (tmp->next && tmp->next->index != SPACE)
-			ft_lst_new(&new, " ", FALSE);
+			ft_lst_new(&new, " ", FALSE, 0);
 	}
 }
 
@@ -67,13 +67,13 @@ void	ft_split_redirections(t_shell **shell, char *str)
 			type = str[i];
 			while (str[i + j] == type)
 				j++;
-			ft_lst_new(shell, parse_quotation(&str[i], type, j, 0), TRUE);
+			ft_lst_new(shell, parse_quotation(&str[i], type, j, 0), TRUE, 0);
 		}
 		else if (str[i])
 		{
 			while (str[i + j] && str[i + j] != SMALL && str[i + j] != GREAT)
 				j++;
-			ft_lst_new(shell, parse_quotation(&str[i], 0, j, 0), TRUE);
+			ft_lst_new(shell, parse_quotation(&str[i], 0, j, 0), TRUE, 0);
 		}
 		else
 			return ;
@@ -95,10 +95,10 @@ void	ft_split_add(t_shell *tmp, t_shell *new)
 		if (tmp->data[i] == GREAT || tmp->data[i] == SMALL)
 			ft_split_redirections(&new, tmp->data);
 		else
-			ft_lst_new(&new, tmp->data, FALSE);
+			ft_lst_new(&new, tmp->data, FALSE, 0);
 	}
 	else
-		ft_lst_new(&new, tmp->data, FALSE);
+		ft_lst_new(&new, tmp->data, FALSE, 0);
 }
 
 t_shell	*parsing_redops(t_shell **shell)

@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 16:17:05 by max               #+#    #+#             */
-/*   Updated: 2023/02/07 13:52:45 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/08 20:02:03 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	ft_write_op(char *str, int status, int print)
 {
 	if (print == TRUE)
 	{
-		write (2, "\"minishell: syntax error near unexpected token `", 49);
+		write (2, "minishell: syntax error near unexpected token `", 47);
 		write (2, str, ft_strlen(str));
 		write (2, "'\n", 2);
 		g_status = status;

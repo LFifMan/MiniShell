@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:44:43 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/07 17:29:07 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/08 16:25:42 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int		ft_execution(t_tabs *tabs, t_var *var);
 
 /* PARSING_INPUT.C */
 t_shell	*parsing_spaces(t_shell **shell);
-void	split_spaces(t_shell **shell, char *input);
+void	split_spaces(t_shell **shell, char *input, int old_index);
 int		parsing_quotations(t_shell **shell, char *input);
 char	*parse_quotation(char *input, char index, int size, int i);
 
@@ -176,9 +176,9 @@ char	**ft_parsing_binaries(char *const *envp, char *argv);
 
 
 /* FT_LSTS.C */
-char	ft_add_index(char c);
+char	ft_add_index(char c, int index);
 char	*ft_add_data(char *input);
-void	ft_lst_new(t_shell **lst, char *input, int index);
+void	ft_lst_new(t_shell **lst, char *input, int index, int old_index);
 void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input);
 
 
@@ -216,6 +216,7 @@ int		ft_build_pwd(t_tabs *tabs, t_var *var);
 int		ft_build_env(t_tabs *tabs, t_var *var);
 int		ft_build_cd(t_tabs *tabs, t_var *var, int print);
 int		ft_builtins(t_tabs *tabs, t_var *var, char *cmd_one);
+char	*ft_str_lower(char *str);
 
 
 /* FT_BUILTINS_UTILS.C */

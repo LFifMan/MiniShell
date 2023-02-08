@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 13:40:05 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/06 20:56:45 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/08 16:30:39 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	ft_heredoc(t_tabs *tabs, t_var *var, int j)
 void	ft_child(t_tabs *tabs, t_var *var)
 {
 	int	k;
+	char	*cmd_one;
 
 	k = 0;
 	var->redir_in = 0;
@@ -54,10 +55,15 @@ void	ft_child(t_tabs *tabs, t_var *var)
 		dup2(var->fd[1], 1);
 	close(var->fd[0]);
 	close(var->fd[1]);
-	if (ft_builtins(tabs, var, tabs->cmds[0]) == TRUE)
+	cmd_one = ft_str_lower(tabs->cmds[0]);
+	if (ft_builtins(tabs, var, cmd_one) == TRUE)
+	{
+		free(cmd_one);
 		exit(0);
+	}
 	else
 	{
+		free(cmd_one);
 		var->var = execve(tabs->cmds[0], tabs->cmds, var->env);
 		while (tabs->paths[k] && var->var < 0)
 		{

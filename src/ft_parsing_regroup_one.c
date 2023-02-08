@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:25:12 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/07 15:01:32 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/08 16:03:33 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,13 +89,13 @@ void	ft_split_pipes(t_shell **shell, char *input)
 		{
 			while (input[i + j] == PIPE)
 				j++;
-			ft_lst_new(shell, parse_quotation(&input[i], PIPE, j, 0), TRUE);
+			ft_lst_new(shell, parse_quotation(&input[i], PIPE, j, 0), TRUE, 0);
 		}
 		else if (input[i])
 		{
 			while (input[i + j] && input[i + j] != PIPE)
 				j++;
-			ft_lst_new(shell, parse_quotation(&input[i], 0, j, 0), TRUE);
+			ft_lst_new(shell, parse_quotation(&input[i], 0, j, 0), TRUE, 0);
 		}
 		else
 			return ;

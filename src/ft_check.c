@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 23:15:26 by max               #+#    #+#             */
-/*   Updated: 2023/02/07 14:59:03 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/08 19:06:55 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	ft_check_next_redirection(t_shell *shell, int print)
 	shell = shell->next;
 	if (shell->index == SPACE)
 	{
-		if (!shell->next || (shell->next->index != CHARS && \
+		if (!shell->next || (shell->next->index != CHARS && shell->next->index != DOLLAR &&\
 		shell->next->index != DQ && shell->next->index != SQ))
 			return (ft_write_op("newline", 258, print));
 	}
@@ -95,3 +95,13 @@ int	ft_check_spaces(char *input)
 	}
 	return (TRUE);
 }
+
+// int	ft_check_ambiguity(t_shell *shell)
+// {
+// 	int i;
+// 	t_shell *tmp;
+
+// 	tmp = shell;
+
+	
+// }
