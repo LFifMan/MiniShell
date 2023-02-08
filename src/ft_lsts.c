@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 18:45:45 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/08 19:57:58 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/08 21:55:32 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,9 @@ void	ft_lst_new(t_shell **lst, char *input, int index, int old_index)
 void	ft_build_cmds(t_shell *input, t_tabs *tmp, int i)
 {
 	if (input->index == DQ || input->index == SQ)
-		tmp->cmds[i] = ft_strjoin(tmp->cmds[i], ft_trim_quotations(input->data), TRUE);
+		tmp->cmds[i] = ft_strjoin(tmp->cmds[i], input->data, TRUE);
 	else
-		tmp->cmds[i] = ft_strjoin(tmp->cmds[i], ft_trim_quotations(input->data), FALSE);
+		tmp->cmds[i] = ft_strjoin(tmp->cmds[i], input->data, FALSE);
 	input = input->next;
 
 }
@@ -94,16 +94,16 @@ void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input)
 		if ((input && input->index == PIPE) || (input && input->index == SPACE && !input->next))
 			break ;
 		if (input->index == DQ || input->index == SQ)
-			tmp->cmds[i] = ft_strdup(ft_trim_quotations(input->data), TRUE);
+			tmp->cmds[i] = ft_strdup(input->data, TRUE);
 		else
-			tmp->cmds[i] = ft_strdup(ft_trim_quotations(input->data), FALSE);
+			tmp->cmds[i] = ft_strdup(input->data, FALSE);
 		input = input->next;
 		while (input && input->index != SPACE && input->index != PIPE)
 		{
 			if (input->index == DQ || input->index == SQ)
-				tmp->cmds[i] = ft_strjoin(tmp->cmds[i], ft_trim_quotations(input->data), TRUE);
+				tmp->cmds[i] = ft_strjoin(tmp->cmds[i], input->data, TRUE);
 			else
-				tmp->cmds[i] = ft_strjoin(tmp->cmds[i], ft_trim_quotations(input->data), FALSE);
+				tmp->cmds[i] = ft_strjoin(tmp->cmds[i], input->data, FALSE);
 			input = input->next;
 		}
 		i++;
