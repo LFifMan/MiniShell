@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 16:17:05 by max               #+#    #+#             */
-/*   Updated: 2023/02/08 18:15:30 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/09 19:10:37 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ char	*ft_str_lower(char *str)
 
 	i = 0;
 	dest = malloc (sizeof(char) * (ft_strlen(str) + 1));
-	while (str[i])
+	while (str && str[i])
 	{
 		dest[i] = (char)ft_tolower(str[i]);
 		i++;

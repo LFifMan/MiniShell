@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 23:14:47 by max               #+#    #+#             */
-/*   Updated: 2023/02/06 21:29:21 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/09 19:05:09 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	ft_free_shell(t_shell *lst)
 	lst = lst->next;
 	while (lst != NULL)
 	{
+		// printf("hello la mif %s\n", lst->data);
 		tmp = lst;
 		lst = lst->next;
 		free(tmp->data);

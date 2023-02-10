@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:44:43 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/08 16:25:42 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/10 16:49:23 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,18 @@ int		ft_dollar_len(char *data, int start);
 int		ft_env_len(char *env, int start);
 
 
+/* NEW DOLLAR*/
+void	ft_pars_dollar2(t_tabs **tabs, t_var *var);
+char	*ft_replace_dollar2(char **env, char *data, int status);
+char	*ft_remove_dollar2(char *data, int start);
+char	*ft_replace2(char *data, char *env, int data_i);
+int		ft_look_in_envp2(char *data, char *env, int i);
+char	*ft_replace_status2(char *data, int status, int place);
+int		ft_get_dollar_place(char *data);
+int		ft_look_for_dollar2(char *data);
+
+
+
 /* PARSING_REGROUP_ONE.C */
 char	*ft_trim_quotations(char *str);
 int		ft_lst_count_spaces(t_shell *lst);
@@ -173,6 +185,12 @@ char	**ft_split_bin(char *s, char c, char *argv);
 int		ft_countwords(char *s, char c);
 char	*ft_mallocfill_bin(char **s, char c, char *argv, int beg);
 char	**ft_parsing_binaries(char *const *envp, char *argv);
+
+
+/* FT_TRIM_QUOTES.C */
+void	ft_trim_quotes(t_tabs **tabs);
+char	*ft_trim_cmds(char *cmd, int size);
+int		ft_trim_count(char *cmd);
 
 
 /* FT_LSTS.C */
@@ -306,5 +324,13 @@ void	PRINT_SHELL(t_shell **a);
 void	PRINT_CMDS(t_tabs **a);
 void	PRINT_PATHS(t_tabs **a);
 void	PRINT_REDOP(t_tabs **tabs);
+
+
+
+
+
+void	ft_pars_spaces(t_tabs **tabs);
+
+
 
 #endif

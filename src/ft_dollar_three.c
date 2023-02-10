@@ -67,7 +67,7 @@ int	ft_dollar_len(char *data, int start)
 	while (data[start] && ft_check_allowed_char(data[start], start) == TRUE)
 	{
 		start++;
-		len ++;
+		len++;
 	}
 	return (len);
 }

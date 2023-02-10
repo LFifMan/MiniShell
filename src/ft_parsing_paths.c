@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 02:56:33 by max               #+#    #+#             */
-/*   Updated: 2023/01/31 14:23:01 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/09 19:05:08 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,12 @@ void	ft_paths(t_var var, t_tabs **tabs)
 	tmp = tmp->next;
 	while (tmp)
 	{
-		tmp->paths = ft_parsing_binaries(var.env, tmp->cmds[0]);
+		if (!tmp->cmds)
+		{
+			tmp->paths = ft_parsing_binaries(var.env, "");
+		}
+		else
+			tmp->paths = ft_parsing_binaries(var.env, tmp->cmds[0]);
 		tmp = tmp->next;
 	}
 }
@@ -47,7 +52,7 @@ char	**ft_parsing_binaries(char *const *envp, char *argv)
 	while (envp[i] && ft_memcmp((char *)envp[i], "PATH=", 5) != 0)
 		i++;
 	if (!envp[i])
-		binaries_paths = ft_create_paths(argv);
+		binaries_paths = ft_create_paths(argv); // remove
 	else
 		binaries_paths = ft_split_bin((char *)envp[i], ':', argv);
 	if (!binaries_paths)

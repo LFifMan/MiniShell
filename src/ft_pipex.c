@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 13:40:05 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/08 16:30:39 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/09 19:07:23 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,24 +55,28 @@ void	ft_child(t_tabs *tabs, t_var *var)
 		dup2(var->fd[1], 1);
 	close(var->fd[0]);
 	close(var->fd[1]);
-	cmd_one = ft_str_lower(tabs->cmds[0]);
-	if (ft_builtins(tabs, var, cmd_one) == TRUE)
+	if (tabs->cmds && tabs->cmds[0])
 	{
-		free(cmd_one);
-		exit(0);
-	}
-	else
-	{
-		free(cmd_one);
-		var->var = execve(tabs->cmds[0], tabs->cmds, var->env);
-		while (tabs->paths[k] && var->var < 0)
+		cmd_one = ft_str_lower(tabs->cmds[0]);
+		if (ft_builtins(tabs, var, cmd_one) == TRUE)
 		{
-			var->var = execve(tabs->paths[k], tabs->cmds, var->env);
-			k++;
+			free(cmd_one);
+			exit(0);
 		}
-		ft_write(tabs->cmds[0], 2, 127);
-		exit(127);
+		else
+		{
+			free(cmd_one);
+			var->var = execve(tabs->cmds[0], tabs->cmds, var->env);
+			while (tabs->paths[k] && var->var < 0)
+			{
+				var->var = execve(tabs->paths[k], tabs->cmds, var->env);
+				k++;
+			}
+			ft_write(tabs->cmds[0], 2, 127);
+			exit(127);
+		}
 	}
+	exit (0);
 }
 
 void	ft_parent(t_tabs *tabs, t_var *var)

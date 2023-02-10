@@ -25,8 +25,9 @@ int	ft_ctrl_prs(t_shell **shell, t_var *var, char *input, t_tabs *tabs)
 	(*shell) = parsing_pipes(*shell);
 	(*shell) = parsing_redops(shell);
 	(void)var;
-	ft_pars_dollar(shell, var);
-	PRINT_SHELL(shell);
+	//ft_pars_dollar(shell, var);
+	
+	
 	// if (ft_check_ambibuity(shell, var) == FALSE)
 	// {
 	// 	ft_free_lst(*shell, tabs, input, 1);
@@ -46,10 +47,9 @@ int	ft_ctrl_cmd(t_tabs **tabs, t_shell **shell, t_var *var)
 {
 	*tabs = ft_regroup(shell, var);
 	ft_redops(tabs);
-	PRINT_CMDS(tabs);
-	PRINT_REDOP(tabs);
+	ft_pars_dollar2(tabs, var);
+	ft_pars_spaces(tabs);
 	ft_trim_quotes(tabs);
-	//ft_pars_dollar2(tabs, var);
 	ft_paths(*var, tabs);
 	return (TRUE);
 }
@@ -74,7 +74,7 @@ void	ft_ctrl_twr(t_var *var)
 			if (ft_ctrl_prs(&shell, var, input, tabs) == TRUE)
 			{
 				ft_ctrl_cmd(&tabs, &shell, var);
-				//ft_execution(tabs, var);
+				ft_execution(tabs, var);
 				ft_free_lst(shell, tabs, input, 2);
 			}
 		}

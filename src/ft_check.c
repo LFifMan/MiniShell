@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 23:15:26 by max               #+#    #+#             */
-/*   Updated: 2023/02/08 19:06:55 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/09 18:51:29 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,10 @@ int	ft_check_next_redirection(t_shell *shell, int print)
 int	ft_check_op(t_shell *shell)
 {
 	shell = shell->next;
-	while (shell->index == SPACE)
+	while (shell && shell->index == SPACE)
 		shell = shell->next;
+	if (!shell)
+		return (FALSE);
 	if (shell->index == PIPE)
 	{
 		if (ft_strlen(shell->data) > 1)
