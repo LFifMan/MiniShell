@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:19:30 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/10 16:51:14 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/13 18:13:17 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,16 @@ static int	count_words(const char *str, char c)
 	{
 		if (*str == SQ)
 		{
+			i++;
 			str++;
 			while (*str != SQ)
+				str++;
+		}
+		else if (*str == DQ)
+		{
+			i++;
+			str++;
+			while (*str != DQ)
 				str++;
 		}
 		else if (*str != c && trigger == 0)
@@ -61,7 +69,7 @@ char		**ft_split(char const *s, char c)
 	char	**split;
 
 	if (!s || !(split = malloc((count_words(s, c) + 1) * sizeof(char *))))
-		return (0);
+		return (0); // todo : EXIT
 	i = 0;
 	j = 0;
 	index = -1;
@@ -95,6 +103,7 @@ char	**ft_split_array(char **cmd)
 	size = 0;
 	while (cmd[i])
 	{
+		printf("count size = %d\n", count_words(cmd[i], SPACE));
 		size += count_words(cmd[i], SPACE);
 		i++;
 	}
@@ -115,12 +124,20 @@ char	**ft_split_array(char **cmd)
 			i++;
 			free(tmp);
 		}
+		else if (ft_check_spaces(cmd[i]) == TRUE)
+			i++;
 		else
 		{
-				dest[j] = ft_strdup(cmd[i], FALSE);
-				i++;
-				j++;
+			dest[j] = ft_strdup(cmd[i], FALSE);
+			i++;
+			j++;
 		}
+	}
+	i = 0;
+	while (i < j)
+	{
+		printf("i = %d sauce %s \n", i, dest[i]);
+		i++;
 	}
 	dest[j] = 0;
 	i = 0;

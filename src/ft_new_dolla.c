@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 19:29:16 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/10 16:51:10 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/13 18:02:43 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,14 +162,14 @@ void	ft_pars_dollar2(t_tabs **tabs, t_var *var)
 		while (tmp->cmds[i])
 		{
 			while (ft_look_for_dollar2(tmp->cmds[i]) == TRUE)
-					tmp->cmds[i] = ft_replace_dollar2(var->env, tmp->cmds[i], var->tmp_g);
+				tmp->cmds[i] = ft_replace_dollar2(var->env, tmp->cmds[i], var->tmp_g);
 			i++;
 		}
 		i = 0;
 		while (tmp->redop[i])
 		{
 			while (ft_look_for_dollar2(tmp->redop[i]) == TRUE)
-					tmp->redop[i] = ft_replace_dollar2(var->env, tmp->redop[i], var->tmp_g);
+				tmp->redop[i] = ft_replace_dollar2(var->env, tmp->redop[i], var->tmp_g);
 			i++;
 		}
 		tmp = tmp->next;

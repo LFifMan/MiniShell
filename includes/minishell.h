@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:44:43 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/10 16:49:23 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/13 17:26:53 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -328,6 +328,7 @@ void	PRINT_REDOP(t_tabs **tabs);
 
 
 
+int ft_check_ambiguity(t_tabs **tabs);
 
 void	ft_pars_spaces(t_tabs **tabs);
 

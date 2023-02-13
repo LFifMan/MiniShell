@@ -68,6 +68,7 @@ SRC		=	main.c \
 			ft_trim_quotes.c \
 			ft_new_dolla.c \
 			ft_parse_spaces_tabs.c \
+			ft_ambiguity.c \
 			ft_write.c
 
 HEAD	=	minishell.h
