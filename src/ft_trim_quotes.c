@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 21:25:26 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/09 19:10:38 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/14 14:24:15 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	ft_trim_count(char *cmd)
 				i++;
 				j++;
 			}
+			i++;
 		}
 		else if (cmd[i] && cmd[i] == DQ)
 		{
@@ -38,6 +39,7 @@ int	ft_trim_count(char *cmd)
 				i++;
 				j++;
 			}
+			i++;
 		}
 		else
 		{
@@ -47,9 +49,6 @@ int	ft_trim_count(char *cmd)
 				j++;
 			}
 		}
-		if (!cmd[i])
-			break;
-		i++;
 	}
 	return (j);
 }
@@ -76,6 +75,7 @@ char	*ft_trim_cmds(char *cmd, int size)
 				i++;
 				j++;
 			}
+			i++;
 		}
 		else if (cmd[i] && cmd[i] == DQ)
 		{
@@ -86,6 +86,7 @@ char	*ft_trim_cmds(char *cmd, int size)
 				i++;
 				j++;
 			}
+			i++;
 		}
 		else
 		{
@@ -96,9 +97,6 @@ char	*ft_trim_cmds(char *cmd, int size)
 				j++;
 			}
 		}
-		if (!cmd[i])
-			break;
-		i++;
 	}
 	dest[j] = 0;
 	free(cmd);

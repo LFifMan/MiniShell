@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:19:30 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/13 18:13:17 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/14 14:28:07 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ char	**ft_split_array(char **cmd)
 	size = 0;
 	while (cmd[i])
 	{
-		printf("count size = %d\n", count_words(cmd[i], SPACE));
 		size += count_words(cmd[i], SPACE);
 		i++;
 	}
@@ -136,7 +135,6 @@ char	**ft_split_array(char **cmd)
 	i = 0;
 	while (i < j)
 	{
-		printf("i = %d sauce %s \n", i, dest[i]);
 		i++;
 	}
 	dest[j] = 0;

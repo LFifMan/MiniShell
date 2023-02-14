@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 19:29:16 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/13 18:02:43 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/14 14:28:28 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ char	*ft_replace2(char *data, char *env, int data_i)
 	//size_malloc = ft_size_malloc(data, env, data_i, env_i);
 	ret = ft_strjoin(ret, &env[env_i], FALSE);
 	ret = ft_strjoin(ret, &data[data_i + env_i - 1], FALSE);
-	printf("%s\n", ret);
 	//ret = ft_malloc_cpy(data, env, size_malloc);
 	free(data);
 	return (ret);
@@ -176,14 +175,6 @@ void	ft_pars_dollar2(t_tabs **tabs, t_var *var)
 	}
 }
 
-
-/* DONE */
-
-
-
-
-
-
 int	ft_get_dollar_place(char *data)
 {
 	int	i;
@@ -196,6 +187,7 @@ int	ft_get_dollar_place(char *data)
 			i++;
 			while (data[i] != SQ)
 				i++;
+			i++;
 		}
 		else if (data[i] == DQ)
 		{
@@ -207,6 +199,7 @@ int	ft_get_dollar_place(char *data)
 						return (i);
 				i++;
 			}
+			i++;
 		}
 		else
 		{
@@ -219,8 +212,6 @@ int	ft_get_dollar_place(char *data)
 				i++;
 			}
 		}
-		if (data[i])
-			i++;
 	}
 	return (i);
 }
@@ -238,6 +229,7 @@ int	ft_look_for_dollar2(char *data)
 			i++;
 			while (data[i] != SQ)
 				i++;
+			i++;
  		}
 		else if (data[i] == DQ)
 		{
@@ -249,6 +241,7 @@ int	ft_look_for_dollar2(char *data)
 						return (TRUE);
 				i++;
 			}
+			i++;
 		}
 		else
 		{
@@ -257,121 +250,9 @@ int	ft_look_for_dollar2(char *data)
 				if (data[i] == DOLLAR)
 					if (data[i + 1] != SPACE && data[i + 1] != 0)
 						return (TRUE);
-
 				i++;
 			}
 		}
-		if (data[i])
-			i++;
 	}
 	return (FALSE);
 }
-
-
-// REMOVED
-/*
-int	ft_look_for_status(char *data)
-{
-	int	i;
-
-	i = 0;
-	while (data[i])
-	{
-		if (data[i] == SQ) // put to a function
-		{
-			i++;
-			while (data[i] != SQ)
-				i++;
-		}
-		else if (data[i] == DQ) // put to a function
-		{
-			i++;
-			while (data[i] != DQ)
-			{
-				if (data[i] == DOLLAR)
-					if (data[i + 1] && data[i] == DOLLAR && data[i + 1] == QUESTION)
-						return (TRUE);
-				i++;
-			}
-		}
-		else
-		{
-			while (data[i] != DQ && data[i] != SQ)
-			{
-				if (data[i] == DOLLAR)
-					if (data[i + 1] && data[i] == DOLLAR && data[i + 1] == QUESTION)
-						return (TRUE);
-
-				i++;
-			}
-		}
-		i++;
-	}
-	return (FALSE);
-}
-
-
-
-char	*ft_replace_status(char *data, int status)
-{ 
-	int		i;
-	int		j;
-	int		k;
-	char	*str_status;
-	char	*dest;
-
-	str_status = ft_itoa(status);
-	i = 0;
-	dest = malloc(sizeof(char) * (ft_strlen(data) + ft_strlen(str_status) - 1));
-	while (data[i])
-	{
-		if (data[i] == SQ)
-		{
-			dest[i] = data[i];
-			i++;
-			while (data[i] != SQ)
-			{
-				dest[i] = data[i];
-				i++;
-			}
-			dest[i] = data[i];
-			i++;
-		}
-		else if (data[i] == DQ)
-		{
-			dest[i] = data[i];
-			i++;
-			while (data[i] != DQ)
-			{
-				if (data[i] == DOLLAR)
-				{
-					dest = ft_strjoin(ft_strjoin(dest, str_status, TRUE), &data[i + 2], FALSE);
-					free(data);
-					return (dest);
-				}
-				else
-					dest[i] = data[i];
-				i++;
-			}
-			dest[i] = data[i];
-			i++;
-		}
-		else
-		{
-			while (data[i] != DQ && data[i] != SQ)
-			{
-				if (data[i] == DOLLAR)
-				{
-					dest = ft_strjoin(ft_strjoin(dest, str_status, TRUE), &data[i + 2], FALSE);
-					free(data);
-					return (dest);
-				}
-				else
-					dest[i] = data[i];
-				i++;
-			}
-		}
-	}
-	return (dest);
-}
-*/

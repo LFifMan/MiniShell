@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 00:01:15 by max               #+#    #+#             */
-/*   Updated: 2023/01/31 17:31:23 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/14 16:05:39 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,3 +83,70 @@ void	ft_signals(int index)
 		tcsetattr(STDIN_FILENO, TCSANOW, &saved_termios);
 	}
 }
+
+
+// void	ft_heredoc(t_tabs *tabs, t_var *var, int j)
+// {
+// 	char	*delimiter;					
+// 	char	*input;
+// 	char	path[1024];
+// 	int		fd;
+
+// 	var->redir_in = 1;
+// 	delimiter = tabs->redop[j + 1];
+// 	input = NULL;
+// 	fd = open("tempfile", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+// 	while (1)
+// 	{
+// 		input = readline("heredoc> ");
+// 		if (strcmp(input, delimiter) == 0)
+// 		{
+// 			free(input);
+// 			break ;
+// 		}
+// 		write(fd, input, strlen(input));
+// 		write(fd, "\n", 1);
+// 		free(input);
+// 	}
+// 	close(fd);
+// 	getcwd(path, sizeof(path));
+// 	strcat(path, "/tempfile");
+// 	var->in_fd = open(path, O_RDONLY); // redirect input to the file
+// 	dup2(var->in_fd, 0);
+// 	close(var->in_fd);
+// 	unlink(path);
+// }
+
+
+// void	ft_heredoc(t_tabs *tabs, t_var *var, int j)
+// {
+// 	char	*delimiter;					
+// 	char	*input;
+// 	char	path[1024];
+// 	int		fd;
+
+// 	var->redir_in = 1;
+// 	delimiter = tabs->redop[j + 1];
+// 	input = NULL;
+// 	fd = open("tempfile", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+// 	while (1)
+// 	{
+// 		input = readline("heredoc> ");
+// 		if (strcmp(input, delimiter) == 0)
+// 		{
+// 			free(input);
+// 			break ;
+// 		}
+// 		write(fd, input, strlen(input));
+// 		write(fd, "\n", 1);
+// 		printf("%s\n", input);
+// 		free(input);
+// 	}
+// 	close(fd);
+// 	getcwd(path, sizeof(path));
+// 	strcat(path, "/tempfile");
+// 	var->in_fd = open(path, O_RDONLY); // redirect input to the file
+// 	dup2(var->in_fd, 0);
+// 	close(var->in_fd);
+// 	unlink(path);
+// }

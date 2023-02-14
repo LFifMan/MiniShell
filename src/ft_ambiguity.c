@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:16:05 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/13 17:41:51 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/14 15:05:50 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int ft_check_ambiguity(t_tabs **tabs)
 		i = 0;
 		while (tmp->redop[i])
 		{
-			if (tmp->redop[i][0] != GREAT || tmp->redop[i][0] != SMALL)
+			if (tmp->redop[i][0] != GREAT && tmp->redop[i][0] != SMALL)
 				return (FALSE);
 			i++;
 			if (tmp->redop[i][0] == GREAT || tmp->redop[i][0] == SMALL)

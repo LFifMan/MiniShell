@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 13:40:05 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/09 19:07:23 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/14 17:26:11 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,28 +16,48 @@ void	ft_heredoc(t_tabs *tabs, t_var *var, int j)
 {
 	char	*delimiter;					
 	char	*input;
-	char	path[1024];
-	int		fd;
+	char	*str;
 
-	var->redir_in = 1;
+	var->redir_in = 2;
 	delimiter = tabs->redop[j + 1];
 	input = NULL;
+	// var->in_fd = open("tempfile", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	ft_signals(TRUE);
+	str = ft_strdup("", FALSE);
 	while (1)
 	{
+
 		input = readline("heredoc> ");
-		if (strcmp(input, delimiter) == 0)
+
+		if (!input)
+		{
 			break ;
+		}
+		else if (strcmp(input, delimiter) == 0)
+		{
+			free(input);
+			break ;
+		}
+
+		str = ft_strjoin(str, input, TRUE);
+		str = ft_strjoin(str, "\n", FALSE);
 	}
-	getcwd(path, sizeof(path));
-	strcat(path, "/tempfile");
-	fd = open("tempfile", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	write(fd, input, strlen(input)); // write the input to the file
-	close(fd);
-	var->in_fd = open("tempfile", O_RDONLY); // redirect input to the file
+	ft_signals(FALSE);
+	//printf("str : %s, strlen : %zu\n", str, ft_strlen(str));
+	write(var->in_fd, &str, ft_strlen(str) - 1);
+	// getcwd(path, sizeof(path));
+	// strcat(path, "/tempfile");
+	// close(fd);
+	// var->in_fd = open("tempfile", O_RDONLY); // redirect input to the file
+	
+	
 	dup2(var->in_fd, 0);
 	close(var->in_fd);
-	unlink("tempfile");
-	free(input);
+
+
+	// close(var->in_fd);
+	// unlink("tempfile");
+	// free(input);
 }
 
 void	ft_child(t_tabs *tabs, t_var *var)
@@ -53,8 +73,10 @@ void	ft_child(t_tabs *tabs, t_var *var)
 		dup2(var->fd[0], 0);
 	if (tabs->next && var->redir_out == 0)
 		dup2(var->fd[1], 1);
-	close(var->fd[0]);
-	close(var->fd[1]);
+	// if (var->redir_in == 2)
+	// {
+	// 	dup2(var->fd[0], 0);
+	// }
 	if (tabs->cmds && tabs->cmds[0])
 	{
 		cmd_one = ft_str_lower(tabs->cmds[0]);
@@ -76,6 +98,8 @@ void	ft_child(t_tabs *tabs, t_var *var)
 			exit(127);
 		}
 	}
+	close(var->fd[0]);
+	close(var->fd[1]);
 	exit (0);
 }
 
