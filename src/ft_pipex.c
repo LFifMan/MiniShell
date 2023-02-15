@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 13:40:05 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/15 17:33:37 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/15 20:02:58 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,16 @@ void	ft_heredoc(t_tabs *tabs, t_var *var, int j)
 {
 	char	*delimiter;					
 	char	*input;
-	char	*str;
+	//char	*str;
 
 	var->redir_in = 2;
 	delimiter = tabs->redop[j + 1];
 	input = NULL;
 	// var->in_fd = open("tempfile", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	var->out_fd = open("tempfile", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+
 	ft_signals(TRUE);
-	str = ft_strdup("", FALSE);
+	//str = ft_strdup("", FALSE);
 	while (1)
 	{
 
@@ -38,21 +40,34 @@ void	ft_heredoc(t_tabs *tabs, t_var *var, int j)
 			free(input);
 			break ;
 		}
-
-		str = ft_strjoin(str, input, TRUE);
-		str = ft_strjoin(str, "\n", FALSE);
+		write(var->out_fd, input, strlen(input));
+		write(var->out_fd, "\n", 1);
+		//str = ft_strjoin(str, input, TRUE);
+		//str = ft_strjoin(str, "\n", FALSE);
 	}
+
+	printf("OUT OF WHILE\n");
 	ft_signals(FALSE);
+	dup2(var->out_fd, 1);
+	close(var->out_fd);
+	var->in_fd = open("tempfile", O_RDONLY);
+	dup2(var->in_fd, 0); // restore standard input to the terminal
+	close(var->in_fd);
+
 	//printf("str : %s, strlen : %zu\n", str, ft_strlen(str));
-	write(var->in_fd, &str, ft_strlen(str) - 1);
+
+
+
+	//num_bytes_written = write(var->in_fd, str, ft_strlen(str));
+	//write(var->in_fd, &str, ft_strlen(str));
 	// getcwd(path, sizeof(path));
 	// strcat(path, "/tempfile");
 	// close(fd);
 	// var->in_fd = open("tempfile", O_RDONLY); // redirect input to the file
 	
-	
-	dup2(var->in_fd, 0);
-	close(var->in_fd);
+//	dup2(var->in_fd, 0);
+
+
 	//printf("str : %s, strlen : %zu\n", str, ft_strlen(str));
 
 	// close(var->in_fd);
@@ -69,8 +84,10 @@ void	ft_child(t_tabs *tabs, t_var *var)
 	var->redir_in = 0;
 	var->redir_out = 0;
 	ft_redops_handler(tabs, var);
+	printf("redi = %d\n", var->redir_in);
 	if (tabs->next)
 	{
+		printf("NEXT\n");
 		if (var->redir_out == 0)
 		{
 			dup2(var->fd[1], 1);
@@ -85,15 +102,20 @@ void	ft_child(t_tabs *tabs, t_var *var)
 	}
 	else if (!tabs->next && var->i != 0 && var->redir_in == 0)
 	{
+		printf("redir = 0\n");
+        dup2(var->in_fd, 0);
+        close(var->in_fd);
+	}
+	if (var->redir_in == 2)
+	{
+		printf("REDIR2\n");
 		dup2(var->tmpfd, 0);
 		close(var->tmpfd);
+		dup2(var->out_fd, 1);
+		close(var->out_fd);
+
 	}
-	
-	// if (var->redir_in == 2)
-	// {
-	// 	dup2(var->fd[0], 0);
-	// }
-	if (tabs->cmds && tabs->cmds[0])
+		if (tabs->cmds && tabs->cmds[0])
 	{
 		cmd_one = ft_str_lower(tabs->cmds[0]);
 		if (ft_builtins(tabs, var, cmd_one) == TRUE)
@@ -140,6 +162,7 @@ void	ft_parent(t_tabs *tabs, t_var *var)
 
 void	ft_process_execution(t_var *var, t_tabs *tabs)
 {
+	
 	if (var->i != 0 || tabs->next)
 	{	
 		if (pipe(var->fd) == -1)
