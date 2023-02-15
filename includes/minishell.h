@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:44:43 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/13 17:26:53 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/15 17:18:44 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct s_var
 	int				redir_out;
 	int				in_fd;
 	int				out_fd;
+	int				tmpfd;
 	int				fd[2];
 	pid_t			child;
 	int				status;

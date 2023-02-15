@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 13:40:05 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/14 17:26:11 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/15 17:33:37 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	ft_heredoc(t_tabs *tabs, t_var *var, int j)
 	
 	dup2(var->in_fd, 0);
 	close(var->in_fd);
-
+	//printf("str : %s, strlen : %zu\n", str, ft_strlen(str));
 
 	// close(var->in_fd);
 	// unlink("tempfile");
@@ -62,17 +62,33 @@ void	ft_heredoc(t_tabs *tabs, t_var *var, int j)
 
 void	ft_child(t_tabs *tabs, t_var *var)
 {
-	int	k;
+	int		k;
 	char	*cmd_one;
 
 	k = 0;
 	var->redir_in = 0;
 	var->redir_out = 0;
 	ft_redops_handler(tabs, var);
-	if (var->i != 0 && var->redir_in == 0)
-		dup2(var->fd[0], 0);
-	if (tabs->next && var->redir_out == 0)
-		dup2(var->fd[1], 1);
+	if (tabs->next)
+	{
+		if (var->redir_out == 0)
+		{
+			dup2(var->fd[1], 1);
+			close(var->fd[1]);
+		}	
+		if (var->redir_in == 0)
+		{
+			dup2(var->tmpfd, 0);
+			close(var->tmpfd);
+			close(var->fd[0]);
+		}
+	}
+	else if (!tabs->next && var->i != 0 && var->redir_in == 0)
+	{
+		dup2(var->tmpfd, 0);
+		close(var->tmpfd);
+	}
+	
 	// if (var->redir_in == 2)
 	// {
 	// 	dup2(var->fd[0], 0);
@@ -105,15 +121,34 @@ void	ft_child(t_tabs *tabs, t_var *var)
 
 void	ft_parent(t_tabs *tabs, t_var *var)
 {
-	if (var->i != 0)
-		close(var->fd[0]);
+	// if (var->i != 0)
+	// 	close(var->fd[0]);
+	// if (tabs->next != NULL)
+	// close(var->fd[1]);
 	if (tabs->next != NULL)
+	{
+		close(var->tmpfd);
 		close(var->fd[1]);
+		var->tmpfd = var->fd[0];
+	}
+	else if (!tabs->next && var->i != 0)
+	{
+		close(var->tmpfd);
+	}
+
 }
 
 void	ft_process_execution(t_var *var, t_tabs *tabs)
 {
-	pipe(var->fd);
+	if (var->i != 0 || tabs->next)
+	{	
+		if (pipe(var->fd) == -1)
+		{
+				printf("la sauce");
+		}
+	}
+
+	//pipe(var->fd);
 	var->child = fork();
 	if (var->child < 0)
 		ft_write(tabs->cmds[0], 6, 52);
@@ -127,10 +162,13 @@ void	ft_process_execution(t_var *var, t_tabs *tabs)
 	}
 }
 
+
 void	ft_pipex(t_tabs *tabs, t_var *var)
 {
 	var->var = -1;
 	var->i = 0;
+	var->tmpfd = dup(0);
+
 	if (tabs->next)
 		tabs = tabs->next;
 	while (tabs)
@@ -151,3 +189,119 @@ void	ft_pipex(t_tabs *tabs, t_var *var)
 		g_status = 1;
 	}
 }
+
+
+
+
+
+
+
+
+
+/*
+void	ft_pipex(t_tabs *tabs, t_var *var)
+{
+	int		fd[2];
+	int		tmpfd;
+	pid_t	child;
+	int		i;
+	int		status;
+	int		var2;
+
+	var2 = -1;
+	i = 0;
+	tmpfd = dup(0);
+	tabs = tabs->next;
+	while (tabs)
+	{
+		if (i != 0 || tabs->next)
+		{
+			printf("in da pipe\n");
+		
+			if (pipe(fd) == -1)
+			{
+
+				printf("la sauce");
+			}
+		}
+		child = fork();
+		if (child < 0)
+			printf("la sauce"); //ft_errors(3, tabs);
+		if (child == 0)
+		{
+			if (tabs->next )
+			{
+				if (var->redir_out == 0)
+				{
+					dup2(fd[1], 1);
+					close(fd[1]);
+
+				}	
+		
+				if (var->redir_in == 0)
+				{
+					dup2(tmpfd, 0);
+					close(tmpfd);
+					close(fd[0]);
+				}
+				dup2(tmpfd, 0);
+				dup2(fd[1], 1);
+				close(tmpfd);
+				close(fd[0]);
+				close(fd[1]);
+			}
+			else if (!tabs->next && i != 0 && var->redir_in == 0)
+			{
+				dup2(tmpfd, 0);
+				close(tmpfd);
+			}
+				dup2(tmpfd, 0);
+			if (tabs->next != NULL)
+				dup2(fd[1], 1);
+			else
+			{
+				dup2(tmpfd, 0);
+				close(tmpfd);
+			}
+			close(tmpfd);
+			close(fd[1]);
+			*/
+/*			while (tabs->paths[i] && var2 < 0)
+			{
+				var2 = execve(tabs->paths[i], tabs->cmds, var->env);
+				i++;
+			}
+			printf("bash: %s command not found\n", tabs->cmds[0]);//ft_errors(4, tabs);
+		}
+		else
+		{
+			if (tabs->next != NULL)
+			{
+				close(tmpfd);
+				close(fd[1]);
+				tmpfd = fd[0];
+			}
+			else if (!tabs->next && i != 0)
+			{
+				close(tmpfd);
+			}
+			//if (i != 0)
+				close(tmpfd);
+			if (!tabs->next)
+			{
+				close(tmpfd);
+				
+			}
+			close(fd[1]);
+			tmpfd = fd[0];
+			*/
+		/*
+		}
+		tabs = tabs->next;
+		i++;
+	}
+	while (i--)
+		wait(&status);
+	//tmpfd = dup(0);
+}
+*/
