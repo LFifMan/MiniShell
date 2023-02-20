@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 13:40:05 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/20 15:56:38 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/20 15:58:16 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ void	ft_child(t_tabs *tabs, t_var *var)
 	else if (!tabs->next && var->i != 0 && var->redir_in == 0) // 
 	{
 		printf("redir = 0\n");
-        dup2(var->in_fd, 0); // todo: why is it in_fd?
-        close(var->in_fd);
+        dup2(var->tmpfd, 0); // todo: why is it in_fd?
+        close(var->tmpfd);
 	}
 	if (tabs->cmds && tabs->cmds[0])
 	{
