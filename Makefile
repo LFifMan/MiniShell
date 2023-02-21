@@ -3,7 +3,7 @@
 NAME	= minishell
 CC		= gcc
 RM		= rm -rf
-FLAGS	= -Werror -Wextra -Wall -g3 #-fsanitize=address
+FLAGS	= -Werror -Wextra -Wall -g3 -fsanitize=address
 #LIBS	= -L /usr/local/Cellar/readline/8.2.1/lib -lreadline -I /usr/local/Cellar/readline/8.2.1/include/readline
 LIBS	= -L $(HOME)/.brew/Cellar/readline/8.2.1/lib -lreadline -I $(HOME)/.brew/Cellar/readline/8.2.1/include/readline
 MKDIR_P = mkdir -p

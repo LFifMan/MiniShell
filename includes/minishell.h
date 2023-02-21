@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:44:43 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/15 17:18:44 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/21 16:18:59 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct s_tabs
 	char			**paths;
 	char			**redop;
 	struct s_tabs	*next;
+	int				ambiguity;
 }					t_tabs;
 
 int	g_status;

@@ -44,10 +44,7 @@ int	ft_ctrl_cmd(t_tabs **tabs, t_shell **shell, t_var *var)
 	ft_pars_dollar2(tabs, var);
 	ft_pars_spaces(tabs);
 	if (ft_check_ambiguity(tabs) == FALSE)
-	{
-		write (2, "ambiguous redirection frr\n", ft_strlen("ambiguous redirection frr\n"));
-	}
-	//PRINT_CMDS(tabs);
+		write (2, "minishell: error: ambiguous redirection frr\n", ft_strlen("minishell: error: ambiguous redirection frr\n"));
 	ft_trim_quotes(tabs);
 	ft_paths(*var, tabs);
 	return (TRUE);

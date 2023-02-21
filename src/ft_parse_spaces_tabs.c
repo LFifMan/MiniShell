@@ -6,12 +6,11 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:19:30 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/14 14:28:07 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/21 17:40:40 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
 
 static int	count_words(const char *str, char c)
 {
@@ -22,28 +21,36 @@ static int	count_words(const char *str, char c)
 	trigger = 0;
 	while (*str)
 	{
-		if (*str == SQ)
+		if (*str == c)
 		{
-			i++;
+			while (*str && *str == c)
+				str++;
+		}
+		else if (*str == SQ)
+		{
 			str++;
 			while (*str != SQ)
 				str++;
+			str++;
+			if (*str == c || *str == 0)
+				i++;
 		}
 		else if (*str == DQ)
 		{
-			i++;
 			str++;
 			while (*str != DQ)
 				str++;
+			str++;
+			if (*str == c || *str == 0)
+				i++;
 		}
-		else if (*str != c && trigger == 0)
+		else
 		{
-			trigger = 1;
-			i++;
+			while (*str && *str != DQ && *str != SQ && *str != c)
+				str++;
+			if (*str == c || *str == 0)
+				i++;
 		}
-		else if (*str == c)
-			trigger = 0;
-		str++;
 	}
 	return (i);
 }
@@ -88,7 +95,6 @@ char		**ft_split(char const *s, char c)
 	return (split);
 }
 
-
 char	**ft_split_array(char **cmd)
 {
 	int		i;
@@ -107,6 +113,8 @@ char	**ft_split_array(char **cmd)
 		i++;
 	}
 	dest = malloc(sizeof(char*) * (size + 1));
+	if (!dest)
+		exit(EXIT_FAILURE);
 	i = 0;
 	while (cmd[i])
 	{
