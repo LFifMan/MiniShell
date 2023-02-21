@@ -60,3 +60,33 @@ char	*ft_itoa(int n)
 		count++;
 	return (dest(n, count));
 }
+
+int	ft_is_whitespace(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	return (i);
+}
+
+int	ft_atoi(char *str)
+{
+	int	res;
+	int	sign;
+	int	i;
+
+	res = 0;
+	sign = 1;
+	i = ft_is_whitespace(str);
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			sign = -1;
+		i++;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+		res = res * 10 + (str[i++] - '0');
+	return (sign * res);
+}

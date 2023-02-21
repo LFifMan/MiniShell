@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:38:40 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/31 14:21:48 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/08 16:19:27 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*parse_quotation(char *input, char index, int size, int i)
 {
 	char	*data;
 
-	if (index == DOUBLEQUOTE || index == SINGLEQUOTE)
+	if (index == DQ || index == SQ)
 	{
 		data = malloc(sizeof(char) * size + 3);
 		if (!data)
@@ -51,29 +51,29 @@ int	parsing_quotations(t_shell **shell, char *input)
 	while (input[i])
 	{
 		j = 0;
-		if (input[i] == DOUBLEQUOTE || input[i] == SINGLEQUOTE)
+		if (input[i] == DQ || input[i] == SQ)
 		{
 			type = input[i++];
 			while (input[i + j] && input[i + j] != type)
 				j++;
 			if (!input[i + j])
 				return (FALSE);
-			ft_lstadd_back(shell, parse_quotation(&input[i], type, j, 0), TRUE);
+			ft_lst_new(shell, parse_quotation(&input[i], type, j, 0), TRUE, 0);
 			i++;
 		}
 		else
 		{
-			while (input[i + j] && input[i + j] != SINGLEQUOTE && input[i + j] != DOUBLEQUOTE)
+			while (input[i + j] && input[i + j] != SQ && input[i + j] != DQ)
 				j++;
-			ft_lstadd_back(shell, parse_quotation(&input[i], \
-            0, j, 0), TRUE);
+			ft_lst_new(shell, parse_quotation(&input[i], \
+			0, j, 0), TRUE, 0);
 		}
 		i += j;
 	}
 	return (TRUE);
 }
 
-void	split_spaces(t_shell **shell, char *input)
+void	split_spaces(t_shell **shell, char *input, int old_index)
 {
 	int	i;
 	int	j;
@@ -86,13 +86,13 @@ void	split_spaces(t_shell **shell, char *input)
 		{
 			while (input[i + j] == SPACE)
 				j++;
-			ft_lstadd_back(shell, parse_quotation(&input[i], SPACE, j, 0), TRUE);
+			ft_lst_new(shell, parse_quotation(&input[i], SPACE, j, 0), TRUE, 0);
 		}
 		else if (input[i])
 		{
 			while (input[i + j] && input[i + j] != SPACE)
 				j++;
-			ft_lstadd_back(shell, parse_quotation(&input[i], 0, j, 0), TRUE);
+			ft_lst_new(shell, parse_quotation(&input[i], 0, j, 0), TRUE, old_index);
 		}
 		else
 			return ;
@@ -112,13 +112,13 @@ t_shell	*parsing_spaces(t_shell **shell)
 	tmp = (*shell)->next;
 	while (tmp)
 	{
-		if (tmp->index == SINGLEQUOTE || tmp->index == DOUBLEQUOTE)
-			ft_lstadd_back(&new, tmp->data, FALSE);
+		if (tmp->index == SQ || tmp->index == DQ)
+			ft_lst_new(&new, tmp->data, FALSE, 0);
 		else
-			split_spaces(&new, tmp->data);
+			split_spaces(&new, tmp->data, tmp->index);
 		tmp = tmp->next;
 	}
-	free_shell(*shell);
+	ft_free_shell(*shell);
 	free(*shell);
 	return (new);
 }

@@ -6,13 +6,13 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 02:56:33 by max               #+#    #+#             */
-/*   Updated: 2023/01/31 14:23:01 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/14 14:32:57 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	ft_paths(t_vars vars, t_tabs **tabs)
+void	ft_paths(t_var var, t_tabs **tabs)
 {
 	t_tabs	*tmp;
 
@@ -20,21 +20,24 @@ void	ft_paths(t_vars vars, t_tabs **tabs)
 	tmp = tmp->next;
 	while (tmp)
 	{
-		tmp->paths = ft_parsing_binaries(vars.envp, tmp->cmds[0]);
+		if (!tmp->cmds)
+		{
+			tmp->paths = ft_parsing_binaries(var.env, "");
+		}
+		else
+			tmp->paths = ft_parsing_binaries(var.env, tmp->cmds[0]);
 		tmp = tmp->next;
 	}
 }
 
-char	**ft_create_paths(char *argv)
+char	**ft_create_paths(void)
 {
 	char	**dst;
 
-	dst = malloc(sizeof(char *) * 2 + 1);
+	dst = malloc(sizeof(char *));
 	if (!dst)
 		exit (EXIT_FAILURE);
-	dst[0] = ft_strjoin("/bin/", argv, FALSE); // TODO: NOT FREE S1
-	dst[1] = ft_strjoin("/usr/bin/", argv, FALSE);// TODO: NOT FREE S1
-	dst[2] = 0;
+	dst[0] = 0;
 	return (dst);
 }
 
@@ -47,7 +50,7 @@ char	**ft_parsing_binaries(char *const *envp, char *argv)
 	while (envp[i] && ft_memcmp((char *)envp[i], "PATH=", 5) != 0)
 		i++;
 	if (!envp[i])
-		binaries_paths = ft_create_paths(argv);
+		binaries_paths = ft_create_paths();
 	else
 		binaries_paths = ft_split_bin((char *)envp[i], ':', argv);
 	if (!binaries_paths)

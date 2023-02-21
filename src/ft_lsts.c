@@ -6,62 +6,73 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 18:45:45 by mstockli          #+#    #+#             */
-/*   Updated: 2023/01/31 14:20:52 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/09 14:24:02 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	ft_lstsize(t_shell **lst)
+char	ft_add_index(char c, int index)
 {
-	t_shell	*tmp;
-	int		i;
-
-	tmp = (*lst)->next;
-	i = 0;
-	while (tmp != NULL)
-	{
-		i++;
-		tmp = tmp->next;
-	}
-	return (i);
+	if (c == PIPE && index == DOLLAR)
+	 	return (DOLLAR);
+	if (c == DQ || c == SQ || c == PIPE || \
+	c == SPACE || c == GREAT || c == SMALL || c == DOLLAR)
+		return (c);
+	return (CHARS);
 }
 
-void	ft_lstadd_back(t_shell **lst, char *input, int index)
+char	*ft_add_data(char *input)
 {
-	t_shell	*tmp;
-	t_shell	*curr;
 	int		i;
+	char	*data;
 
-	tmp = malloc(sizeof(t_shell));
-	if (!tmp)
-		exit (EXIT_FAILURE);
-	tmp->next = NULL;
-	if (input[0] == DOUBLEQUOTE || input[0] == SINGLEQUOTE || input[0] == PIPE || input[0] == SPACE || input[0] == GREATER || input[0] == SMALLER) // create an index to know if the lst is a quotation or not
-		tmp->index = input[0];
-	else
-		tmp->index = CHARS;
 	i = 0;
-	tmp->data = malloc(sizeof(char) * ft_strlen(input) + 1);
-	if (!tmp->data)
+	data = malloc (sizeof(char) * ft_strlen(input) + 1);
+	if (!data)
 		exit (EXIT_FAILURE);
 	while (input[i])
 	{
-		tmp->data[i] = input[i];
+		data[i] = input[i];
 		i++;
 	}
-	tmp->data[i] = 0;
-	curr = *lst;
-	while (curr->next != NULL)
-	{
-		curr = curr->next;
-	}
-	curr->next = tmp;
-	if (index == TRUE)
-		free (input);
-
+	data[i] = 0;
+	return (data);
 }
 
+void	ft_lst_new(t_shell **lst, char *input, int index, int old_index)
+{
+	t_shell	*new;
+	t_shell	*curr;
+
+	new = malloc(sizeof(t_shell));
+	if (!new)
+		exit (EXIT_FAILURE);
+	new->next = NULL;
+	new->index = (int)ft_add_index(input[0], old_index);
+	new->data = ft_add_data(input);
+	if (*lst == NULL)
+	{
+		*lst = new;
+		return ;
+	}
+	curr = *lst;
+	while (curr->next != NULL)
+		curr = curr->next;
+	curr->next = new;
+	if (index == TRUE)
+		free (input);
+}
+
+void	ft_build_cmds(t_shell *input, t_tabs *tmp, int i)
+{
+	if (input->index == DQ || input->index == SQ)
+		tmp->cmds[i] = ft_strjoin(tmp->cmds[i], input->data, TRUE);
+	else
+		tmp->cmds[i] = ft_strjoin(tmp->cmds[i], input->data, FALSE);
+	input = input->next;
+
+}
 void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input)
 {
 	t_tabs	*tmp;
@@ -79,47 +90,28 @@ void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input)
 	while (input)
 	{
 		if (input && input->next && input->index == SPACE)
-		{
 			input = input->next;
-		}
-		if (input && input->index == PIPE)
-		{
+		if ((input && input->index == PIPE) || (input && input->index == SPACE && !input->next))
 			break ;
-		}
-		if (input && input->index == SPACE && !input->next)
-		{
-			break ;
-		}
-		if (input->index == DOUBLEQUOTE || input->index == SINGLEQUOTE)
-		{
-			tmp->cmds[i] = ft_strdup(ft_trim_quotations(input->data), TRUE);
-		}
+		if (input->index == DQ || input->index == SQ)
+			tmp->cmds[i] = ft_strdup(input->data, FALSE);
 		else
-		{
-			tmp->cmds[i] = ft_strdup(ft_trim_quotations(input->data), FALSE);
-		}
+			tmp->cmds[i] = ft_strdup(input->data, FALSE);
 		input = input->next;
 		while (input && input->index != SPACE && input->index != PIPE)
 		{
-			if (input->index == DOUBLEQUOTE || input->index == SINGLEQUOTE)
-			{
-				tmp->cmds[i] = ft_strjoin(tmp->cmds[i], ft_trim_quotations(input->data), TRUE);
-			}
+			if (input->index == DQ || input->index == SQ)
+				tmp->cmds[i] = ft_strjoin(tmp->cmds[i], input->data, FALSE);
 			else
-			{
-				tmp->cmds[i] = ft_strjoin(tmp->cmds[i], ft_trim_quotations(input->data), FALSE);
-			}
+				tmp->cmds[i] = ft_strjoin(tmp->cmds[i], input->data, FALSE);
 			input = input->next;
 		}
 		i++;
-
 	}
 	tmp->cmds[i] = 0;
 	curr = *tabs;
 	while (tabs && (*tabs)->next != NULL)
-	{
 		(*tabs) = (*tabs)->next;
-	}
 	(*tabs)->next = tmp;
 	(*tabs) = curr;
 }
