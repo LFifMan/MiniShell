@@ -41,34 +41,51 @@ char	*parse_quotation(char *input, char index, int size, int i)
 	return (data);
 }
 
+int	ft_parsing_quot_two(char *input, t_shell **shell, int option, int i)
+{
+	char	type;
+	int		j;
+
+	j = 0;
+	if (option == 1)
+	{
+		type = input[i++];
+		while (input[i + j] && input[i + j] != type)
+			j++;
+		if (!input[i + j])
+			return (-1);
+		ft_lst_new(shell, parse_quotation(&input[i], type, j, 0), \
+		TRUE, 0);
+		i++;
+	}
+	else
+	{
+		while (input[i + j] && input[i + j] != SQ && input[i + j] != DQ)
+			j++;
+		ft_lst_new(shell, parse_quotation(&input[i], 0, j, 0), \
+		TRUE, 0);
+	}
+	i += j;
+	return (i);
+}
+
 int	parsing_quotations(t_shell **shell, char *input)
 {
-	int		i;
-	int		j;
-	char	type;
+	int	i;
 
 	i = 0;
 	while (input[i])
 	{
-		j = 0;
 		if (input[i] == DQ || input[i] == SQ)
 		{
-			type = input[i++];
-			while (input[i + j] && input[i + j] != type)
-				j++;
-			if (!input[i + j])
+			i = ft_parsing_quot_two(input, shell, 1, i);
+			if (i == -1)
 				return (FALSE);
-			ft_lst_new(shell, parse_quotation(&input[i], type, j, 0), TRUE, 0);
-			i++;
 		}
 		else
 		{
-			while (input[i + j] && input[i + j] != SQ && input[i + j] != DQ)
-				j++;
-			ft_lst_new(shell, parse_quotation(&input[i], \
-			0, j, 0), TRUE, 0);
+			i = ft_parsing_quot_two(input, shell, 0, i);
 		}
-		i += j;
 	}
 	return (TRUE);
 }
@@ -92,7 +109,8 @@ void	split_spaces(t_shell **shell, char *input, int old_index)
 		{
 			while (input[i + j] && input[i + j] != SPACE)
 				j++;
-			ft_lst_new(shell, parse_quotation(&input[i], 0, j, 0), TRUE, old_index);
+			ft_lst_new(shell, parse_quotation(&input[i], 0, j, 0), \
+			TRUE, old_index);
 		}
 		else
 			return ;

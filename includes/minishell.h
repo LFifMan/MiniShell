@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:44:43 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/21 16:18:59 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/03/06 19:34:01 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,25 +75,49 @@ typedef struct s_tabs
 
 int	g_status;
 
-/* FT_SIGNALS.C */
-void	ft_sigint_handler(int sig);
-void	ft_block_signal(int sig);
-void	ft_enable_signal(void);
-void	ft_halt_signal(void);
-void	ft_signals(int index);
+/* FT_AMBIGUITY.C */
+
+int		ft_check_ambiguity(t_tabs **tabs);
+void	ft_pars_spaces_two(t_tabs **tabs);
 
 
-/* FT_INIT_ONE.C */
-char	*get_root_new(char **env);
-void	ft_init_env(t_var *var, char **envp, int envp_length);
-void	ft_init_var(t_var *var, char **envp);
+/* FT_BUILT.C */
+
+int		ft_build_echo(t_tabs *tabs, t_var *var);
+int		ft_build_pwd(t_tabs *tabs, t_var *var);
+int		ft_build_env(t_tabs *tabs, t_var *var);
+int		ft_build_cd(t_tabs *tabs, t_var *var, int print);
+
+/* FT_BUILT_TWO.C */
+
+char	*ft_str_lower(char *str);
+int		ft_builtins(t_tabs *tabs, t_var *var, char *cmd_one);
 
 
-/* FT_INIT_TWO.C */
-char	**ft_create_exp(int envp_length, char **input);
-char	**ft_dup_exp(t_var *var, int envp_length);
-void	ft_sort_exp(int envp_length, char **export);
-char	*ft_shlvl(char *env);
+/* FT_BUILT_UTILS_ONE.C */
+
+int		ft_option_n(char *str);
+int		ft_find_dir(const char *path);
+char	*ft_create_root(char *env, int j);
+void	ft_update_pwd(t_var *var, char *root);
+void	ft_cd_alone(char **env, int print, t_var *var);
+
+
+/* FT_BUILT_UTILS_TWO.C */
+
+int		check_num(char *str);
+int		ft_build_exit(t_tabs *tabs, t_var *var, int print);
+void	ft_cd_absolute(t_tabs *tabs, t_var *var, int print);
+void	ft_cd_relative(t_tabs *tabs, t_var *var, int print, char *current);
+int		ft_find_home(char **env);
+
+
+/* FT_CHECK.C */
+
+int		ft_check_next_pipe(t_shell *shell, int print);
+int		ft_check_next_redirection(t_shell *shell, int print);
+int		ft_check_op(t_shell *shell);
+int		ft_check_spaces(char *input);
 
 
 /* FT_CTRL_TWR_ONE.C */
@@ -103,169 +127,13 @@ void	ft_ctrl_twr(t_var *var);
 
 
 /* FT_CTRL_TWR_TWO.C */
-char	*ft_prompt(void);
+char	*ft_prompt(t_var *var);
+int		ft_check_builtins(char *cmd_one);
 int		ft_execution(t_tabs *tabs, t_var *var);
 
 
-/* PARSING_INPUT.C */
-t_shell	*parsing_spaces(t_shell **shell);
-void	split_spaces(t_shell **shell, char *input, int old_index);
-int		parsing_quotations(t_shell **shell, char *input);
-char	*parse_quotation(char *input, char index, int size, int i);
-
-
-/* FT_DOLLAR_ONE.C */
-char	*ft_replace_status(char *data, int status);
-int		ft_look_for_status(char *data);
-char	*ft_to_be_named(char **env, char *data, int status);
-void	ft_pars_dollar(t_shell **shell, t_var *var);
-
-
-/* FT_DOLLAR_TWO.C */
-int		ft_size_malloc(char *data, char *env, int start_data, int start_env);
-char	*ft_malloc_cpy(char *data, char *env, int size);
-char	*ft_replace(char *data, char *env);
-int		ft_iteration(char c);
-char	*ft_remove_dollar(char *data);
-
-
-/* FT_DOLLAR_THREE.C */
-int		ft_look_for_dollar(char *data);
-int		ft_check_allowed_char(char c, int pos);
-int		ft_look_in_envp(char *data, char *env);
-int		ft_dollar_len(char *data, int start);
-int		ft_env_len(char *env, int start);
-
-
-/* NEW DOLLAR*/
-void	ft_pars_dollar2(t_tabs **tabs, t_var *var);
-char	*ft_replace_dollar2(char **env, char *data, int status);
-char	*ft_remove_dollar2(char *data, int start);
-char	*ft_replace2(char *data, char *env, int data_i);
-int		ft_look_in_envp2(char *data, char *env, int i);
-char	*ft_replace_status2(char *data, int status, int place);
-int		ft_get_dollar_place(char *data);
-int		ft_look_for_dollar2(char *data);
-
-
-
-/* PARSING_REGROUP_ONE.C */
-char	*ft_trim_quotations(char *str);
-int		ft_lst_count_spaces(t_shell *lst);
-t_tabs	*ft_regroup(t_shell **shell, t_var *var);
-void	ft_split_pipes(t_shell **shell, char *input);
-//t_shell	*parsing_pipes(t_shell **shell);
-
-
-/* PARSING_REGROUP_TWO.C */
-void	ft_prepare_new(t_shell *new, t_shell *shell);
-t_shell	*ft_create_new(void);
-t_shell	*parsing_pipes(t_shell *shell);
-
-
-/* PARSING_REDIRECTIONS.C */
-t_shell	*parsing_redops(t_shell **shell);
-void	ft_split_redirections(t_shell **shell, char *input);
-t_shell	*ft_space_redops(t_shell **shell);
-
-
-/* PARSING_REDOP.C */
-int		ft_count_redops(char **cmd);
-char	**ft_remove_redop_cmds(char **cmd, int index);
-//int		ft_anommer_two(t_tabs *tmp, int i, int j);
-void	ft_redops(t_tabs **tabs);
-
-
-/* CHECK.C */
-int		ft_check_op(t_shell *shell);
-int		ft_check_spaces(char *input);
-
-
-/* PARSING_PATHS.C */
-void	ft_paths(t_var var, t_tabs **tabs);
-char	**ft_split_bin(char *s, char c, char *argv);
-int		ft_countwords(char *s, char c);
-char	*ft_mallocfill_bin(char **s, char c, char *argv, int beg);
-char	**ft_parsing_binaries(char *const *envp, char *argv);
-
-
-/* FT_TRIM_QUOTES.C */
-void	ft_trim_quotes(t_tabs **tabs);
-char	*ft_trim_cmds(char *cmd, int size);
-int		ft_trim_count(char *cmd);
-
-
-/* FT_LSTS.C */
-char	ft_add_index(char c, int index);
-char	*ft_add_data(char *input);
-void	ft_lst_new(t_shell **lst, char *input, int index, int old_index);
-void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input);
-
-
-/* FT_FREE_LSTS_ONE.C */
-int		ft_free_shell(t_shell *lst);
-//void	ft_free(t_tabs *lst);
-int		ft_free_tabs(t_tabs *lst);
-void	ft_free_lst(t_shell *shell, t_tabs *tabs, char *input, int index);
-void	ft_free_var(t_var var);
-
-
-/* FT_FREE_LSTS_TWO.C */
-void	ft_free_array(char **exp, int len_env);
-
-
-/* FT_PIPEX.C */
-void	ft_heredoc(t_tabs *tabs, t_var *var, int j);
-void	ft_child(t_tabs *tabs, t_var *var);
-void	ft_parent(t_tabs *tabs, t_var *var);
-void	ft_process_execution(t_var *var, t_tabs *tabs);
-void	ft_pipex(t_tabs *tabs, t_var *var);
-
-
-/* FT_REDOPS_HANDLER.C */
-void	ft_handle_heredoc(t_tabs *tabs, t_var *var, int i);
-void	ft_handle_append_redir(t_tabs *tabs, t_var *var, int i);
-void	ft_handle_input_redir(t_tabs *tabs, t_var *var, int i);
-void	ft_handle_trunc_redir(t_tabs *tabs, t_var *var, int i);
-void	ft_redops_handler(t_tabs *tabs, t_var *var);
-
-
-/* FT_BUILT.C */
-int		ft_build_echo(t_tabs *tabs, t_var *var);
-int		ft_build_pwd(t_tabs *tabs, t_var *var);
-int		ft_build_env(t_tabs *tabs, t_var *var);
-int		ft_build_cd(t_tabs *tabs, t_var *var, int print);
-int		ft_builtins(t_tabs *tabs, t_var *var, char *cmd_one);
-char	*ft_str_lower(char *str);
-
-
-/* FT_BUILTINS_UTILS.C */
-int		ft_option_n(char *str);
-int		ft_find_dir(const char *path);
-char	*ft_create_root(char *env, int j);
-void	ft_update_pwd(t_var *var, char *root);
-void	ft_cd_alone(char **env, int print, t_var *var);
-
-/* FT_BUILT_UTILS_TWO.c */
-int		ft_build_exit(char *input);
-void	ft_cd_absolute(t_tabs *tabs, t_var *var, int print);
-void	ft_cd_relative(t_tabs *tabs, t_var *var, int print, char *current);
-int		ft_find_home(char **env);
-
-
-/* FT_UPDATE_ENV.C */
-int		ft_check_old(t_var *var);
-void	ft_update_env (t_var *var, char *path);
-void	ft_old_env(t_var *var, int i);
-void	reset_env(t_var *var, char *src);
-void	deset_env(t_var *var);
-
-/* FT_UPDATE_EXP.C */
-void	ft_old_exp(t_var *var, int i);
-void	ft_update_exp(t_var *var, char *path);
-
-
 /* FT_EXPORT_ONE.C */
+
 int		ft_check_var(char *str, t_var *var, int index);
 void	ft_export_env(t_var *var, char *str);
 void	ft_export_export(t_var *var, char *str, int index);
@@ -274,21 +142,213 @@ int		ft_build_export(t_tabs *tabs, t_var *var, int print);
 
 
 /* FT_EXPORT_TWO.C */
+
 char	**ft_new_src(char **src, char *str, int len);
 char	**replace_var(char **src, char *str, int place);
 void	ft_sort_new_export(t_var *var);
 
 
+/* FT_FREE_LSTS_ONE.C */
+
+int		ft_free_shell(t_shell *lst);
+void	ft_free(t_tabs *lst);
+int		ft_free_tabs(t_tabs *lst);
+void	ft_free_lst(t_shell *shell, t_tabs *tabs, char *input, int index);
+void	ft_free_var(t_var var);
+
+
+/* FT_FREE_LSTS_TWO.C */
+
+void	ft_free_array(char **exp, int len_env);
+
+
+/* FT_INIT_ONE.C */
+
+char	*get_root_new(char **env);
+void	ft_init_env(t_var *var, char **env, int len_env);
+void	ft_init_var(t_var *var, char **env);
+
+
+/* FT_INIT_TWO.C */
+
+char	**ft_create_exp(int len_env, char **exp);
+char	**ft_dup_exp(t_var *var, int len_env);
+void	ft_sort_exp(int len_env, char **exp);
+char	*ft_shlvl(char *env);
+
+
+/* FT_LSTS.C */
+
+char	ft_add_index(char c, int index);
+char	*ft_add_data(char *input);
+void	ft_lst_new(t_shell **lst, char *input, int index, int old_index);
+void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input);
+
+
+/* FT_MALLOC.C */
+
+char	*ft_malloc_str(int size);
+char	**ft_malloc_array(int size);
+
+/* FT_DOLLAR_ONE.C */
+
+int		loop_get_dollar_place(char *data, int i);
+int		ft_get_dollar_place(char *data);
+int		loop_look_for_dollar(char *data, int i);
+int		ft_look_for_dollar(char *data);
+
+
+/* FT_DOLLAR_TWO.C */
+
+int		ft_iteration(char c);
+int		ft_check_allowed_char(char c, int pos);
+char	*ft_replace_status(char *data, int status, int place);
+int		ft_look_in_envp(char *data, char *env, int i);
+char	*ft_replace(char *data, char *env, int data_i);
+
+
+/* FT_DOLLAR_THREE.C */
+
+char	*ft_remove_dollar(char *data, int start);
+char	*ft_replace_dollar(char **env, char *data, int status);
+void	ft_pars_dollar(t_tabs **tabs, t_var *var);
+
+
+/* FT_PARSE_SPACES_TABS.C */
+
+int		count_words(const char *str, char c);
+char	*word_dup(const char *str, int start, int finish);
+char	**ft_split(char const *s, char c);
+char	**ft_split_array(char **cmd);
+void	ft_pars_spaces(t_tabs **tabs);
+
+
+/* FT_PARSING_INPUT.C */
+
+char	*parse_quotation(char *input, char index, int size, int i);
+int		parsing_quotations(t_shell **shell, char *input);
+void	split_spaces(t_shell **shell, char *input, int old_index);
+t_shell	*parsing_spaces(t_shell **shell);
+
+
+/* FT_PARSING_PATHS.C */
+
+void	ft_paths(t_var var, t_tabs **tabs);
+char	**ft_create_paths(void);
+char	**ft_parsing_binaries(char *const *envp, char *argv);
+char	*ft_mallocfill_bin(char **str, char c, char *argv, int beg);
+int		ft_countwords(char *str, char c);
+char	**ft_split_bin(char *str, char c, char *argv);
+
+
+/* FT_PARSING_PIPES.C */
+
+void	ft_prepare_new(t_shell *new, t_shell *shell);
+t_shell	*ft_create_new(void);
+t_shell	*parsing_pipes(t_shell *shell);
+
+
+/* FT_PARSING_REDOP.C */
+
+int		ft_count_redops(char **cmd);
+char	**ft_remove_redop_cmds(char **cmd, int index);
+int		ft_tmp_redop(t_tabs *tmp, int i, int j);
+void	ft_redops(t_tabs **tabs);
+
+
+/* FT_PARSING_REGROUP_ONE.C */
+
+char	*ft_trim_quotations(char *str);
+int		ft_lst_count_spaces(t_shell *lst);
+t_tabs	*ft_regroup(t_shell **shell, t_var *var);
+void	ft_split_pipes(t_shell **shell, char *input);
+
+
+/* FT_PIPEX_ONE.C */
+
+void	ft_child(t_tabs *tabs, t_var *var);
+void	ft_parent(t_tabs *tabs, t_var *var);
+void	ft_process_execution(t_var *var, t_tabs *tabs);
+void	ft_pipex(t_tabs *tabs, t_var *var);
+
+
+/* FT_PIPEX_TWO.C */
+
+void	ft_heredoc_two(t_var *var);
+void	ft_heredoc(t_tabs *tabs, t_var *var, int j);
+void	ft_fd_handlers(t_var *var, int option);
+void	ft_handle_execution(t_var *var, t_tabs *tabs, int option, char *cmd_one);
+
+
+/* FT_REDIRECTIONS.C */
+
+void	ft_to_name(t_shell *tmp, t_shell *new, int option);
+t_shell	*ft_space_redops(t_shell **shell);
+void	ft_split_redirections(t_shell **shell, char *str);
+void	ft_split_add(t_shell *tmp, t_shell *new);
+t_shell	*parsing_redops(t_shell **shell);
+
+
+/* FT_REDOPS-HANDLER.C */
+
+void	ft_handle_heredoc(t_tabs *tabs, t_var *var, int i);
+void	ft_handle_append_redir(t_tabs *tabs, t_var *var, int i);
+void	ft_handle_input_redir(t_tabs *tabs, t_var *var, int i);
+void	ft_handle_trunc_redir(t_tabs *tabs, t_var *var, int i);
+void	ft_redops_handler(t_tabs *tabs, t_var *var);
+
+
+/* FT_SIGNALS.C */
+
+void	ft_sigint_handler(int sig);
+void	ft_block_signal(int sig);
+void	ft_enable_signal(void);
+void	ft_halt_signal(void);
+void	ft_signals(int index);
+
+
+/* FT_TRIM_QUOTES.C */
+
+int		ft_trim_count(char *cmd, int i, int j);
+char	*ft_trim_cmds(char *cmd, int size, int i, int j);
+void	ft_trim_quotes(t_tabs **tabs);
+
+
 /* FT_UNSET.C */
-void	ft_unset_export(t_tabs *tabs, t_var *var, char *cmd_one);
+
+void	ft_remove_env_var(t_var *var, char *str);
+void	ft_remove_export_var(t_var *var, char *str);
 int		ft_build_unset(t_tabs *tabs, t_var *var, int print);
+void	ft_unset_export(t_tabs *tabs, t_var *var, char *cmd_one);
 
 
-/* FT_WRITE.C */
-void	ft_write(char *str, int option, int status);
-int		ft_write_op(char *str, int status, int print);
+/* FT_UPDATE_ENV.C */
 
-/* UTILS1.C */
+void	ft_update_env(t_var *var, char *path);
+int		ft_check_old_env(t_var *var);
+void	deset_env(t_var *var);
+void	reset_env(t_var *var, char *src);
+void	ft_old_env(t_var *var, int i);
+int		ft_check_old(t_var *var);
+
+
+/* FT_UPDATE_EXP.C */
+
+void	ft_update_exp(t_var *var, char *path);
+void	ft_old_exp(t_var *var, int i);
+int		ft_find_pwd(char **env);
+
+
+/* FT_UTILS_FOUR.C */
+
+char	*dest(int n, int count);
+char	*ft_itoa(int n);
+int		ft_is_whitespace(char *str);
+int		ft_atoi(char *str);
+
+
+/* FT_UTILS_ONE.C */
+
 char	*ft_strcpy(char *s1, const char *s2);
 size_t	ft_strlen(const char *str);
 int		ft_strcmp(char *input, char *str);
@@ -296,7 +356,15 @@ int		ft_memcmp(void *s1, void *s2, size_t n);
 char	*ft_zero(const char *s);
 
 
-/* UTILS2.C */
+/* FT_UTILS_THREE.C */
+
+size_t	ft_strlcpy(char *dest, const char *src, size_t size);
+int		ft_tolower(int c);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+
+
+/* FT_UTILS_TWO.C */
+
 char	*ft_join(int index, char *s1, char *s2, char *dest);
 char	*ft_join_exp(char *s1, char *s2, int index);
 int		ft_cmp_ascii(char *input, char *str);
@@ -304,36 +372,23 @@ char	*ft_strjoin(char *s1, char *s2, int index);
 char	*ft_strdup(char *src, int index);
 
 
-/* UTILS3.C */
-size_t	ft_strlcpy(char *dest, const char *src, size_t size);
-int		ft_tolower(int c);
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
+/* FT_VERIFS.C */
 
-
-/* UTILS4.C */
-char	*dest(int n, int count);
-char	*ft_itoa(int n);
-int		ft_atoi(char *str);
-int		ft_is_whitespace(char *str);
-
-
-/* FT_MALLOC.C */
-char	**ft_malloc_array(int size);
-char	*ft_malloc_str(int size);
-
-/* TO BE REMOVED */
 void	PRINT_SHELL(t_shell **a);
 void	PRINT_CMDS(t_tabs **a);
+void	PRINT_REDOP(t_tabs **a);
 void	PRINT_PATHS(t_tabs **a);
-void	PRINT_REDOP(t_tabs **tabs);
 
 
+/* FT_WRITE.C */
+
+int		ft_write_op(char *str, int status, int print);
+void	ft_write(char *str, int option, int status);
+void	ft_write_exit(char *str, int option, int status);
 
 
-int ft_check_ambiguity(t_tabs **tabs);
+/* FT_MAIN.C */
 
-void	ft_pars_spaces(t_tabs **tabs);
-
-
+int		main(int ac, char **av, char **ev);
 
 #endif

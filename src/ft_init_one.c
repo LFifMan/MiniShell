@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 18:03:27 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/21 19:03:04 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/22 18:51:28 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	ft_init_var(t_var *var, char **env)
 
 	len_env = 0;
 	pwds = 2;
+	var->tmp_g = 0;
 	while (env[len_env])
 	{
 		if (ft_strncmp(env[len_env], "OLDPWD=", 7) == TRUE || \

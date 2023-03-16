@@ -83,7 +83,6 @@ char	*ft_mallocfill_bin(char **str, char c, char *argv, int beg)
 	dst[i] = 0;
 	dst = ft_strjoin(dst, argv, FALSE);
 	*str += i + start;
-
 	return (dst);
 }
 

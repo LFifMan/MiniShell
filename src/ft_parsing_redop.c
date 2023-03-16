@@ -42,7 +42,6 @@ char	**ft_remove_redop_cmds(char **cmd, int index)
 	dst = malloc(sizeof(char *) * (i - ft_count_redops(cmd) + 1));
 	if (!dst)
 		exit (EXIT_FAILURE);
-	
 	i = 0;
 	j = 0;
 	while (cmd[i])
@@ -82,12 +81,8 @@ void	ft_redops(t_tabs **tabs)
 		while (tmp->cmds[i])
 		{
 			if (tmp->cmds[i][0] == GREAT || tmp->cmds[i][0] == SMALL)
-			{
-				j = ft_tmp_redop(tmp, i, j);
-				i = i + 2;
-			}
-			else
-				i++;
+				j = ft_tmp_redop(tmp, i++, j);
+			i++;
 		}
 		tmp->redop[j] = 0;
 		tmp->cmds = ft_remove_redop_cmds(tmp->cmds, 0);

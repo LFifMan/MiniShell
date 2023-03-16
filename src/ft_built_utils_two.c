@@ -6,33 +6,48 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 16:17:05 by max               #+#    #+#             */
-/*   Updated: 2023/02/21 19:00:07 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/22 19:28:00 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	ft_build_exit(char *input)
+int	check_num(char *str)
 {
 	int	i;
 
-	if (ft_strcmp(input, "exit") == TRUE)
+	i = 0;
+	while (str[i])
 	{
-		return (TRUE);
+		if ((str[i] > '9' || str[i] < '0'))
+			return (FALSE);
+		i++;
 	}
-	if (ft_strncmp(input, "exit ", 5) == TRUE)
+	return (TRUE);
+}
+
+int	ft_build_exit(t_tabs *tabs, t_var *var, int print)
+{
+	if (tabs->cmds[1])
 	{
-		i = 5;
-		while (input[i])
+		if (check_num(tabs->cmds[1]) == FALSE)
 		{
-			if (input[i] > '9' || input[i] < '0' )
-				return (FALSE);
-			i++;
+			if (print == TRUE)
+				ft_write_exit(tabs->cmds[1], 1, 255);
+			exit (255);
 		}
-		exit(ft_atoi(&input[5]) % 256);
+		else if (tabs->cmds[2])
+		{
+			if (print == TRUE)
+				ft_write_exit(tabs->cmds[1], 2, 1);
+			g_status = 1;
+		}
+		else
+			exit (ft_atoi(tabs->cmds[1]));
 	}
 	else
-		return (FALSE);
+		exit(var->tmp_g);
+	return (TRUE);
 }
 
 void	ft_cd_absolute(t_tabs *tabs, t_var *var, int print)

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_update_env.c                                    :+:      :+:    :+:   */
+/*   ft_update_env_one.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 16:17:05 by max               #+#    #+#             */
-/*   Updated: 2023/02/08 21:23:34 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/03/10 14:37:18 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,20 +126,4 @@ void	ft_old_env(t_var *var, int i)
 	}
 	else
 		var->env[j] = ft_strjoin(tmp_env, &var->env[i][4], FALSE);
-}
-
-int	ft_check_old(t_var *var)
-{
-	int	k;
-
-	k = -1;
-	while (var->exp[++k])
-		if (ft_strncmp(var->exp[k], "declare -x OLDPWD=\"", 19) == TRUE)
-		{
-			if (var->exp[k][19] != DQ)
-			{
-				break ;
-			}
-		}
-	return (k);
 }
