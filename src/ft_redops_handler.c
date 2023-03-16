@@ -10,14 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+//todo : line 21 -> ft_write(option = 3 || 1 withno cd ?)
+
 #include "../includes/minishell.h"
 
 void	ft_handle_heredoc(t_tabs *tabs, t_var *var, int i)
 {
 	ft_heredoc(tabs, var, i);
 	i += 1;
-	//ft_write(tabs->redop[i], 3, 1);
-	//todo : ft_write(option = 3 || 1 withno cd ?)
 }
 
 void	ft_handle_append_redir(t_tabs *tabs, t_var *var, int i)

@@ -6,19 +6,19 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:19:30 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/21 17:40:40 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/03/16 14:32:51 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+//todo : line 79 exit instead of return.
+
 #include "../includes/minishell.h"
 
-static int	count_words(const char *str, char c)
+int	count_words(const char *str, char c)
 {
-	int i;
-	int trigger;
+	int	i;
 
 	i = 0;
-	trigger = 0;
 	while (*str)
 	{
 		if (*str == c)
@@ -29,18 +29,22 @@ static int	count_words(const char *str, char c)
 		else if (*str == SQ)
 		{
 			str++;
-			while (*str != SQ)
+			while (*str && *str != SQ)
+			{
 				str++;
-			str++;
+			}
+			if (*str)
+				str++;
 			if (*str == c || *str == 0)
 				i++;
 		}
-		else if (*str == DQ)
+		else if (*str && *str == DQ)
 		{
 			str++;
-			while (*str != DQ)
+			while (*str && *str != DQ)
 				str++;
-			str++;
+			if (*str)
+				str++;
 			if (*str == c || *str == 0)
 				i++;
 		}
@@ -55,7 +59,7 @@ static int	count_words(const char *str, char c)
 	return (i);
 }
 
-static char	*word_dup(const char *str, int start, int finish)
+char	*word_dup(const char *str, int start, int finish)
 {
 	char	*word;
 	int		i;
@@ -68,30 +72,58 @@ static char	*word_dup(const char *str, int start, int finish)
 	return (word);
 }
 
-char		**ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c)
 {
 	size_t	i;
 	size_t	j;
 	int		index;
+	char	q;
 	char	**split;
 
-	if (!s || !(split = malloc((count_words(s, c) + 1) * sizeof(char *))))
-		return (0); // todo : EXIT
+	printf("innnnnnn\n");
+	if (!s)
+		return (0);
+	split = malloc(sizeof(char *) * (count_words(s, c) + 1));
+	if (!split)
+		exit (EXIT_FAILURE);
+
+	printf("count = %d\n", count_words(s, c));
+
 	i = 0;
 	j = 0;
-	index = -1;
-	while (i <= ft_strlen(s))
+	index = 0;
+	while (s[i])
 	{
-		if (s[i] != c && index < 0)
-			index = i;
-		else if ((s[i] == c || i == ft_strlen(s)) && index >= 0)
+		if (s[i] == SQ || s[i] == DQ)
 		{
-			split[j++] = word_dup(s, index, i);
-			index = -1;
+			q = s[i];
+			i++;
+			while (s[i] && s[i] != q)
+				i++;
+			if (s[i])
+				i++;
 		}
-		i++;
+		else
+		{
+			while (s[i] && s[i] != SQ && s[i] != DQ)
+			{
+				if (s[i] == c)
+				{
+					split[j] = word_dup(s, index, i);
+					index = i + 1;
+					j++;
+				}
+				i++;
+			}
+		}
 	}
+	printf("i = %d j = %d index = %d\n", (int)i, (int)j, index);
+	if (s[i - 1] != ' ')
+		split[j++] = word_dup(s, index, i);
+	printf("i = %d j = %d\n", (int)i, (int)j);
 	split[j] = 0;
+	printf("OUUUUUUT\n");
+
 	return (split);
 }
 
@@ -107,12 +139,13 @@ char	**ft_split_array(char **cmd)
 	i = 0;
 	j = 0;
 	size = 0;
+
 	while (cmd[i])
 	{
 		size += count_words(cmd[i], SPACE);
 		i++;
 	}
-	dest = malloc(sizeof(char*) * (size + 1));
+	dest = malloc(sizeof(char *) * (size + 1));
 	if (!dest)
 		exit(EXIT_FAILURE);
 	i = 0;
@@ -140,18 +173,10 @@ char	**ft_split_array(char **cmd)
 			j++;
 		}
 	}
-	i = 0;
-	while (i < j)
-	{
-		i++;
-	}
 	dest[j] = 0;
-	i = 0;
-	while (cmd[i])
-	{
+	i = -1;
+	while (cmd[++i])
 		free(cmd[i]);
-		i++;
-	}
 	free(cmd);
 	return (dest);
 }

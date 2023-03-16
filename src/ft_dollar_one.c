@@ -5,89 +5,112 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/22 23:27:44 by max               #+#    #+#             */
-/*   Updated: 2023/02/10 14:16:52 by mstockli         ###   ########.fr       */
+/*   Created: 2023/02/08 19:29:16 by mstockli          #+#    #+#             */
+/*   Updated: 2023/03/10 17:33:30 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*ft_replace_status(char *data, int status)
-{ 
-	int		i;
-	int		j;
-	int		k;
-	char	*str_status;
-	char	*dest;
-
-	str_status = ft_itoa(status);
-	i = 0;
-	dest = malloc(sizeof(char) * (ft_strlen(data) + ft_strlen(str_status) - 1));
-	while (data[i] && data[i] != DOLLAR)
+int	loop_get_dollar_place(char *data, int i)
+{
+	if (data[i] == DQ)
 	{
-		dest[i] = data[i];
+		i++;
+		while (data[i] != DQ)
+		{
+			if (data[i] == DOLLAR)
+				if (data[i + 1] != SPACE && data[i + 1] != 0)
+					return (i);
+			i++;
+		}
 		i++;
 	}
-	k = i + 2;
-	j = 0;
-	while (str_status[j])
-		dest[i++] = str_status[j++];
-	while (data[k])
-		dest[i++] = data[k++];
-	dest[i] = 0;
-	free(data);
-	free(str_status);
-	return (dest);
+	else
+	{
+		while (data[i] && data[i] != SQ && data[i] != DQ)
+		{
+			if (data[i] == DOLLAR)
+				if (data[i + 1] != SPACE && data[i + 1] != 0)
+					return (i);
+			i++;
+		}
+	}
+	return (i);
 }
 
-int	ft_look_for_status(char *data)
+int	ft_get_dollar_place(char *data)
 {
 	int	i;
 
 	i = 0;
-	while (data[i] && data[i] != DOLLAR)
-		i++;
-	if (data[i + 1] && data[i] == DOLLAR && data[i + 1] == QUESTION)
-		return (TRUE);
-	return (FALSE);
-}
-
-char	*ft_to_be_named(char **env, char *data, int status)
-{
-	int	j;
-	int	index;
-
-	j = 0;
-	index = FALSE;
-	if (ft_look_for_status(data) == TRUE)
+	while (data[i])
 	{
-		return (ft_replace_status(data, status));
-	}
-	while (env[j])
-	{
-		if (ft_look_in_envp(data, env[j]) == TRUE)
+		if (data[i] == SQ)
 		{
-			data = ft_replace(data, env[j]);
-			index = TRUE;
-			break ;
+			i++;
+			while (data[i] != SQ)
+				i++;
+			i++;
 		}
-		j++;
+		else
+		{
+			i = loop_get_dollar_place(data, i);
+			if (data[i] == DOLLAR)
+				return (i);
+		}
 	}
-	if (index == FALSE)
-		data = ft_remove_dollar(data);
-	return (data);
+	return (i);
 }
 
-void	ft_pars_dollar(t_shell **shell, t_var *var)
+int	loop_look_for_dollar(char *data, int i)
 {
-	t_shell	*tmp;
-
-	tmp = (*shell)->next;
-	while (tmp)
+	if (data[i] == DQ)
 	{
-		if (tmp->index == DQ || tmp->index == CHARS || tmp->index == DOLLAR)
-			while (ft_look_for_dollar(tmp->data) == TRUE)
-				tmp->data = ft_to_be_named(var->env, tmp->data, var->tmp_g);
-		tmp = tmp->next;
+		i++;
+		while (data[i] != DQ)
+		{
+			if (data[i] == DOLLAR)
+				if (data[i + 1] != SPACE && data[i + 1] != 0)
+					return (i);
+			i++;
+		}
+		i++;
 	}
+	else
+	{
+		while (data[i] && data[i] != SQ && data[i] != DQ)
+		{
+			if (data[i] == DOLLAR)
+				if (data[i + 1] != SPACE && data[i + 1] != 0)
+					return (i);
+			i++;
+		}
+	}
+	return (i);
+}
+
+int	ft_look_for_dollar(char *data)
+{
+	int	i;
+
+	i = 0;
+	while (data[i])
+	{
+		if (data[i] == SQ)
+		{
+			i++;
+			while (data[i] && data[i] != SQ)
+				i++;
+			if (data[i])
+				i++;
+		}
+		else
+		{
+			i = loop_look_for_dollar(data, i);
+			if (data[i] == DOLLAR)
+				return (TRUE);
+		}
+	}
+	return (FALSE);
 }

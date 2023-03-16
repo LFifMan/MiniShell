@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_malloc.c                                        :+:      :+:    :+:   */
+/*   ft_update_env_two.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/07 13:33:33 by mstockli          #+#    #+#             */
-/*   Updated: 2023/03/16 13:44:18 by mstockli         ###   ########.fr       */
+/*   Created: 2023/01/21 16:17:05 by max               #+#    #+#             */
+/*   Updated: 2023/03/10 14:36:23 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*ft_malloc_str(int size)
+int	ft_check_old(t_var *var)
 {
-	char	*dest;
+	int	k;
 
-	dest = malloc(sizeof(char) * (size));
-	if (!dest)
-		exit (EXIT_FAILURE);
-	return (dest);
-}
-
-char	**ft_malloc_array(int size)
-{
-	char	**dest;
-
-	dest = malloc(sizeof(char *) * (size + 1));
-	if (!dest)
-		exit (EXIT_FAILURE);
-	return (dest);
+	k = -1;
+	while (var->exp[++k])
+	{
+		if (ft_strncmp(var->exp[k], "declare -x OLDPWD=\"", 19) == TRUE)
+		{
+			if (var->exp[k][19] != DQ)
+			{
+				break ;
+			}
+		}
+	}
+	return (k);
 }

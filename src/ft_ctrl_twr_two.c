@@ -12,19 +12,16 @@
 
 #include "../includes/minishell.h"
 
-char	*ft_prompt(void)
+char	*ft_prompt(t_var *var)
 {
 	char	*input;
 
-	g_status = 0;
 	input = readline("minishell> ");
+	var->tmp_g = g_status;
+	g_status = 0;
 	if (input == 0)
 	{
 		printf("\033[1A\033[11Cexit\n");
-		exit(0);
-	}
-	if (ft_build_exit(input) == TRUE)
-	{
 		exit(0);
 	}
 	add_history(input);
@@ -47,6 +44,8 @@ int	ft_check_builtins(char *cmd_one)
 	else if (ft_strcmp(cmd_one, "export") == TRUE)
 		return (TRUE);
 	else if (ft_strcmp(cmd_one, "unset") == TRUE)
+		return (TRUE);
+	else if (ft_strcmp(cmd_one, "exit") == TRUE)
 		return (TRUE);
 	return (FALSE);
 }

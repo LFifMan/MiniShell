@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 18:03:27 by mstockli          #+#    #+#             */
-/*   Updated: 2023/02/07 14:22:46 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/22 18:51:28 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*get_root_new(char **env)
 	i = 0;
 	while (env[i] && ft_memcmp((char *)env[i], "HOME=", 5) != 0)
 		i++;
+	if (!env[i])
+		return (NULL);
 	return (ft_strdup(&env[i][5], FALSE));
 }
 
@@ -55,6 +57,7 @@ void	ft_init_var(t_var *var, char **env)
 
 	len_env = 0;
 	pwds = 2;
+	var->tmp_g = 0;
 	while (env[len_env])
 	{
 		if (ft_strncmp(env[len_env], "OLDPWD=", 7) == TRUE || \

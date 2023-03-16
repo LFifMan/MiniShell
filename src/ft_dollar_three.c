@@ -1,86 +1,90 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ft_ctrl_twr.c                                 :+:      :+:    :+:   */
+/*   ft_new_dolla.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/22 23:27:44 by max               #+#    #+#             */
-/*   Updated: 2023/02/03 16:18:56 by mstockli         ###   ########.fr       */
+/*   Created: 2023/02/08 19:29:16 by mstockli          #+#    #+#             */
+/*   Updated: 2023/02/14 14:28:28 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	ft_look_for_dollar(char *data)
+char	*ft_remove_dollar(char *data, int start)
 {
-	int	i;
+	char	*ret;
+	int		end;
+	int		size;
+	int		i;
 
+	end = start + 1;
+	while (data[end] && ft_iteration(data[end]) == TRUE)
+		end++;
+	size = (int)ft_strlen(data) - end + start;
+	ret = malloc(sizeof(char) * size + 1);
+	if (!ret)
+		exit (EXIT_FAILURE);
+	size = 0;
 	i = 0;
-	while (data[i])
-	{
-		if (data[i] == DOLLAR)
-			if (data[i + 1] != SPACE && data[i + 1] != 0)
-				return (TRUE);
-		i++;
-	}
-	return (FALSE);
+	while (data[i] && size < start)
+		ret[size++] = data[i++];
+	while (data[end])
+		ret[size++] = data[end++];
+	free(data);
+	ret[size] = 0;
+	return (ret);
 }
 
-int	ft_check_allowed_char(char c, int pos)
+char	*ft_repdoll(char **env, char *data, int status)
 {
-	if (c >= 'a' && c <= 'z')
-		return (TRUE);
-	if (c >= 'A' && c <= 'Z')
-		return (TRUE);
-	if (c == '_' || (c >= '0' && c <= '9' && pos != 1))
-		return (TRUE);
-	return (FALSE);
-}
-
-int	ft_look_in_envp(char *data, char *env)
-{
-	int	i;
 	int	j;
+	int	index;
+	int	place;
 
-	i = 0;
+	place = ft_get_dollar_place(data);
 	j = 0;
-	while (data[i] != DOLLAR)
-		i++;
-	i++;
-	while (data[i + j] && env[j] != '=' && data[i + j] == env[j])
+	index = FALSE;
+	if (data[place + 1] == QUESTION)
+		return (ft_replace_status(data, status, place));
+	while (env[j])
 	{
-		if (ft_check_allowed_char(data[i + j], i + j) == FALSE)
+		if (ft_look_in_envp(data, env[j], place + 1) == TRUE)
+		{
+			data = ft_replace(data, env[j], place + 1);
+			index = TRUE;
 			break ;
+		}
 		j++;
 	}
-	if (env[j] == '=' && ft_check_allowed_char(data[i + j], i + j) == FALSE)
-		return (TRUE);
-	return (FALSE);
+	if (index == FALSE)
+		data = ft_remove_dollar(data, place);
+	return (data);
 }
 
-int	ft_dollar_len(char *data, int start)
+void	ft_pars_dollar(t_tabs **tabs, t_var *var)
 {
-	int	len;
+	t_tabs	*tmp;
+	int		i;
 
-	len = 0;
-	while (data[start] && ft_check_allowed_char(data[start], start) == TRUE)
+	tmp = (*tabs)->next;
+	while (tmp)
 	{
-		start++;
-		len++;
+		i = 0;
+		while (tmp->cmds[i])
+		{
+			while (ft_look_for_dollar(tmp->cmds[i]) == TRUE)
+				tmp->cmds[i] = ft_repdoll(var->env, tmp->cmds[i], var->tmp_g);
+			i++;
+		}
+		i = 0;
+		while (tmp->redop[i])
+		{
+			while (ft_look_for_dollar(tmp->redop[i]) == TRUE)
+				tmp->redop[i] = ft_repdoll(var->env, tmp->redop[i], var->tmp_g);
+			i++;
+		}
+		tmp = tmp->next;
 	}
-	return (len);
-}
-
-int	ft_env_len(char *env, int start)
-{
-	int	len;
-
-	len = 0;
-	while (env[start])
-	{
-		start++;
-		len++;
-	}
-	return (len);
 }

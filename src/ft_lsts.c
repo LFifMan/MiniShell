@@ -15,7 +15,7 @@
 char	ft_add_index(char c, int index)
 {
 	if (c == PIPE && index == DOLLAR)
-	 	return (DOLLAR);
+		return (DOLLAR);
 	if (c == DQ || c == SQ || c == PIPE || \
 	c == SPACE || c == GREAT || c == SMALL || c == DOLLAR)
 		return (c);
@@ -64,34 +64,14 @@ void	ft_lst_new(t_shell **lst, char *input, int index, int old_index)
 		free (input);
 }
 
-void	ft_build_cmds(t_shell *input, t_tabs *tmp, int i)
+int	loop_regroup(t_shell *input, t_tabs *tmp, int i)
 {
-	if (input->index == DQ || input->index == SQ)
-		tmp->cmds[i] = ft_strjoin(tmp->cmds[i], input->data, TRUE);
-	else
-		tmp->cmds[i] = ft_strjoin(tmp->cmds[i], input->data, FALSE);
-	input = input->next;
-
-}
-void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input)
-{
-	t_tabs	*tmp;
-	t_tabs	*curr;
-	int		i;
-
-	tmp = malloc(sizeof(t_tabs));
-	if (!tmp)
-		exit (EXIT_FAILURE);
-	tmp->next = NULL;
-	i = 0;
-	tmp->cmds = malloc (sizeof(char *) * (ft_lst_count_spaces(input) + 1));
-	if (!tmp->cmds)
-		exit (EXIT_FAILURE);
 	while (input)
 	{
 		if (input && input->next && input->index == SPACE)
 			input = input->next;
-		if ((input && input->index == PIPE) || (input && input->index == SPACE && !input->next))
+		if ((input && input->index == PIPE) || (input && input->index == SPACE \
+		&& !input->next))
 			break ;
 		if (input->index == DQ || input->index == SQ)
 			tmp->cmds[i] = ft_strdup(input->data, FALSE);
@@ -108,6 +88,24 @@ void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input)
 		}
 		i++;
 	}
+	return (i);
+}
+
+void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input)
+{
+	t_tabs	*tmp;
+	t_tabs	*curr;
+	int		i;
+
+	tmp = malloc(sizeof(t_tabs));
+	if (!tmp)
+		exit (EXIT_FAILURE);
+	tmp->next = NULL;
+	i = 0;
+	tmp->cmds = malloc (sizeof(char *) * (ft_lst_count_spaces(input) + 1));
+	if (!tmp->cmds)
+		exit (EXIT_FAILURE);
+	i = loop_regroup(input, tmp, i);
 	tmp->cmds[i] = 0;
 	curr = *tabs;
 	while (tabs && (*tabs)->next != NULL)

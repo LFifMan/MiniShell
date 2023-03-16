@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ft_ctrl_twr.c                                 :+:      :+:    :+:   */
+/*   ft_ctrl_twr_one.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 23:27:44 by max               #+#    #+#             */
-/*   Updated: 2023/02/03 16:18:56 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/03/10 17:35:17 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,13 @@ int	ft_ctrl_prs(t_shell **shell, t_var *var, char *input, t_tabs *tabs)
 	(*shell) = parsing_pipes(*shell);
 	(*shell) = parsing_redops(shell);
 	(void)var;
-	//ft_pars_dollar(shell, var);
-	
 	(*shell) = parsing_spaces(shell);
+	(*shell) = ft_space_redops(shell);
 	if (ft_check_op(*shell) == FALSE)
 	{
 		ft_free_lst(*shell, tabs, input, 1);
 		return (FALSE);
 	}
-	(*shell) = ft_space_redops(shell);
 	return (TRUE);
 }
 
@@ -41,10 +39,9 @@ int	ft_ctrl_cmd(t_tabs **tabs, t_shell **shell, t_var *var)
 {
 	*tabs = ft_regroup(shell, var);
 	ft_redops(tabs);
-	ft_pars_dollar2(tabs, var);
+	ft_pars_dollar(tabs, var);
 	ft_pars_spaces(tabs);
-	if (ft_check_ambiguity(tabs) == FALSE)
-		write (2, "minishell: error: ambiguous redirection frr\n", ft_strlen("minishell: error: ambiguous redirection frr\n"));
+	ft_check_ambiguity(tabs);
 	ft_trim_quotes(tabs);
 	ft_paths(*var, tabs);
 	return (TRUE);
@@ -62,7 +59,7 @@ void	ft_ctrl_twr(t_var *var)
 	shell->next = NULL;
 	while (1)
 	{
-		input = ft_prompt();
+		input = ft_prompt(var);
 		if (ft_check_spaces(input) == TRUE)
 			ft_free_lst(shell, tabs, input, 0);
 		else

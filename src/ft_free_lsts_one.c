@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 23:14:47 by max               #+#    #+#             */
-/*   Updated: 2023/02/09 19:05:09 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/02/22 17:16:28 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int	ft_free_shell(t_shell *lst)
 	lst = lst->next;
 	while (lst != NULL)
 	{
-		// printf("hello la mif %s\n", lst->data);
 		tmp = lst;
 		lst = lst->next;
 		free(tmp->data);
@@ -50,19 +49,21 @@ void	ft_free(t_tabs *lst)
 	while (tmp->redop[i])
 		free(tmp->redop[i++]);
 	free(tmp->redop);
-	free(tmp);
 }
 
 int	ft_free_tabs(t_tabs *lst)
 {
 	t_tabs	*end;
+	t_tabs	*tmp;
 
 	end = lst;
 	lst = lst->next;
 	while (lst != NULL)
 	{
+		tmp = lst;
 		ft_free(lst);
 		lst = lst->next;
+		free(tmp);
 	}
 	lst = end;
 	lst->next = NULL;
@@ -77,7 +78,7 @@ void	ft_free_lst(t_shell *shell, t_tabs *tabs, char *input, int index)
 		ft_free_shell(shell);
 		if (index == 2)
 		{
-			//ft_free_tabs(tabs);
+			ft_free_tabs(tabs);
 			free(tabs);
 		}
 	}
@@ -96,16 +97,3 @@ void	ft_free_var(t_var var)
 		free(var.exp[i++]);
 	free(var.exp);
 }
-
-//void	ft_free_array(char **exp, int len_env)
-//{
-//	int	i;
-//
-//	i = 0;
-//	while (i < len_env)
-//	{
-//		free(exp[i]);
-//		i++;
-//	}
-//	free(exp);
-//}

@@ -12,7 +12,6 @@
 
 #include "../includes/minishell.h"
 
-//todo : + 1 in malloc and strlcpy ? / free str after strlcpy ?
 char	*ft_trim_quotations(char *str)
 {
 	char	*dest;
