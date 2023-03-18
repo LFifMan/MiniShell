@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse_spaces_tabs.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:19:30 by mstockli          #+#    #+#             */
-/*   Updated: 2023/03/10 17:33:19 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/03/17 18:25:17 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,12 @@ char	**ft_split(char const *s, char c)
 	size_t	i;
 	size_t	j;
 	int		index;
+	char	q;
 	char	**split;
 
 	if (!s)
 		return (0);
-	split = malloc((count_words(s, c) + 1) * sizeof(char *));
+	split = malloc(sizeof(char *) * (count_words(s, c) + 1));
 	if (!split)
 		exit (EXIT_FAILURE);
 	i = 0;
@@ -89,20 +90,33 @@ char	**ft_split(char const *s, char c)
 	index = 0;
 	while (s[i])
 	{
-		while (s[i] && s[i] != SQ && s[i] != DQ)
+		if (s[i] == SQ || s[i] == DQ)
 		{
-			if (s[i] == c)
-			{
-				split[j] = word_dup(s, index, i);
-				index = i + 1;
-				j++;
-			}
+			q = s[i];
 			i++;
+			while (s[i] && s[i] != q)
+				i++;
+			if (s[i])
+				i++;
+		}
+		else
+		{
+			while (s[i] && s[i] != SQ && s[i] != DQ)
+			{
+				if (s[i] == c)
+				{
+					split[j] = word_dup(s, index, i);
+					index = i + 1;
+					j++;
+				}
+				i++;
+			}
 		}
 	}
-	split[j] = word_dup(s, index, i);
-	j++;
+	if (s[i - 1] != ' ')
+		split[j++] = word_dup(s, index, i);
 	split[j] = 0;
+
 	return (split);
 }
 
@@ -153,9 +167,9 @@ char	**ft_split_array(char **cmd)
 		}
 	}
 	dest[j] = 0;
-	i = -1;
-	while (cmd[++i])
-		free(cmd[i]);
+	i = 0;
+	while (cmd[i])
+		free(cmd[i++]);
 	free(cmd);
 	return (dest);
 }
