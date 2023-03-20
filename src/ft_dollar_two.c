@@ -6,7 +6,7 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 19:29:16 by mstockli          #+#    #+#             */
-/*   Updated: 2023/03/17 18:28:15 by max              ###   ########.fr       */
+/*   Updated: 2023/03/20 14:19:02 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,88 +75,27 @@ int	ft_look_in_envp(char *data, char *env, int i)
 	return (FALSE);
 }
 
-int	count_words_dollars(char *cmd, int cw, int cs, int cc)
-{
-	int	i;
-
-	i = 0;
-	if (cmd[0] == SPACE) // white space
-		cs++;
-	while (cmd[i])
-	{
-		while (cmd[i] && (cmd[i] == SPACE || (cmd[i] >= 9 && cmd[i] <= 13)))
-			i++;
-		if (!cmd[i])
-			break ;
-		cw++;
-		while (cmd[i] && (cmd[i] != SPACE && (cmd[i] < 9 || cmd[i] > 13)))
-		{
-			i++;
-			cc++;
-		}
-	}
-	if (cmd[i - 1] == SPACE) // white space
-		cs++;
-	return(((cw * 2) + cw - 1) + cc + cs);
-}
-
-char	*ft_rep_quotes(char *cmd)
-{
-	int		i;
-	int		j;
-	char	*ret;
-
-	ret = ft_malloc_str(count_words_dollars(cmd, 0, 0, 0) + 1);
-	i = 0;
-	j = 0;
-	if (cmd[0] == SPACE) // white space
-		ret[j++] = SPACE;
-	while (cmd[i])
-	{
-		while (cmd[i] && (cmd[i] == SPACE || (cmd[i] >= 9 && cmd[i] <= 13)))
-			i++;
-		// the space could be put here! and must
-		if (!cmd[i])
-			break ;
-		if (j != 0 && ret[j - 1] != SPACE)
-			ret[j++] = SPACE;
-		ret[j++] = DQ;
-		while (cmd[i] && (cmd[i] != SPACE && (cmd[i] < 9 || cmd[i] > 13)))
-		{
-			ret[j] = cmd[i];
-			i++;
-			j++;
-		}
-		ret[j++] = DQ;
-	}
-	if (cmd[i - 1] == SPACE) // white space
-		ret[j++] = SPACE;
-	ret[j] = 0;
-	return (ret);
-}
-
 char	*ft_replace(char *data, char *env, int data_i)
 {
 	int		env_i;
 	int		i;
 	char	*ret;
 
-	//todo: check whitespace --> return a str with 1 space
-	if (ft_is_whitespace(data) == TRUE)
-		return (ft_strdup(" ", FALSE));
 	env_i = 0;
 	i = 0;
 	while (env[env_i] == data[data_i + env_i])
 		env_i++;
+	if (ft_check_spaces(&env[env_i + 1]) == TRUE)
+		return (ft_strdup(" ", FALSE));
 	env_i++;
-	ret = malloc(sizeof(char) * (data_i + 1)); // todo: add check malloc +  + 3?
+	ret = ft_malloc_str(data_i);
 	while (i < data_i - 1)
 	{
 		ret[i] = data[i];
 		i++;
 	}
 	ret[i] = 0;
-	ret = ft_strjoin(ret, ft_rep_quotes(&env[env_i]), TRUE); // replace " &env[env_i]" by a func that puts quotes! and strjoin becomes true
+	ret = ft_strjoin(ret, ft_rep_quotes(&env[env_i], 0, 0), TRUE);
 	ret = ft_strjoin(ret, &data[data_i + env_i - 1], FALSE);
 	free(data);
 	return (ret);

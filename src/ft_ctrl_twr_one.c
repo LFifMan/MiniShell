@@ -6,7 +6,7 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 23:27:44 by max               #+#    #+#             */
-/*   Updated: 2023/03/17 18:26:08 by max              ###   ########.fr       */
+/*   Updated: 2023/03/20 14:01:22 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,9 @@ int	ft_ctrl_cmd(t_tabs **tabs, t_shell **shell, t_var *var)
 	*tabs = ft_regroup(shell, var);
 	ft_redops(tabs);
 	ft_pars_dollar(tabs, var);
-	//PRINT_CMDS(tabs);
+	PRINT_CMDS(tabs);
 	ft_pars_spaces(tabs);
+	PRINT_CMDS(tabs);
 	ft_check_ambiguity(tabs);
 	ft_trim_quotes(tabs);
 	ft_paths(*var, tabs);

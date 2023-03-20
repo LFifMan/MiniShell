@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:44:43 by mstockli          #+#    #+#             */
-/*   Updated: 2023/03/06 19:34:01 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/03/20 14:27:57 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,6 +213,10 @@ char	*ft_remove_dollar(char *data, int start);
 char	*ft_replace_dollar(char **env, char *data, int status);
 void	ft_pars_dollar(t_tabs **tabs, t_var *var);
 
+/* FT_DOLLAR_THREE.C */
+
+char	*ft_rep_quotes(char *cmd, int i, int j);
+
 
 /* FT_PARSE_SPACES_TABS.C */
 
@@ -238,7 +242,7 @@ char	**ft_create_paths(void);
 char	**ft_parsing_binaries(char *const *envp, char *argv);
 char	*ft_mallocfill_bin(char **str, char c, char *argv, int beg);
 int		ft_countwords(char *str, char c);
-char	**ft_split_bin(char *str, char c, char *argv);
+char	**ft_split_bin(char *str, char c, char *argv, int i);
 
 
 /* FT_PARSING_PIPES.C */

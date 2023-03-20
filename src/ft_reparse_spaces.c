@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   new_split.c                                        :+:      :+:    :+:   */
+/*   ft_reparse_spaces.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/10 16:19:30 by mstockli          #+#    #+#             */
-/*   Updated: 2023/03/17 04:30:55 by max              ###   ########.fr       */
+/*   Created: 2023/03/20 14:39:45 by max               #+#    #+#             */
+/*   Updated: 2023/03/20 14:43:42 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@ int	count_words_two(char *cmd)
 	i = 0;
 	while (cmd[i])
 	{
+		if (cmd[i] == SPACE)
+		else if (cmd[i] == SQ)
+		
 		while (cmd[i] && (cmd[i] == SPACE || (cmd[i] >= 9 && cmd[i] <= 13)))
 			i++;
 		if (!cmd[i])
@@ -135,7 +138,7 @@ char	**ft_split_array_two(char **cmd)
 	return (tab);
 }
 
-void	ft_pars_spaces_two(t_tabs **tabs)
+void	ft_reparse_spaces(t_tabs **tabs)
 {
 	t_tabs	*tmp;
 

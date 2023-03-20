@@ -50,7 +50,8 @@ SRC		=	main.c \
 			ft_redops_handler.c \
 			ft_redirections.c \
 			ft_check.c \
-			ft_parsing_paths.c \
+			ft_parsing_paths_one.c \
+			ft_parsing_paths_two.c \
 			ft_built.c \
 			ft_built_two.c \
 			ft_built_utils_one.c \
@@ -68,10 +69,10 @@ SRC		=	main.c \
 			ft_dollar_one.c \
 			ft_dollar_two.c \
 			ft_dollar_three.c \
+			ft_dollar_four.c \
 			ft_parse_spaces_tabs.c \
 			ft_ambiguity.c \
 			ft_write.c \
-			new_split.c \
 			ft_verifs.c
 
 HEAD	=	minishell.h

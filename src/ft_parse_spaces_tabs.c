@@ -6,7 +6,7 @@
 /*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:19:30 by mstockli          #+#    #+#             */
-/*   Updated: 2023/03/17 18:25:17 by max              ###   ########.fr       */
+/*   Updated: 2023/03/20 15:25:12 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,31 +116,18 @@ char	**ft_split(char const *s, char c)
 	if (s[i - 1] != ' ')
 		split[j++] = word_dup(s, index, i);
 	split[j] = 0;
-
 	return (split);
 }
 
-char	**ft_split_array(char **cmd)
+char	**ft_split_array(char **cmd, int i, int j, int size)
 {
-	int		i;
-	int		j;
 	int		k;
-	int		size;
 	char	**dest;
 	char	**tmp;
 
-	i = 0;
-	j = 0;
-	size = 0;
-
 	while (cmd[i])
-	{
-		size += count_words(cmd[i], SPACE);
-		i++;
-	}
-	dest = malloc(sizeof(char *) * (size + 1));
-	if (!dest)
-		exit(EXIT_FAILURE);
+		size += count_words(cmd[i++], SPACE);
+	dest = ft_malloc_array(size);
 	i = 0;
 	while (cmd[i])
 	{
@@ -149,28 +136,17 @@ char	**ft_split_array(char **cmd)
 			tmp = ft_split(cmd[i], SPACE);
 			k = 0;
 			while (tmp[k])
-			{
-				dest[j] = ft_strdup(tmp[k], FALSE);
-				k++;
-				j++;
-			}
+				dest[j++] = ft_strdup(tmp[k++], FALSE);
 			i++;
 			free(tmp);
 		}
 		else if (ft_check_spaces(cmd[i]) == TRUE)
 			i++;
 		else
-		{
-			dest[j] = ft_strdup(cmd[i], FALSE);
-			i++;
-			j++;
-		}
+			dest[j++] = ft_strdup(cmd[i++], FALSE);
 	}
 	dest[j] = 0;
-	i = 0;
-	while (cmd[i])
-		free(cmd[i++]);
-	free(cmd);
+	ft_free_array(cmd, i);
 	return (dest);
 }
 
@@ -182,9 +158,9 @@ void	ft_pars_spaces(t_tabs **tabs)
 	while (tmp)
 	{
 		if (tmp->cmds)
-			tmp->cmds = ft_split_array(tmp->cmds);
+			tmp->cmds = ft_split_array(tmp->cmds, 0, 0, 0);
 		if (tmp->redop)
-			tmp->redop = ft_split_array(tmp->redop);
+			tmp->redop = ft_split_array(tmp->redop, 0, 0, 0);
 		tmp = tmp->next;
 	}
 }
