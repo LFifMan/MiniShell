@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 13:40:05 by mstockli          #+#    #+#             */
-/*   Updated: 2023/03/20 17:40:35 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/03/20 18:00:47 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	ft_process_execution(t_var *var, t_tabs *tabs)
 	{	
 		if (pipe(var->fd) == -1)
 		{
-			printf("la sauce");
+			exit(EXIT_FAILURE);
 		}
 	}
 	var->child = fork();

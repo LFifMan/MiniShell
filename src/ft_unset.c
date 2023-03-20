@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 19:44:36 by max               #+#    #+#             */
-/*   Updated: 2023/03/06 18:17:29 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/03/20 18:03:53 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_remove_env_var(t_var *var, char *str)
 	int	j;
 	int	len;
 
-	len = (int)strlen(str);
+	len = (int)ft_strlen(str);
 	i = 0;
 	while (var->env[i])
 	{
@@ -47,7 +47,7 @@ void	ft_remove_export_var(t_var *var, char *str)
 
 	unset = ft_strdup("declare -x ", FALSE);
 	unset = ft_join_exp(unset, str, FALSE);
-	len = (int)strlen(unset);
+	len = (int)ft_strlen(unset);
 	i = 0;
 	while (var->exp[i])
 	{

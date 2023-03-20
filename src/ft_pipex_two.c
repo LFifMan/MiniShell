@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 13:40:05 by mstockli          #+#    #+#             */
-/*   Updated: 2023/03/20 17:40:39 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/03/20 18:06:52 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,12 @@ void	ft_heredoc(t_tabs *tabs, t_var *var, int j)
 		input = readline("heredoc> ");
 		if (!input)
 			break ;
-		else if (strcmp(input, delimiter) == 0)
+		else if (ft_strcmp(input, delimiter) == 0)
 		{
 			free(input);
 			break ;
 		}
-		write(var->out_fd, input, strlen(input));
+		write(var->out_fd, input, ft_strlen(input));
 		write(var->out_fd, "\n", 1);
 	}
 	ft_heredoc_two(var);
