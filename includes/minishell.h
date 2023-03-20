@@ -6,7 +6,7 @@
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:44:43 by mstockli          #+#    #+#             */
-/*   Updated: 2023/03/20 16:56:12 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/03/20 17:40:58 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ int	g_status;
 int		ft_check_ambiguity(t_tabs **tabs);
 void	ft_pars_spaces_two(t_tabs **tabs);
 
-
 /* FT_BUILT.C */
 
 int		ft_build_echo(t_tabs *tabs, t_var *var);
@@ -93,7 +92,6 @@ int		ft_build_cd(t_tabs *tabs, t_var *var, int print);
 char	*ft_str_lower(char *str);
 int		ft_builtins(t_tabs *tabs, t_var *var, char *cmd_one);
 
-
 /* FT_BUILT_UTILS_ONE.C */
 
 int		ft_option_n(char *str);
@@ -101,7 +99,6 @@ int		ft_find_dir(const char *path);
 char	*ft_create_root(char *env, int j);
 void	ft_update_pwd(t_var *var, char *root);
 void	ft_cd_alone(char **env, int print, t_var *var);
-
 
 /* FT_BUILT_UTILS_TWO.C */
 
@@ -111,7 +108,6 @@ void	ft_cd_absolute(t_tabs *tabs, t_var *var, int print);
 void	ft_cd_relative(t_tabs *tabs, t_var *var, int print, char *current);
 int		ft_find_home(char **env);
 
-
 /* FT_CHECK.C */
 
 int		ft_check_next_pipe(t_shell *shell, int print);
@@ -119,18 +115,15 @@ int		ft_check_next_redirection(t_shell *shell, int print);
 int		ft_check_op(t_shell *shell);
 int		ft_check_spaces(char *input);
 
-
 /* FT_CTRL_TWR_ONE.C */
 int		ft_ctrl_prs(t_shell **shell, t_var *var, char *input, t_tabs *tabs);
 int		ft_ctrl_cmd(t_tabs **tabs, t_shell **shell, t_var *var);
 void	ft_ctrl_twr(t_var *var);
 
-
 /* FT_CTRL_TWR_TWO.C */
 char	*ft_prompt(t_var *var);
 int		ft_check_builtins(char *cmd_one);
 int		ft_execution(t_tabs *tabs, t_var *var);
-
 
 /* FT_EXPORT_ONE.C */
 
@@ -140,13 +133,11 @@ void	ft_export_export(t_var *var, char *str, int index);
 int		ft_printf_export(t_tabs *tabs, t_var *var);
 int		ft_build_export(t_tabs *tabs, t_var *var, int print);
 
-
 /* FT_EXPORT_TWO.C */
 
 char	**ft_new_src(char **src, char *str, int len);
 char	**replace_var(char **src, char *str, int place);
 void	ft_sort_new_export(t_var *var);
-
 
 /* FT_FREE_LSTS_ONE.C */
 
@@ -156,18 +147,15 @@ int		ft_free_tabs(t_tabs *lst);
 void	ft_free_lst(t_shell *shell, t_tabs *tabs, char *input, int index);
 void	ft_free_var(t_var var);
 
-
 /* FT_FREE_LSTS_TWO.C */
 
 void	ft_free_array(char **exp, int len_env);
-
 
 /* FT_INIT_ONE.C */
 
 char	*get_root_new(char **env);
 void	ft_init_env(t_var *var, char **env, int len_env);
 void	ft_init_var(t_var *var, char **env);
-
 
 /* FT_INIT_TWO.C */
 
@@ -176,14 +164,12 @@ char	**ft_dup_exp(t_var *var, int len_env);
 void	ft_sort_exp(int len_env, char **exp);
 char	*ft_shlvl(char *env);
 
-
 /* FT_LSTS.C */
 
 char	ft_add_index(char c, int index);
 char	*ft_add_data(char *input);
 void	ft_lst_new(t_shell **lst, char *input, int index, int old_index);
 void	ft_lstregroup_back(	t_tabs **tabs, t_shell *input);
-
 
 /* FT_MALLOC.C */
 
@@ -197,7 +183,6 @@ int		ft_get_dollar_place(char *data);
 int		loop_look_for_dollar(char *data, int i);
 int		ft_look_for_dollar(char *data);
 
-
 /* FT_DOLLAR_TWO.C */
 
 int		ft_iteration(char c);
@@ -205,7 +190,6 @@ int		ft_check_allowed_char(char c, int pos);
 char	*ft_replace_status(char *data, int status, int place);
 int		ft_look_in_envp(char *data, char *env, int i);
 char	*ft_replace(char *data, char *env, int data_i);
-
 
 /* FT_DOLLAR_THREE.C */
 
@@ -217,15 +201,26 @@ void	ft_pars_dollar(t_tabs **tabs, t_var *var);
 
 char	*ft_rep_quotes(char *cmd, int i, int j);
 
+/* FT_REPARSE_SPACES_ONE.C */
 
-/* FT_PARSE_SPACES_TABS.C */
+void	ft_reparse_spaces(t_tabs **tabs);
+char	**ft_split_array_two(char **cmd);
+void	prepare_tab(char **tab, char **cmd);
+int		ft_resplit(char *cmd, char **tab, int i_tab, int start);
 
-int		count_words(char *str, char c);
-char	*word_dup(char *str, int start, int finish);
-char	**ft_split(char *s, char c);
-char	**ft_split_array(char **cmd, int i, int j, int size);
-void	ft_pars_spaces(t_tabs **tabs);
+/* FT_REPARSE_SPACES_TWO.C */
 
+char	*fill_malloc(char *cmd, int start, int end);
+int		find_end(char *cmd, int i);
+int		find_start(char *cmd, int end);
+
+/* FT_REPARSE_SPACES_THREE.C */
+
+int		count_total_words(char **cmd);
+int		count_words(char *cmd);
+int		ft_incr_quotes(char *cmd, int i, char c);
+int		ft_incr_chars(char *cmd, int i);
+int		ft_incr_spaces(char *cmd, int i);
 
 /* FT_PARSING_INPUT.C */
 
@@ -233,7 +228,6 @@ char	*parse_quotation(char *input, char index, int size, int i);
 int		parsing_quotations(t_shell **shell, char *input);
 void	split_spaces(t_shell **shell, char *input, int old_index);
 t_shell	*parsing_spaces(t_shell **shell);
-
 
 /* FT_PARSING_PATHS.C */
 
@@ -244,13 +238,11 @@ char	*ft_mallocfill_bin(char **str, char c, char *argv, int beg);
 int		ft_countwords(char *str, char c);
 char	**ft_split_bin(char *str, char c, char *argv, int i);
 
-
 /* FT_PARSING_PIPES.C */
 
 void	ft_prepare_new(t_shell *new, t_shell *shell);
 t_shell	*ft_create_new(void);
 t_shell	*parsing_pipes(t_shell *shell);
-
 
 /* FT_PARSING_REDOP.C */
 
@@ -259,14 +251,12 @@ char	**ft_remove_redop_cmds(char **cmd, int index);
 int		ft_tmp_redop(t_tabs *tmp, int i, int j);
 void	ft_redops(t_tabs **tabs);
 
-
 /* FT_PARSING_REGROUP_ONE.C */
 
 char	*ft_trim_quotations(char *str);
 int		ft_lst_count_spaces(t_shell *lst);
 t_tabs	*ft_regroup(t_shell **shell, t_var *var);
 void	ft_split_pipes(t_shell **shell, char *input);
-
 
 /* FT_PIPEX_ONE.C */
 
@@ -275,14 +265,12 @@ void	ft_parent(t_tabs *tabs, t_var *var);
 void	ft_process_execution(t_var *var, t_tabs *tabs);
 void	ft_pipex(t_tabs *tabs, t_var *var);
 
-
 /* FT_PIPEX_TWO.C */
 
 void	ft_heredoc_two(t_var *var);
 void	ft_heredoc(t_tabs *tabs, t_var *var, int j);
 void	ft_fd_handlers(t_var *var, int option);
-void	ft_handle_execution(t_var *var, t_tabs *tabs, int option, char *cmd_one);
-
+void	ft_handle_exec(t_var *var, t_tabs *tabs, int option, char *cmd_one);
 
 /* FT_REDIRECTIONS.C */
 
@@ -292,7 +280,6 @@ void	ft_split_redirections(t_shell **shell, char *str);
 void	ft_split_add(t_shell *tmp, t_shell *new);
 t_shell	*parsing_redops(t_shell **shell);
 
-
 /* FT_REDOPS-HANDLER.C */
 
 void	ft_handle_heredoc(t_tabs *tabs, t_var *var, int i);
@@ -300,7 +287,6 @@ void	ft_handle_append_redir(t_tabs *tabs, t_var *var, int i);
 void	ft_handle_input_redir(t_tabs *tabs, t_var *var, int i);
 void	ft_handle_trunc_redir(t_tabs *tabs, t_var *var, int i);
 void	ft_redops_handler(t_tabs *tabs, t_var *var);
-
 
 /* FT_SIGNALS.C */
 
@@ -310,13 +296,11 @@ void	ft_enable_signal(void);
 void	ft_halt_signal(void);
 void	ft_signals(int index);
 
-
 /* FT_TRIM_QUOTES.C */
 
 int		ft_trim_count(char *cmd, int i, int j);
 char	*ft_trim_cmds(char *cmd, int size, int i, int j);
 void	ft_trim_quotes(t_tabs **tabs);
-
 
 /* FT_UNSET.C */
 
@@ -324,7 +308,6 @@ void	ft_remove_env_var(t_var *var, char *str);
 void	ft_remove_export_var(t_var *var, char *str);
 int		ft_build_unset(t_tabs *tabs, t_var *var, int print);
 void	ft_unset_export(t_tabs *tabs, t_var *var, char *cmd_one);
-
 
 /* FT_UPDATE_ENV.C */
 
@@ -335,13 +318,11 @@ void	reset_env(t_var *var, char *src);
 void	ft_old_env(t_var *var, int i);
 int		ft_check_old(t_var *var);
 
-
 /* FT_UPDATE_EXP.C */
 
 void	ft_update_exp(t_var *var, char *path);
 void	ft_old_exp(t_var *var, int i);
 int		ft_find_pwd(char **env);
-
 
 /* FT_UTILS_FOUR.C */
 
@@ -349,7 +330,6 @@ char	*dest(int n, int count);
 char	*ft_itoa(int n);
 int		ft_is_whitespace(char *str);
 int		ft_atoi(char *str);
-
 
 /* FT_UTILS_ONE.C */
 
@@ -359,13 +339,11 @@ int		ft_strcmp(char *input, char *str);
 int		ft_memcmp(void *s1, void *s2, size_t n);
 char	*ft_zero(const char *s);
 
-
 /* FT_UTILS_THREE.C */
 
 size_t	ft_strlcpy(char *dest, const char *src, size_t size);
 int		ft_tolower(int c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
-
 
 /* FT_UTILS_TWO.C */
 
@@ -375,21 +353,11 @@ int		ft_cmp_ascii(char *input, char *str);
 char	*ft_strjoin(char *s1, char *s2, int index);
 char	*ft_strdup(char *src, int index);
 
-
-/* FT_VERIFS.C */
-
-void	PRINT_SHELL(t_shell **a);
-void	PRINT_CMDS(t_tabs **a);
-void	PRINT_REDOP(t_tabs **a);
-void	PRINT_PATHS(t_tabs **a);
-
-
 /* FT_WRITE.C */
 
 int		ft_write_op(char *str, int status, int print);
 void	ft_write(char *str, int option, int status);
 void	ft_write_exit(char *str, int option, int status);
-
 
 /* FT_MAIN.C */
 

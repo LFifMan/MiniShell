@@ -70,10 +70,11 @@ SRC		=	main.c \
 			ft_dollar_two.c \
 			ft_dollar_three.c \
 			ft_dollar_four.c \
-			ft_parse_spaces_tabs.c \
+			ft_reparse_spaces_one.c \
+			ft_reparse_spaces_two.c \
+			ft_reparse_spaces_three.c \
 			ft_ambiguity.c \
-			ft_write.c \
-			ft_verifs.c
+			ft_write.c 
 
 HEAD	=	minishell.h
 

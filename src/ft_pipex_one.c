@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pipex.c                                         :+:      :+:    :+:   */
+/*   ft_pipex_one.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 13:40:05 by mstockli          #+#    #+#             */
-/*   Updated: 2023/03/06 19:15:48 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/03/20 17:40:35 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ void	ft_child(t_tabs *tabs, t_var *var)
 	{
 		cmd_one = ft_str_lower(tabs->cmds[0]);
 		if (ft_builtins(tabs, var, cmd_one) == TRUE)
-			ft_handle_execution(var, tabs, 1, cmd_one);
+			ft_handle_exec(var, tabs, 1, cmd_one);
 		else
-			ft_handle_execution(var, tabs, 2, cmd_one);
+			ft_handle_exec(var, tabs, 2, cmd_one);
 	}
 	ft_fd_handlers(var, 0);
 }

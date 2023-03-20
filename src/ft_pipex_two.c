@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pipex.c                                         :+:      :+:    :+:   */
+/*   ft_pipex_two.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 13:40:05 by mstockli          #+#    #+#             */
-/*   Updated: 2023/03/06 19:15:48 by mstockli         ###   ########.fr       */
+/*   Updated: 2023/03/20 17:40:39 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	ft_fd_handlers(t_var *var, int option)
 	}
 }
 
-void	ft_handle_execution(t_var *var, t_tabs *tabs, int option, char *cmd_one)
+void	ft_handle_exec(t_var *var, t_tabs *tabs, int option, char *cmd_one)
 {
 	int	k;
 
