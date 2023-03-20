@@ -4,8 +4,8 @@ NAME	= minishell
 CC		= gcc
 RM		= rm -rf
 FLAGS	= -Werror -Wextra -Wall -g3 -fsanitize=address
-LIBS	= -L /usr/local/Cellar/readline/8.2.1/lib -lreadline -I /usr/local/Cellar/readline/8.2.1/include/readline
-#LIBS	= -L $(HOME)/.brew/Cellar/readline/8.2.1/lib -lreadline -I $(HOME)/.brew/Cellar/readline/8.2.1/include/readline
+#LIBS	= -L /usr/local/Cellar/readline/8.2.1/lib -lreadline -I /usr/local/Cellar/readline/8.2.1/include/readline
+LIBS	= -L $(HOME)/.brew/Cellar/readline/8.2.1/lib -lreadline -I $(HOME)/.brew/Cellar/readline/8.2.1/include/readline
 MKDIR_P = mkdir -p
 
 ##-----VARIABLES-----##
@@ -89,12 +89,12 @@ HEADERS = $(addprefix $(PATH_HEAD),$(HEAD))
 all:						$(NAME) asciiart
 
 $(NAME):					$(DIR_OBJ) $(OBJS) $(HEADERS)
-#							$(CC)  $(FLAGS) -I $(PATH_HEAD) -L $(HOME)/.brew/Cellar/readline/8.2.1/lib -lreadline -lhistory -o $(@) $(OBJS)
-							$(CC)  $(FLAGS) -I $(PATH_HEAD) -L /usr/local/Cellar/readline/8.2.1/lib -lreadline -lhistory -o $(@) $(OBJS)
+							$(CC)  $(FLAGS) -I $(PATH_HEAD) -L $(HOME)/.brew/Cellar/readline/8.2.1/lib -lreadline -lhistory -o $(@) $(OBJS)
+#							$(CC)  $(FLAGS) -I $(PATH_HEAD) -L /usr/local/Cellar/readline/8.2.1/lib -lreadline -lhistory -o $(@) $(OBJS)
 
 $(PATH_OBJ)%.o:				$(PATH_SRC)%.c
-#							$(CC) $(FLAGS) -c -I $(PATH_HEAD) -I $(HOME)/.brew/Cellar/readline/8.2.1/include/ -o $@ $<
-							$(CC) $(FLAGS) -c -I $(PATH_HEAD)  -I /usr/local/Cellar/readline/8.2.1/include/ -o $@ $<
+							$(CC) $(FLAGS) -c -I $(PATH_HEAD) -I $(HOME)/.brew/Cellar/readline/8.2.1/include/ -o $@ $<
+#							$(CC) $(FLAGS) -c -I $(PATH_HEAD)  -I /usr/local/Cellar/readline/8.2.1/include/ -o $@ $<
 
 ${DIR_OBJ} :
 		@mkdir -p ${DIR_OBJ}

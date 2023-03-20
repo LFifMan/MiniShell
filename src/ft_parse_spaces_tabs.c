@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse_spaces_tabs.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:19:30 by mstockli          #+#    #+#             */
-/*   Updated: 2023/03/20 15:25:12 by max              ###   ########.fr       */
+/*   Updated: 2023/03/20 17:09:26 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,52 +14,60 @@
 
 #include "../includes/minishell.h"
 
-int	count_words(const char *str, char c)
-{
-	int	i;
 
-	i = 0;
-	while (*str)
-	{
-		if (*str == c)
-		{
-			while (*str && *str == c)
-				str++;
-		}
-		else if (*str == SQ)
-		{
-			str++;
-			while (*str && *str != SQ)
-			{
-				str++;
-			}
-			if (*str)
-				str++;
-			if (*str == c || *str == 0)
-				i++;
-		}
-		else if (*str && *str == DQ)
-		{
-			str++;
-			while (*str && *str != DQ)
-				str++;
-			if (*str)
-				str++;
-			if (*str == c || *str == 0)
-				i++;
-		}
-		else
-		{
-			while (*str && *str != DQ && *str != SQ && *str != c)
-				str++;
-			if (*str == c || *str == 0)
-				i++;
-		}
-	}
+int	ft_incr_spaces(char *cmd, int i)
+{
+	while (cmd[i] && cmd[i] == SPACE)
+		i++;
 	return (i);
 }
 
-char	*word_dup(const char *str, int start, int finish)
+int	ft_incr_quotes(char *cmd, int i, char c)
+{
+	i++;
+	while (cmd[i] && cmd[i] != c)
+		i++;
+	if (cmd[i])
+		i++;
+	return (i);
+}
+
+int	ft_incr_chars(char *cmd, int i)
+{
+	while (cmd[i] && cmd[i] != DQ && cmd[i] != SQ && cmd[i] != SPACE)
+		i++;
+	return (i);
+}
+
+
+int	count_words(char *cmd, char c)
+{
+	int	count;
+	int	i;
+
+	(void)c;
+	count = 0;
+	i = 0;
+	while (cmd[i])
+	{
+		if (cmd[i] == SPACE)
+			i = ft_incr_spaces(cmd, i);
+		else if (cmd[i] && (cmd[i] == SQ || cmd[i] == DQ))
+		{
+			i = ft_incr_quotes(cmd, i, cmd[i]);
+			if (cmd[i] == SPACE || cmd[i] == 0)
+				count++;
+		}
+		else
+		{
+			i = ft_incr_chars(cmd, i);
+			if (cmd[i] == SPACE || cmd[i] == 0)
+				count++;
+		}
+	}
+	return (count);
+}
+char	*word_dup(char *str, int start, int finish)
 {
 	char	*word;
 	int		i;
@@ -72,7 +80,7 @@ char	*word_dup(const char *str, int start, int finish)
 	return (word);
 }
 
-char	**ft_split(char const *s, char c)
+char	**ft_split(char *s, char c)
 {
 	size_t	i;
 	size_t	j;
@@ -90,6 +98,7 @@ char	**ft_split(char const *s, char c)
 	index = 0;
 	while (s[i])
 	{
+		index = ft_incr_spaces(s, i);
 		if (s[i] == SQ || s[i] == DQ)
 		{
 			q = s[i];
@@ -126,7 +135,11 @@ char	**ft_split_array(char **cmd, int i, int j, int size)
 	char	**tmp;
 
 	while (cmd[i])
+	{
+		printf("size = %d and cmd= %s\n", count_words(cmd[i], SPACE), cmd[i]);
 		size += count_words(cmd[i++], SPACE);
+	
+	}
 	dest = ft_malloc_array(size);
 	i = 0;
 	while (cmd[i])

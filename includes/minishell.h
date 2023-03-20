@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: mstockli <mstockli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:44:43 by mstockli          #+#    #+#             */
-/*   Updated: 2023/03/20 14:27:57 by max              ###   ########.fr       */
+/*   Updated: 2023/03/20 16:56:12 by mstockli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,10 +220,10 @@ char	*ft_rep_quotes(char *cmd, int i, int j);
 
 /* FT_PARSE_SPACES_TABS.C */
 
-int		count_words(const char *str, char c);
-char	*word_dup(const char *str, int start, int finish);
-char	**ft_split(char const *s, char c);
-char	**ft_split_array(char **cmd);
+int		count_words(char *str, char c);
+char	*word_dup(char *str, int start, int finish);
+char	**ft_split(char *s, char c);
+char	**ft_split_array(char **cmd, int i, int j, int size);
 void	ft_pars_spaces(t_tabs **tabs);
 
 
